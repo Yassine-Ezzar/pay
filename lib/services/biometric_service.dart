@@ -18,7 +18,7 @@ class BiometricService {
         localizedReason: 'Veuillez vous authentifier pour vous enregistrer avec SmartPay',
         options: const AuthenticationOptions(
           biometricOnly: true,
-          stickyAuth: true, // Continue même si l’app passe en arrière-plan
+          stickyAuth: true,
         ),
       );
     } catch (e) {

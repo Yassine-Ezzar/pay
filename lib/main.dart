@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/splash',
       getPages: AppPages.pages,
       theme: ThemeData(
-        fontFamily: 'Rubik', // Police globale
+        fontFamily: 'Rubik', 
         scaffoldBackgroundColor: Styles.scaffoldBackgroundColor,
         primaryColor: Styles.defaultBlueColor,
         colorScheme: ColorScheme.light(
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Styles.defaultGreyColor, // Boutons
+            backgroundColor: Styles.defaultGreyColor, 
             foregroundColor: Styles.defaultYellowColor,
             padding: EdgeInsets.all(Styles.defaultPadding),
             shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),

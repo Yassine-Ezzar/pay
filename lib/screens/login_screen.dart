@@ -14,14 +14,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final _nameController = TextEditingController();
   final _pinController = TextEditingController();
   final _biometricService = BiometricService();
-  final _storage = FlutterSecureStorage();
-  String _enteredPin = ''; // Pour suivre les chiffres entrés dans le PIN
+  final _storage = const FlutterSecureStorage();
+  String _enteredPin = '';
 
   void _addNumber(String number) {
     if (_enteredPin.length < 4) {
       setState(() {
         _enteredPin += number;
-        _pinController.text = _enteredPin; // Mettre à jour le contrôleur pour le backend
+        _pinController.text = _enteredPin;
       });
     }
   }
@@ -35,28 +35,138 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-void _loginWithPin() async {
-  try {
-    await ApiService.login(_nameController.text, _pinController.text);
-    Get.offNamed('/success'); // Redirection vers SuccessScreen
-  } catch (e) {
-    Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
-  }
-}
-
-void _loginWithBiometric() async {
-  if (await _biometricService.authenticate()) {
-    final name = await _storage.read(key: 'name');
-    if (name != null) {
-      try {
-        await ApiService.login(name, '');
-        Get.offNamed('/success'); // Redirection vers SuccessScreen
-      } catch (e) {
-        Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
-      }
+  void _loginWithPin() async {
+    try {
+      await ApiService.login(_nameController.text, _pinController.text);
+      Get.offNamed('/success');
+    } catch (e) {
+      Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
     }
   }
-}
+
+  void _loginWithFaceId() async {
+    bool canUseBiometrics = await _biometricService.canUseBiometrics();
+    if (!canUseBiometrics) {
+      Get.snackbar(
+        'Information',
+        'Face ID n’est pas disponible sur cet appareil.',
+        backgroundColor: Styles.defaultGreyColor,
+      );
+      return;
+    }
+
+    bool authenticated = await _biometricService.authenticate();
+    if (authenticated) {
+      _showBiometricDialog(
+        title: 'Connexion avec Face ID',
+        message: 'Votre visage est en cours de reconnaissance...',
+        icon: Icons.face,
+        onConfirm: () async {
+          final name = await _storage.read(key: 'name');
+          if (name != null) {
+            try {
+              await ApiService.login(name, ''); 
+              Get.back(); 
+              Get.offNamed('/success');
+            } catch (e) {
+              Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
+            }
+          } else {
+            Get.snackbar('Erreur', 'Nom non trouvé. Veuillez vous connecter avec PIN d’abord.',
+                backgroundColor: Styles.defaultRedColor);
+          }
+        },
+      );
+    } else {
+      Get.snackbar('Erreur', 'Échec de la reconnaissance faciale.',
+          backgroundColor: Styles.defaultRedColor);
+    }
+  }
+
+  void _loginWithTouchId() async {
+    bool canUseBiometrics = await _biometricService.canUseBiometrics();
+    if (!canUseBiometrics) {
+      Get.snackbar(
+        'Information',
+        'Touch ID n’est pas disponible sur cet appareil.',
+        backgroundColor: Styles.defaultGreyColor,
+      );
+      return;
+    }
+
+    bool authenticated = await _biometricService.authenticate();
+    if (authenticated) {
+      _showBiometricDialog(
+        title: 'Connexion avec Touch ID',
+        message: 'Placez votre doigt sur le lecteur d’empreintes...',
+        icon: Icons.fingerprint,
+        onConfirm: () async {
+          final name = await _storage.read(key: 'name');
+          if (name != null) {
+            try {
+              await ApiService.login(name, ''); 
+              Get.back(); 
+              Get.offNamed('/success');
+            } catch (e) {
+              Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
+            }
+          } else {
+            Get.snackbar('Erreur', 'Nom non trouvé. Veuillez vous connecter avec PIN d’abord.',
+                backgroundColor: Styles.defaultRedColor);
+          }
+        },
+      );
+    } else {
+      Get.snackbar('Erreur', 'Échec de la reconnaissance d’empreinte.',
+          backgroundColor: Styles.defaultRedColor);
+    }
+  }
+  void _showBiometricDialog({
+    required String title,
+    required String message,
+    required IconData icon,
+    required VoidCallback onConfirm,
+  }) {
+    Get.defaultDialog(
+      backgroundColor: Styles.scaffoldBackgroundColor,
+      title: title,
+      titleStyle: TextStyle(
+        fontFamily: 'Rubik',
+        color: Styles.defaultYellowColor,
+        fontSize: 24,
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 80, color: Styles.defaultYellowColor),
+          SizedBox(height: Styles.defaultPadding),
+          CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Styles.defaultYellowColor),
+          ),
+          SizedBox(height: Styles.defaultPadding),
+          Text(
+            message,
+            style: TextStyle(
+              fontFamily: 'Rubik',
+              color: Styles.defaultLightWhiteColor,
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+      confirm: ElevatedButton(
+        onPressed: onConfirm,
+        child: Text('Continuer', style: TextStyle(fontFamily: 'Rubik')),
+      ),
+      cancel: TextButton(
+        onPressed: () => Get.back(),
+        child: Text('Annuler',
+            style: TextStyle(
+                color: Styles.defaultYellowColor, fontFamily: 'Rubik')),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +174,7 @@ void _loginWithBiometric() async {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Styles.defaultYellowColor),
-          onPressed: () => Get.offNamed('/register'), // Redirige vers /register au lieu de Get.back()
+          onPressed: () => Get.offNamed('/register'),
         ),
         backgroundColor: Styles.scaffoldBackgroundColor,
         elevation: 0,
@@ -86,7 +196,6 @@ void _loginWithBiometric() async {
               ),
             ),
             SizedBox(height: Styles.defaultPadding * 2),
-            // Champ pour le nom
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
@@ -104,7 +213,6 @@ void _loginWithBiometric() async {
               style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik'),
             ),
             SizedBox(height: Styles.defaultPadding),
-            // Grille de boutons pour le PIN
             GridView.count(
               shrinkWrap: true,
               crossAxisCount: 3,
@@ -123,7 +231,7 @@ void _loginWithBiometric() async {
                   ),
                   child: Text(
                     '${index + 1}',
-                    style: TextStyle(fontSize: 20, fontFamily: 'Rubik'),
+                    style: const TextStyle(fontSize: 20, fontFamily: 'Rubik'),
                   ),
                 );
               })..addAll([
@@ -136,7 +244,7 @@ void _loginWithBiometric() async {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Icon(Icons.backspace, size: 20),
+                  child: const Icon(Icons.backspace, size: 20),
                 ),
                 ElevatedButton(
                   onPressed: () => _addNumber('0'),
@@ -147,34 +255,32 @@ void _loginWithBiometric() async {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     '0',
                     style: TextStyle(fontSize: 20, fontFamily: 'Rubik'),
                   ),
                 ),
-                SizedBox.shrink(),
+                const SizedBox.shrink(),
               ]),
             ),
             SizedBox(height: Styles.defaultPadding),
-            // Bouton SUBMIT
             ElevatedButton(
               onPressed: _enteredPin.length == 4 ? _loginWithPin : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Styles.defaultBlueColor,
                 foregroundColor: Styles.defaultYellowColor,
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: Styles.defaultBorderRadius,
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'SUBMIT',
                 style: TextStyle(fontSize: 18, fontFamily: 'Rubik'),
               ),
             ),
             SizedBox(height: Styles.defaultPadding),
-            // Lien Resend code (optionnel)
-              TextButton(
+            TextButton(
               onPressed: () => Get.toNamed('/reset-pin'),
               child: Text(
                 'Resend code',
@@ -185,22 +291,46 @@ void _loginWithBiometric() async {
                 ),
               ),
             ),
+            SizedBox(height: Styles.defaultPadding / 2),
+            Text(
+              'Ou bien',
+              style: TextStyle(
+                fontFamily: 'Rubik',
+                fontSize: 14,
+                color: Styles.defaultYellowColor,
+              ),
+              textAlign: TextAlign.center,
+            ),
             SizedBox(height: Styles.defaultPadding),
-          
-            SizedBox(height: Styles.defaultPadding),
-            // Bouton biométrique
+            // Bouton Touch ID
             ElevatedButton(
-              onPressed: _loginWithBiometric,
+              onPressed: _loginWithTouchId,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Styles.defaultGreyColor,
                 foregroundColor: Styles.defaultYellowColor,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: Styles.defaultBorderRadius,
                 ),
               ),
-              child: Text(
-                'Login with Biometrics',
+              child: const Text(
+                'Login with Touch ID',
+                style: TextStyle(fontSize: 16, fontFamily: 'Rubik'),
+              ),
+            ),
+            SizedBox(height: Styles.defaultPadding),
+            ElevatedButton(
+              onPressed: _loginWithFaceId,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Styles.defaultGreyColor,
+                foregroundColor: Styles.defaultYellowColor,
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: Styles.defaultBorderRadius,
+                ),
+              ),
+              child: const Text(
+                'Login with Face ID',
                 style: TextStyle(fontSize: 16, fontFamily: 'Rubik'),
               ),
             ),

@@ -17,7 +17,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _enteredPin = '';
   bool _biometricEnabled = false;
 
-  // Ajouter un chiffre au PIN
   void _addNumber(String number) {
     if (_enteredPin.length < 4) {
       setState(() {
@@ -26,7 +25,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  // Supprimer le dernier chiffre du PIN
   void _deleteNumber() {
     if (_enteredPin.isNotEmpty) {
       setState(() {
@@ -49,7 +47,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _answerController.text,
         _biometricEnabled,
       );
-      Get.offNamed('/success'); // Redirige vers la page de succès
+      Get.offNamed('/success'); 
     } catch (e) {
       Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
     }
@@ -77,11 +75,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
           try {
             await ApiService.register(
               'FaceIDUser_${DateTime.now().millisecondsSinceEpoch}',
-              '0000', // PIN par défaut pour biométrie
+              '0000', 
               'default',
               true,
             );
-            Get.back(); // Ferme la boîte de dialogue
+            Get.back(); 
             Get.offNamed('/success');
           } catch (e) {
             Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
@@ -116,11 +114,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
           try {
             await ApiService.register(
               'TouchIDUser_${DateTime.now().millisecondsSinceEpoch}',
-              '0000', // PIN par défaut pour biométrie
+              '0000', 
               'default',
               true,
             );
-            Get.back(); // Ferme la boîte de dialogue
+            Get.back(); 
             Get.offNamed('/success');
           } catch (e) {
             Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
@@ -133,7 +131,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  // Boîte de dialogue biométrique
   void _showBiometricDialog({
     required String title,
     required String message,
@@ -198,7 +195,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Titre de bienvenue
             Text(
               'Bienvenue ! Choisissez votre méthode',
               style: TextStyle(
@@ -211,7 +207,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             SizedBox(height: Styles.defaultPadding * 2),
 
-            // Champs de texte (Nom et Réponse)
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
@@ -244,8 +239,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   color: Styles.defaultYellowColor, fontFamily: 'Rubik'),
             ),
             SizedBox(height: Styles.defaultPadding * 2),
-
-            // Indicateur de PIN
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(4, (index) {
@@ -265,8 +258,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               }),
             ),
             SizedBox(height: Styles.defaultPadding),
-
-            // Clavier numérique
             GridView.count(
               shrinkWrap: true,
               crossAxisCount: 3,
@@ -313,8 +304,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ]),
             ),
             SizedBox(height: Styles.defaultPadding * 2),
-
-            // Bouton d'inscription avec PIN
             SizedBox(
               width: 200,
               child: ElevatedButton(
@@ -349,8 +338,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
             SizedBox(height: Styles.defaultPadding / 2),
-
-            // Boutons biométriques
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

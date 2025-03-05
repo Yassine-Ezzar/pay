@@ -13,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 2), () {
-      Get.offNamed('/register'); // Redirige vers la page de connexion
+      Get.offNamed('/register');
     });
   }
 
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Styles.scaffoldBackgroundColor,
       body: Center(
         child: Text(
-          'SmartPay',
+          '',
           style: TextStyle(
             fontFamily: 'Rubik',
             fontSize: 40,
