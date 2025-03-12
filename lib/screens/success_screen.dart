@@ -57,7 +57,7 @@ class SuccessScreen extends StatelessWidget {
               ),
               SizedBox(height: Styles.defaultPadding * 3),
               GestureDetector(
-                onTap: () => Get.offNamed('/home'),
+                onTap: () => Get.offNamed('/add-card'),
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     vertical: Styles.defaultPadding,

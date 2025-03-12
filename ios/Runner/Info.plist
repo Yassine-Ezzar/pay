@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSCameraUsageDescription</key>
+<string>Autorisation pour scanner les cartes</string>
 	<key>CFBundleDisplayName</key>
 	<string>Pay</string>
 	<key>CFBundleExecutable</key>

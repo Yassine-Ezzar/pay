@@ -49,4 +49,41 @@ class ApiService {
       throw Exception(data['message']);
     }
   }
+
+
+  static Future<Map<String, dynamic>> addCard(String userId, String cardNumber, String expiryDate, String cvv) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/cards/add'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'userId': userId,
+        'cardNumber': cardNumber,
+        'expiryDate': expiryDate,
+        'cvv': cvv,
+      }),
+    );
+
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 201) {
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<List<dynamic>> getCards(String userId) async {
+    final response = await http.get(Uri.parse('$baseUrl/cards?userId=$userId'));
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<void> deleteCard(String cardId) async {
+    final response = await http.delete(Uri.parse('$baseUrl/cards/$cardId'));
+    final data = jsonDecode(response.body);
+    if (response.statusCode != 200) {
+      throw Exception(data['message']);
+    }
+  }
 }
