@@ -10,33 +10,47 @@ class CardListScreen extends StatefulWidget {
 }
 
 class _CardListScreenState extends State<CardListScreen> {
-  final String userId = 'your-user-id-here'; // À remplacer dynamiquement
+  String? userId;
   List<dynamic> cards = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchCards();
+    _loadUserId();
+  }
+
+  Future<void> _loadUserId() async {
+    userId = await ApiService.storage.read(key: 'userId');
+    if (userId == null) {
+      Get.snackbar('Erreur', 'Utilisateur non connecté', backgroundColor: Styles.defaultRedColor);
+      Get.offNamed('/login');
+    } else {
+      _fetchCards();
+    }
   }
 
   void _fetchCards() async {
-    try {
-      final fetchedCards = await ApiService.getCards(userId);
-      setState(() {
-        cards = fetchedCards;
-      });
-    } catch (e) {
-      Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
+    if (userId != null) {
+      try {
+        final fetchedCards = await ApiService.getCards(userId!);
+        setState(() {
+          cards = fetchedCards;
+        });
+      } catch (e) {
+        Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
+      }
     }
   }
 
   void _deleteCard(String cardId) async {
-    try {
-      await ApiService.deleteCard(cardId);
-      _fetchCards(); // Rafraîchit la liste
-      Get.snackbar('Succès', 'Carte supprimée', backgroundColor: Styles.defaultBlueColor);
-    } catch (e) {
-      Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
+    if (userId != null) {
+      try {
+        await ApiService.deleteCard(cardId);
+        _fetchCards();
+        Get.snackbar('Succès', 'Carte supprimée', backgroundColor: Styles.defaultBlueColor);
+      } catch (e) {
+        Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
+      }
     }
   }
 
