@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     try {
       await ApiService.login(_nameController.text, _enteredPin);
-      Get.offNamed('/card-list');
+      Get.offNamed('/home');
     } catch (e) {
       Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
     }
@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
             try {
               await ApiService.login(name, ''); 
               Get.back();
-              Get.offNamed('/card-list');
+              Get.offNamed('/home');
             } catch (e) {
               Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
             }
@@ -111,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
             try {
               await ApiService.login(name, ''); 
               Get.back();
-              Get.offNamed('/card-list');
+              Get.offNamed('/home');
             } catch (e) {
               Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
             }

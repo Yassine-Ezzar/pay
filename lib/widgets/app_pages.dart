@@ -1,5 +1,6 @@
 import 'package:app/screens/add_card_screen.dart';
 import 'package:app/screens/card_list_screen.dart';
+import 'package:app/screens/home_screen.dart';
 import 'package:app/screens/splash_screen.dart';
 import 'package:app/screens/success_screen.dart';
 import 'package:get/get.dart';
@@ -15,7 +16,7 @@ class AppPages {
     GetPage(name: '/register', page: () => RegisterScreen()),
     GetPage(name: '/login', page: () => LoginScreen()),
     GetPage(name: '/reset-pin', page: () => ResetPinScreen()),
-    //GetPage(name: '/home', page: () => HomeScreen()),
+    GetPage(name: '/home', page: () => HomeScreen()),
     GetPage(name: '/success', page: () => SuccessScreen()),
     GetPage(name: '/add-card', page: () => AddCardScreen()),
     GetPage(name: '/card-list', page: () => CardListScreen()),
