@@ -17,31 +17,26 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
   void initState() {
     super.initState();
 
-    // Initialize AnimationController
     _controller = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
     );
 
-    // Progress animation for the checkmark drawing
     _checkMarkProgress = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-    // Fade animation for texts
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: Interval(0.4, 0.8, curve: Curves.easeInOut)),
     );
 
-    // Slide animation for the button
     _buttonSlideAnimation = Tween<Offset>(
-      begin: Offset(0, 1), // Start below the screen
-      end: Offset.zero, // End at the original position
+      begin: Offset(0, 1), 
+      end: Offset.zero, 
     ).animate(
       CurvedAnimation(parent: _controller, curve: Interval(0.6, 1.0, curve: Curves.bounceOut)),
     );
 
-    // Start the animation
     _controller.forward();
   }
 
@@ -61,7 +56,6 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Animated Checkmark
               AnimatedBuilder(
                 animation: _controller,
                 builder: (context, child) {
@@ -79,7 +73,7 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
                       ],
                     ),
                     child: CustomPaint(
-                      size: Size.square(50), // Size of the checkmark
+                      size: Size.square(50), 
                       painter: CheckMarkPainter(_checkMarkProgress.value),
                     ),
                   );
@@ -87,7 +81,6 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
               ),
               SizedBox(height: Styles.defaultPadding * 2),
 
-              // Fade-in Text: WELL DONE!
               FadeTransition(
                 opacity: _fadeAnimation,
                 child: Text(
@@ -104,7 +97,6 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
               ),
               SizedBox(height: Styles.defaultPadding),
 
-              // Fade-in Text: Welcome to SmartPay!
               FadeTransition(
                 opacity: _fadeAnimation,
                 child: Text(
@@ -119,7 +111,6 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
               ),
               SizedBox(height: Styles.defaultPadding * 3),
 
-              // Slide-up Button: GET STARTED
               SlideTransition(
                 position: _buttonSlideAnimation,
                 child: GestureDetector(
@@ -164,7 +155,6 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
   }
 }
 
-// Custom Painter for the Checkmark
 class CheckMarkPainter extends CustomPainter {
   final double progress;
 
@@ -180,17 +170,15 @@ class CheckMarkPainter extends CustomPainter {
 
     final path = Path();
 
-    // Define the checkmark path
     path.moveTo(size.width * 0.25, size.height * 0.5);
     path.lineTo(size.width * 0.45, size.height * 0.7);
     path.lineTo(size.width * 0.75, size.height * 0.3);
 
-    // Draw the checkmark progressively
     final metrics = path.computeMetrics().first;
     final subPath = metrics.extractPath(0, metrics.length * progress);
     canvas.drawPath(subPath, paint);
 
-    // Add a glowing effect when the checkmark is complete
+    
     if (progress >= 1.0) {
       final glowPaint = Paint()
         ..color = Styles.defaultYellowColor.withOpacity(0.6)

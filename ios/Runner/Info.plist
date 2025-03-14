@@ -8,6 +8,10 @@
 <string>Autorisation pour scanner les cartes</string>
 	<key>CFBundleDisplayName</key>
 	<string>Pay</string>
+	<key>io.flutter.embedded_views_preview</key>
+<true/>
+<key>io.flutter.enableImpeller</key>
+<false/>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
