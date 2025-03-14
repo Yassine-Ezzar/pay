@@ -15,13 +15,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   bool isLoading = true;
   late AnimationController _controller;
   late Animation<double> _animation;
+  int _currentCarouselIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 800),
     )..repeat(reverse: true);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
     _fetchCards();
@@ -67,106 +68,161 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Color(0xFF1A1A1A), Color(0xFF2D2D2D)], // Dark gradient
+                  colors: [Color(0xFF1A1A1A), Color(0xFF2D2D2D)],
                 ),
               ),
-              child: Column(
-                children: [
-                  // Integrated AppBar with "Your Card" and Menu
-                  Padding(
-                    padding: EdgeInsets.all(Styles.defaultPadding),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Your Card',
-                          style: TextStyle(
-                            fontFamily: 'Rubik',
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Styles.defaultYellowColor,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black26,
-                                offset: Offset(1, 1),
-                                blurRadius: 2,
-                              ),
-                            ],
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.menu, color: Styles.defaultYellowColor, size: 28),
-                          onPressed: () {
-                            // Add menu logic here
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: Styles.defaultPadding / 2),
-             
-                  SizedBox(height: Styles.defaultPadding),
-                  // Cards Carousel
-                  Expanded(
-                    child: isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    // Header
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Styles.defaultPadding,
+                        vertical: Styles.defaultPadding / 2,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Your Cards',
+                            style: TextStyle(
+                              fontFamily: 'Rubik',
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
                               color: Styles.defaultYellowColor,
-                              strokeWidth: 2,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black45,
+                                  offset: Offset(1, 1),
+                                  blurRadius: 3,
+                                ),
+                              ],
                             ),
-                          )
-                        : cards.isEmpty
-                            ? Center(
-                                child: Text(
-                                  'No cards added yet.',
-                                  style: TextStyle(
-                                    fontFamily: 'Rubik',
-                                    color: Styles.defaultLightWhiteColor,
-                                    fontSize: 16,
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.menu,
+                              color: Styles.defaultYellowColor,
+                              size: 28,
+                            ),
+                            onPressed: () {
+                              // Add menu logic here
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: Styles.defaultPadding),
+                    // Cards Carousel
+                    Expanded(
+                      child: isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                color: Styles.defaultYellowColor,
+                                strokeWidth: 3,
+                              ),
+                            )
+                          : cards.isEmpty
+                              ? Center(
+                                  child: Text(
+                                    'No cards added yet.\nTap the + button to add a card.',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: 'Rubik',
+                                      color: Styles.defaultLightWhiteColor,
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.italic,
+                                    ),
                                   ),
-                                ),
-                              )
-                            : CarouselSlider(
-                                options: CarouselOptions(
-                                  height: 220,
-                                  enlargeCenterPage: true,
-                                  autoPlay: false,
-                                  aspectRatio: 16 / 9,
-                                  viewportFraction: 0.75,
-                                  enableInfiniteScroll: false,
-                                ),
-                                items: cards.map((card) {
-                                  return Builder(
-                                    builder: (BuildContext context) {
-                                      return Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                        child: Card(
-                                          elevation: 8,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(15),
-                                          ),
-                                          child: CreditCardWidget(
-                                            cardNumber: card['cardNumber'],
-                                            expiryDate: card['expiryDate'],
-                                            cardHolderName: card['cardHolderName'] ?? 'No Name',
-                                            cvvCode: card['cvv'],
-                                            showBackView: false,
-                                            onCreditCardWidgetChange: (creditCardBrand) {},
-                                            cardBgColor: Color(0xFF1E3A8A), // Teal-like color
-                                            textStyle: TextStyle(
-                                              fontFamily: 'Rubik',
-                                              color: Styles.defaultYellowColor,
-                                              fontSize: 16,
+                                )
+                              : Column(
+                                  children: [
+                                    Expanded(
+                                      child: CarouselSlider(
+                                        options: CarouselOptions(
+                                          height: 200,
+                                          enlargeCenterPage: true,
+                                          autoPlay: true,
+                                          autoPlayInterval: Duration(seconds: 5),
+                                          autoPlayAnimationDuration: Duration(milliseconds: 800),
+                                          aspectRatio: 16 / 9,
+                                          viewportFraction: 0.75,
+                                          enableInfiniteScroll: true,
+                                          onPageChanged: (index, reason) {
+                                            setState(() {
+                                              _currentCarouselIndex = index;
+                                            });
+                                          },
+                                        ),
+                                        items: cards.map((card) {
+                                          return Builder(
+                                            builder: (BuildContext context) {
+                                              return AnimatedBuilder(
+                                                animation: _animation,
+                                                builder: (context, child) {
+                                                  return Transform.scale(
+                                                    scale: 1.0 + (_animation.value * 0.05),
+                                                    child: Card(
+                                                      elevation: 10,
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(20),
+                                                      ),
+                                                      shadowColor: Colors.black45,
+                                                      child: CreditCardWidget(
+                                                        cardNumber: card['cardNumber'],
+                                                        expiryDate: card['expiryDate'],
+                                                        cardHolderName: card['cardHolderName'] ?? 'No Name',
+                                                        cvvCode: card['cvv'],
+                                                        showBackView: false,
+                                                        onCreditCardWidgetChange: (creditCardBrand) {},
+                                                        cardBgColor: Color(0xFF1E3A8A),
+                                                        textStyle: TextStyle(
+                                                          fontFamily: 'Rubik',
+                                                          color: Styles.defaultYellowColor,
+                                                          fontSize: 16,
+                                                          shadows: [
+                                                            Shadow(
+                                                              color: Colors.black26,
+                                                              offset: Offset(1, 1),
+                                                              blurRadius: 2,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                    SizedBox(height: Styles.defaultPadding / 2),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: cards.asMap().entries.map((entry) {
+                                        return GestureDetector(
+                                          onTap: () => setState(() => _currentCarouselIndex = entry.key),
+                                          child: Container(
+                                            width: _currentCarouselIndex == entry.key ? 10 : 6,
+                                            height: _currentCarouselIndex == entry.key ? 10 : 6,
+                                            margin: EdgeInsets.symmetric(horizontal: 4.0),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: _currentCarouselIndex == entry.key
+                                                  ? Styles.defaultYellowColor
+                                                  : Styles.defaultLightGreyColor.withOpacity(0.4),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                }).toList(),
-                              ),
-                  ),
-                ],
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ],
+                                ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -190,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Transaction',
+                        'Transactions',
                         style: TextStyle(
                           fontFamily: 'Rubik',
                           fontSize: 22,
@@ -220,16 +276,30 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                   SizedBox(height: Styles.defaultPadding),
                   Expanded(
-                    child: Center(
-                      child: Text(
-                        'Transactions will be displayed here soon.',
-                        style: TextStyle(
-                          fontFamily: 'Rubik',
-                          color: Styles.defaultLightWhiteColor,
-                          fontSize: 16,
-                          fontStyle: FontStyle.italic,
+                    child: Container(
+                      padding: EdgeInsets.all(Styles.defaultPadding),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            offset: Offset(0, 2),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Your transactions will appear here soon.\nStay tuned!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Rubik',
+                            color: Styles.defaultLightWhiteColor,
+                            fontSize: 16,
+                            fontStyle: FontStyle.italic,
+                          ),
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
@@ -239,23 +309,42 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Get.toNamed('/add-card'),
+        backgroundColor: Styles.defaultBlueColor,
+        child: Icon(Icons.add, color: Styles.defaultYellowColor),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.blue[600],
         selectedItemColor: Styles.defaultYellowColor,
-        unselectedItemColor: const Color.fromARGB(179, 13, 13, 13),
-        selectedLabelStyle: TextStyle(fontFamily: 'Rubik'),
+        unselectedItemColor: Styles.defaultLightWhiteColor.withOpacity(0.6),
+        selectedLabelStyle: TextStyle(fontFamily: 'Rubik', fontWeight: FontWeight.bold),
         unselectedLabelStyle: TextStyle(fontFamily: 'Rubik'),
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notifications'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, size: 28),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search, size: 28),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications, size: 28),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person, size: 28),
+            label: 'Profile',
+          ),
         ],
         currentIndex: 0,
         onTap: (index) {
           // Add navigation logic if needed
         },
-        elevation: 10,
+        elevation: 15,
       ),
     );
   }
