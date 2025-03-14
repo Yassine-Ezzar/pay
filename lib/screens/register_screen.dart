@@ -1,9 +1,10 @@
+import 'dart:io'; // Pour Platform
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:app/services/api_service.dart';
 import 'package:app/services/biometric_service.dart';
 import 'package:app/styles/styles.dart';
-import 'package:flutter/services.dart'; // Ajout pour quitter l'application
+import 'package:flutter/services.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -33,10 +34,90 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  // Inscription avec PIN
+  // Register with Face ID (iOS)
+  void _registerWithFaceId() async {
+    bool canUseBiometrics = await _biometricService.canUseBiometrics();
+    if (!canUseBiometrics) {
+      Get.snackbar(
+        'Info',
+        'Face ID is not available on this device.',
+        backgroundColor: Styles.defaultGreyColor,
+      );
+      return;
+    }
+
+    bool authenticated = await _biometricService.authenticate();
+    if (authenticated) {
+      _showBiometricDialog(
+        title: 'Face ID Registration',
+        message: 'Your face is being recognized...',
+        icon: Icons.face,
+        onConfirm: () async {
+          try {
+            await ApiService.register(
+              _nameController.text.isNotEmpty
+                  ? _nameController.text
+                  : 'FaceIDUser_${DateTime.now().millisecondsSinceEpoch}',
+              '0000', // PIN par défaut pour biométrie
+              _answerController.text.isNotEmpty ? _answerController.text : 'default',
+              true,
+            );
+            Get.back();
+            Get.offNamed('/success');
+          } catch (e) {
+            Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+          }
+        },
+      );
+    } else {
+      Get.snackbar('Error', 'Face recognition failed.', backgroundColor: Styles.defaultRedColor);
+    }
+  }
+
+  // Register with Touch ID (Android)
+  void _registerWithTouchId() async {
+    bool canUseBiometrics = await _biometricService.canUseBiometrics();
+    if (!canUseBiometrics) {
+      Get.snackbar(
+        'Info',
+        'Touch ID is not available on this device.',
+        backgroundColor: Styles.defaultGreyColor,
+      );
+      return;
+    }
+
+    bool authenticated = await _biometricService.authenticate();
+    if (authenticated) {
+      _showBiometricDialog(
+        title: 'Touch ID Registration',
+        message: 'Place your finger on the sensor...',
+        icon: Icons.fingerprint,
+        onConfirm: () async {
+          try {
+            await ApiService.register(
+              _nameController.text.isNotEmpty
+                  ? _nameController.text
+                  : 'TouchIDUser_${DateTime.now().millisecondsSinceEpoch}',
+              '0000', // PIN par défaut pour biométrie
+              _answerController.text.isNotEmpty ? _answerController.text : 'default',
+              true,
+            );
+            Get.back();
+            Get.offNamed('/success');
+          } catch (e) {
+            Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+          }
+        },
+      );
+    } else {
+      Get.snackbar('Error', 'Fingerprint recognition failed.', backgroundColor: Styles.defaultRedColor);
+    }
+  }
+
+  // Register with PIN
   void _registerWithPin() async {
     if (_enteredPin.length != 4 || _nameController.text.isEmpty || _answerController.text.isEmpty) {
-      Get.snackbar('Erreur', 'Veuillez remplir tous les champs correctement',
+      Get.snackbar('Error', 'Please fill all fields correctly',
           backgroundColor: Styles.defaultRedColor);
       return;
     }
@@ -47,87 +128,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _answerController.text,
         _biometricEnabled,
       );
-      Get.offNamed('/success'); 
+      Get.offNamed('/success');
     } catch (e) {
-      Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
-    }
-  }
-
-  // Inscription avec Face ID
-  void _registerWithFaceId() async {
-    bool canUseBiometrics = await _biometricService.canUseBiometrics();
-    if (!canUseBiometrics) {
-      Get.snackbar(
-        'Information',
-        'Face ID n’est pas disponible sur cet appareil.',
-        backgroundColor: Styles.defaultGreyColor,
-      );
-      return;
-    }
-
-    bool authenticated = await _biometricService.authenticate();
-    if (authenticated) {
-      _showBiometricDialog(
-        title: 'Face ID Registration',
-        message: 'Votre visage est en cours de reconnaissance...',
-        icon: Icons.face,
-        onConfirm: () async {
-          try {
-            await ApiService.register(
-              'FaceIDUser_${DateTime.now().millisecondsSinceEpoch}',
-              '0000', 
-              'default',
-              true,
-            );
-            Get.back(); 
-            Get.offNamed('/success');
-          } catch (e) {
-            Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
-          }
-        },
-      );
-    } else {
-      Get.snackbar('Erreur', 'Échec de la reconnaissance faciale.',
-          backgroundColor: Styles.defaultRedColor);
-    }
-  }
-
-  // Inscription avec Touch ID
-  void _registerWithTouchId() async {
-    bool canUseBiometrics = await _biometricService.canUseBiometrics();
-    if (!canUseBiometrics) {
-      Get.snackbar(
-        'Information',
-        'Touch ID n’est pas disponible sur cet appareil.',
-        backgroundColor: Styles.defaultGreyColor,
-      );
-      return;
-    }
-
-    bool authenticated = await _biometricService.authenticate();
-    if (authenticated) {
-      _showBiometricDialog(
-        title: 'Touch ID Registration',
-        message: 'Placez votre doigt sur le lecteur d’empreintes...',
-        icon: Icons.fingerprint,
-        onConfirm: () async {
-          try {
-            await ApiService.register(
-              'TouchIDUser_${DateTime.now().millisecondsSinceEpoch}',
-              '0000', 
-              'default',
-              true,
-            );
-            Get.back(); 
-            Get.offNamed('/success');
-          } catch (e) {
-            Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
-          }
-        },
-      );
-    } else {
-      Get.snackbar('Erreur', 'Échec de la reconnaissance d’empreinte.',
-          backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
     }
   }
 
@@ -167,26 +170,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       confirm: ElevatedButton(
         onPressed: onConfirm,
-        child: Text('Confirmer', style: TextStyle(fontFamily: 'Rubik')),
+        child: Text('Confirm', style: TextStyle(fontFamily: 'Rubik')),
       ),
       cancel: TextButton(
         onPressed: () => Get.back(),
-        child: Text('Annuler',
-            style: TextStyle(
-                color: Styles.defaultYellowColor, fontFamily: 'Rubik')),
+        child: Text('Cancel',
+            style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik')),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    bool isIOS = Platform.isIOS; // Détection de la plateforme
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Styles.scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.close, color: Styles.defaultYellowColor),
-          onPressed: () => SystemNavigator.pop(), // Quitte l'application
+          onPressed: () => SystemNavigator.pop(),
         ),
         centerTitle: true,
       ),
@@ -196,7 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Bienvenue ! Choisissez votre méthode',
+              'Welcome! Choose Your Method',
               style: TextStyle(
                 fontFamily: 'Rubik',
                 fontSize: 20,
@@ -206,11 +210,95 @@ class _RegisterScreenState extends State<RegisterScreen> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: Styles.defaultPadding * 2),
-
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 150,
+                  child: ElevatedButton(
+                    onPressed: isIOS ? _registerWithFaceId : _registerWithTouchId,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Styles.defaultRedColor, Styles.defaultBlueColor],
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            isIOS ? Icons.face : Icons.fingerprint,
+                            color: Styles.defaultYellowColor,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            isIOS ? 'Face ID' : 'Touch ID',
+                            style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: Styles.defaultPadding),
+                SizedBox(
+                  width: 150,
+                  child: ElevatedButton(
+                    onPressed: isIOS ? _registerWithTouchId : _registerWithFaceId,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                    
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Styles.defaultRedColor, Styles.defaultBlueColor],
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            isIOS ? Icons.fingerprint : Icons.face,
+                            color: Styles.defaultYellowColor,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            isIOS ? 'Touch ID' : 'Face ID',
+                            style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: Styles.defaultPadding / 2),
+            Text(
+              'Or',
+              style: TextStyle(
+                fontFamily: 'Rubik',
+                fontSize: 14,
+                color: Styles.defaultYellowColor,
+              ),
+            ),
+            SizedBox(height: Styles.defaultPadding / 2),
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
-                labelText: 'Nom',
+                labelText: 'Name',
                 labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
                 filled: true,
                 fillColor: Styles.defaultLightGreyColor.withOpacity(0.2),
@@ -219,14 +307,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderSide: BorderSide(color: Styles.defaultGreyColor),
                 ),
               ),
-              style: TextStyle(
-                  color: Styles.defaultYellowColor, fontFamily: 'Rubik'),
+              style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik'),
             ),
             SizedBox(height: Styles.defaultPadding),
             TextField(
               controller: _answerController,
               decoration: InputDecoration(
-                labelText: 'Nom de votre animal',
+                labelText: 'Pet’s Name',
                 labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
                 filled: true,
                 fillColor: Styles.defaultLightGreyColor.withOpacity(0.2),
@@ -235,8 +322,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderSide: BorderSide(color: Styles.defaultGreyColor),
                 ),
               ),
-              style: TextStyle(
-                  color: Styles.defaultYellowColor, fontFamily: 'Rubik'),
+              style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik'),
             ),
             SizedBox(height: Styles.defaultPadding * 2),
             Row(
@@ -270,8 +356,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Styles.defaultLightGreyColor,
                     foregroundColor: Styles.defaultYellowColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                   child: Text(
                     '${index + 1}',
@@ -284,8 +369,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Styles.defaultLightGreyColor,
                       foregroundColor: Styles.defaultYellowColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                     child: Icon(Icons.backspace),
                   ),
@@ -294,11 +378,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Styles.defaultLightGreyColor,
                       foregroundColor: Styles.defaultYellowColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
-                    child: Text('0',
-                        style: TextStyle(fontFamily: 'Rubik', fontSize: 20)),
+                    child: Text('0', style: TextStyle(fontFamily: 'Rubik', fontSize: 20)),
                   ),
                   SizedBox.shrink(),
                 ]),
@@ -316,120 +398,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   backgroundColor: Styles.defaultBlueColor,
                   foregroundColor: Styles.defaultYellowColor,
                   padding: EdgeInsets.symmetric(vertical: 15),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: Styles.defaultBorderRadius),
+                  shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
                 ),
                 child: Text(
-                  'S’inscrire avec PIN',
+                  'Register with PIN',
                   style: TextStyle(
-                      fontFamily: 'Rubik',
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
+                      fontFamily: 'Rubik', fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
-            ),
-            SizedBox(height: Styles.defaultPadding / 2),
-            Text(
-              'Ou bien',
-              style: TextStyle(
-                fontFamily: 'Rubik',
-                fontSize: 14,
-                color: Styles.defaultYellowColor,
-              ),
-            ),
-            SizedBox(height: Styles.defaultPadding / 2),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 150,
-                  child: ElevatedButton(
-                    onPressed: _registerWithFaceId,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Styles.defaultRedColor,
-                            Styles.defaultBlueColor,
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.face, color: Styles.defaultYellowColor),
-                          SizedBox(width: 5),
-                          Text(
-                            'Face ID',
-                            style: TextStyle(
-                                fontFamily: 'Rubik',
-                                color: Styles.defaultYellowColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: Styles.defaultPadding),
-                SizedBox(
-                  width: 150,
-                  child: ElevatedButton(
-                    onPressed: _registerWithTouchId,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Styles.defaultRedColor,
-                            Styles.defaultBlueColor,
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.fingerprint,
-                              color: Styles.defaultYellowColor),
-                          SizedBox(width: 5),
-                          Text(
-                            'Touch ID',
-                            style: TextStyle(
-                                fontFamily: 'Rubik',
-                                color: Styles.defaultYellowColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
             SizedBox(height: Styles.defaultPadding * 2),
-
-            // Lien vers la connexion
             TextButton(
               onPressed: () => Get.offNamed('/login'),
               child: Text(
-                'Déjà un compte ? Connectez-vous',
+                'Already have an account? Log in',
                 style: TextStyle(
-                    fontFamily: 'Rubik',
-                    color: Styles.defaultYellowColor,
-                    fontSize: 14),
+                    fontFamily: 'Rubik', color: Styles.defaultYellowColor, fontSize: 14),
               ),
             ),
           ],

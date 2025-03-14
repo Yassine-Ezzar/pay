@@ -1,3 +1,4 @@
+import 'dart:io'; // Pour Platform
 import 'package:app/services/api_service.dart';
 import 'package:app/services/biometric_service.dart';
 import 'package:app/styles/styles.dart';
@@ -36,11 +37,16 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _loginWithPin() async {
+    if (_enteredPin.length != 4 || _nameController.text.isEmpty) {
+      Get.snackbar('Error', 'Please enter your name and a 4-digit PIN',
+          backgroundColor: Styles.defaultRedColor);
+      return;
+    }
     try {
-      await ApiService.login(_nameController.text, _pinController.text);
+      await ApiService.login(_nameController.text, _enteredPin);
       Get.offNamed('/card-list');
     } catch (e) {
-      Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
     }
   }
 
@@ -48,8 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
     bool canUseBiometrics = await _biometricService.canUseBiometrics();
     if (!canUseBiometrics) {
       Get.snackbar(
-        'Information',
-        'Face ID n’est pas disponible sur cet appareil.',
+        'Info',
+        'Face ID is not available on this device.',
         backgroundColor: Styles.defaultGreyColor,
       );
       return;
@@ -58,28 +64,27 @@ class _LoginScreenState extends State<LoginScreen> {
     bool authenticated = await _biometricService.authenticate();
     if (authenticated) {
       _showBiometricDialog(
-        title: 'Connexion avec Face ID',
-        message: 'Votre visage est en cours de reconnaissance...',
+        title: 'Login with Face ID',
+        message: 'Your face is being recognized...',
         icon: Icons.face,
         onConfirm: () async {
           final name = await _storage.read(key: 'name');
           if (name != null) {
             try {
               await ApiService.login(name, ''); 
-              Get.back(); 
+              Get.back();
               Get.offNamed('/card-list');
             } catch (e) {
-              Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
+              Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
             }
           } else {
-            Get.snackbar('Erreur', 'Nom non trouvé. Veuillez vous connecter avec PIN d’abord.',
+            Get.snackbar('Error', 'Name not found. Please log in with PIN first.',
                 backgroundColor: Styles.defaultRedColor);
           }
         },
       );
     } else {
-      Get.snackbar('Erreur', 'Échec de la reconnaissance faciale.',
-          backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', 'Face recognition failed.', backgroundColor: Styles.defaultRedColor);
     }
   }
 
@@ -87,8 +92,8 @@ class _LoginScreenState extends State<LoginScreen> {
     bool canUseBiometrics = await _biometricService.canUseBiometrics();
     if (!canUseBiometrics) {
       Get.snackbar(
-        'Information',
-        'Touch ID n’est pas disponible sur cet appareil.',
+        'Info',
+        'Touch ID is not available on this device.',
         backgroundColor: Styles.defaultGreyColor,
       );
       return;
@@ -97,30 +102,31 @@ class _LoginScreenState extends State<LoginScreen> {
     bool authenticated = await _biometricService.authenticate();
     if (authenticated) {
       _showBiometricDialog(
-        title: 'Connexion avec Touch ID',
-        message: 'Placez votre doigt sur le lecteur d’empreintes...',
+        title: 'Login with Touch ID',
+        message: 'Place your finger on the sensor...',
         icon: Icons.fingerprint,
         onConfirm: () async {
           final name = await _storage.read(key: 'name');
           if (name != null) {
             try {
               await ApiService.login(name, ''); 
-              Get.back(); 
+              Get.back();
               Get.offNamed('/card-list');
             } catch (e) {
-              Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
+              Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
             }
           } else {
-            Get.snackbar('Erreur', 'Nom non trouvé. Veuillez vous connecter avec PIN d’abord.',
+            Get.snackbar('Error', 'Name not found. Please log in with PIN first.',
                 backgroundColor: Styles.defaultRedColor);
           }
         },
       );
     } else {
-      Get.snackbar('Erreur', 'Échec de la reconnaissance d’empreinte.',
+      Get.snackbar('Error', 'Fingerprint recognition failed.',
           backgroundColor: Styles.defaultRedColor);
     }
   }
+
   void _showBiometricDialog({
     required String title,
     required String message,
@@ -157,19 +163,20 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       confirm: ElevatedButton(
         onPressed: onConfirm,
-        child: Text('Continuer', style: TextStyle(fontFamily: 'Rubik')),
+        child: Text('Continue', style: TextStyle(fontFamily: 'Rubik')),
       ),
       cancel: TextButton(
         onPressed: () => Get.back(),
-        child: Text('Annuler',
-            style: TextStyle(
-                color: Styles.defaultYellowColor, fontFamily: 'Rubik')),
+        child: Text('Cancel',
+            style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik')),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    bool isIOS = Platform.isIOS; // Détection de la plateforme
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -180,162 +187,224 @@ class _LoginScreenState extends State<LoginScreen> {
         elevation: 0,
       ),
       backgroundColor: Styles.scaffoldBackgroundColor,
-      body: ClipRect(
-        child: ListView(
-          padding: EdgeInsets.all(Styles.defaultPadding),
-          children: [
-            Center(
-              child: Text(
-                'WELCOME BACK!',
-                style: TextStyle(
-                  fontFamily: 'Rubik',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Styles.defaultYellowColor,
-                ),
+      body: ListView(
+        padding: EdgeInsets.all(Styles.defaultPadding),
+        children: [
+          Center(
+            child: Text(
+              'Welcome Back!',
+              style: TextStyle(
+                fontFamily: 'Rubik',
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Styles.defaultYellowColor,
               ),
             ),
-            SizedBox(height: Styles.defaultPadding * 2),
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                labelText: 'Nom',
-                labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Styles.defaultGreyColor),
-                  borderRadius: Styles.defaultBorderRadius,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Styles.defaultYellowColor),
-                  borderRadius: Styles.defaultBorderRadius,
-                ),
-              ),
-              style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik'),
-            ),
-            SizedBox(height: Styles.defaultPadding),
-            GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 3,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 1.5,
-              children: List.generate(9, (index) {
-                return ElevatedButton(
-                  onPressed: () => _addNumber('${index + 1}'),
+          ),
+          SizedBox(height: Styles.defaultPadding * 2),
+      
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 150,
+                child: ElevatedButton(
+                  onPressed: isIOS ? _loginWithFaceId : _loginWithTouchId,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Styles.defaultLightGreyColor,
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
+                    backgroundColor: Colors.transparent,
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Styles.defaultRedColor, Styles.defaultBlueColor],
+                      ),
                       borderRadius: BorderRadius.circular(10),
                     ),
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          isIOS ? Icons.face : Icons.fingerprint,
+                          color: Styles.defaultYellowColor,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          isIOS ? 'Face ID' : 'Touch ID',
+                          style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Text(
-                    '${index + 1}',
-                    style: const TextStyle(fontSize: 20, fontFamily: 'Rubik'),
+                ),
+                
+              ),
+              
+              SizedBox(width: Styles.defaultPadding),
+              SizedBox(
+                width: 150,
+                child: ElevatedButton(
+                  onPressed: isIOS ? _loginWithTouchId : _loginWithFaceId,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
-                );
-              })..addAll([
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Styles.defaultRedColor, Styles.defaultBlueColor],
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          isIOS ? Icons.fingerprint : Icons.face,
+                          color: Styles.defaultYellowColor,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          isIOS ? 'Touch ID' : 'Face ID',
+                          style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+            
+          ),
+          
+          SizedBox(height: Styles.defaultPadding / 2),
+          Text(
+            'Or',
+            style: TextStyle(
+              fontFamily: 'Rubik',
+              fontSize: 14,
+              color: Styles.defaultYellowColor,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: Styles.defaultPadding),
+      TextField(
+            controller: _nameController,
+            decoration: InputDecoration(
+              labelText: 'Name',
+              labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Styles.defaultGreyColor),
+                borderRadius: Styles.defaultBorderRadius,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Styles.defaultYellowColor),
+                borderRadius: Styles.defaultBorderRadius,
+              ),
+            ),
+            style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik'),
+          ),
+          SizedBox(height: Styles.defaultPadding),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(4, (index) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: index < _enteredPin.length
+                        ? Styles.defaultYellowColor
+                        : Styles.defaultGreyColor,
+                  ),
+                ),
+              );
+            }),
+          ),
+          SizedBox(height: Styles.defaultPadding),
+          GridView.count(
+            shrinkWrap: true,
+            crossAxisCount: 3,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            childAspectRatio: 1.5,
+            children: List.generate(9, (index) {
+              return ElevatedButton(
+                onPressed: () => _addNumber('${index + 1}'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Styles.defaultLightGreyColor,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                child: Text(
+                  '${index + 1}',
+                  style: TextStyle(fontSize: 20, fontFamily: 'Rubik'),
+                ),
+              );
+            })..addAll([
                 ElevatedButton(
                   onPressed: _deleteNumber,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Styles.defaultLightGreyColor,
                     foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
-                  child: const Icon(Icons.backspace, size: 20),
+                  child: Icon(Icons.backspace, size: 20),
                 ),
                 ElevatedButton(
                   onPressed: () => _addNumber('0'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Styles.defaultLightGreyColor,
                     foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
-                  child: const Text(
+                  child: Text(
                     '0',
                     style: TextStyle(fontSize: 20, fontFamily: 'Rubik'),
                   ),
                 ),
-                const SizedBox.shrink(),
+                SizedBox.shrink(),
               ]),
-            ),
-            SizedBox(height: Styles.defaultPadding),
-            ElevatedButton(
-              onPressed: _enteredPin.length == 4 ? _loginWithPin : null,
+          ),
+          SizedBox(height: Styles.defaultPadding),
+          SizedBox(
+            width: 200,
+            child: ElevatedButton(
+              onPressed: _enteredPin.length == 4 && _nameController.text.isNotEmpty
+                  ? _loginWithPin
+                  : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Styles.defaultBlueColor,
                 foregroundColor: Styles.defaultYellowColor,
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: Styles.defaultBorderRadius,
-                ),
+                padding: EdgeInsets.symmetric(vertical: 15),
+                shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
               ),
-              child: const Text(
-                'SUBMIT',
+              child: Text(
+                'Login with PIN',
                 style: TextStyle(fontSize: 18, fontFamily: 'Rubik'),
               ),
             ),
-            SizedBox(height: Styles.defaultPadding),
-            TextButton(
-              onPressed: () => Get.toNamed('/reset-pin'),
-              child: Text(
-                'Resend code',
-                style: TextStyle(
-                  fontFamily: 'Rubik',
-                  color: Styles.defaultYellowColor,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            SizedBox(height: Styles.defaultPadding / 2),
-            Text(
-              'Ou bien',
+          ),
+          SizedBox(height: Styles.defaultPadding),
+          TextButton(
+            onPressed: () => Get.toNamed('/reset-pin'),
+            child: Text(
+              'Forgot PIN? Reset it',
               style: TextStyle(
                 fontFamily: 'Rubik',
-                fontSize: 14,
                 color: Styles.defaultYellowColor,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: Styles.defaultPadding),
-            // Bouton Touch ID
-            ElevatedButton(
-              onPressed: _loginWithTouchId,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Styles.defaultGreyColor,
-                foregroundColor: Styles.defaultYellowColor,
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: Styles.defaultBorderRadius,
-                ),
-              ),
-              child: const Text(
-                'Login with Touch ID',
-                style: TextStyle(fontSize: 16, fontFamily: 'Rubik'),
+                fontSize: 16,
               ),
             ),
-            SizedBox(height: Styles.defaultPadding),
-            ElevatedButton(
-              onPressed: _loginWithFaceId,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Styles.defaultGreyColor,
-                foregroundColor: Styles.defaultYellowColor,
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: Styles.defaultBorderRadius,
-                ),
-              ),
-              child: const Text(
-                'Login with Face ID',
-                style: TextStyle(fontSize: 16, fontFamily: 'Rubik'),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
