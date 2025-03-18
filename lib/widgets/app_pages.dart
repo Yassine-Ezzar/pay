@@ -20,5 +20,6 @@ class AppPages {
     GetPage(name: '/success', page: () => SuccessScreen()),
     GetPage(name: '/add-card', page: () => AddCardScreen()),
     GetPage(name: '/card-list', page: () => CardListScreen()),
+    GetPage(name: '/card-verification', page: () => CardVerificationScreen(userId: '', cardNumber: '', expiryDate: '', cvv: '',)), // Ajout
   ];
 }

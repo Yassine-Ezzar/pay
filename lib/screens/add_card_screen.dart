@@ -15,13 +15,12 @@ class _AddCardScreenState extends State<AddCardScreen> {
   String cardNumber = '';
   String expiryDate = '';
   String cvv = '';
-  String cardHolderName = '';
   bool isCvvFocused = false;
-  bool isLoading = false; // Indicateur de chargement
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String? userId;
   CameraController? _cameraController;
   List<CameraDescription>? cameras;
+  bool isVerifying = false;
 
   @override
   void initState() {
@@ -33,7 +32,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
   Future<void> _loadUserId() async {
     userId = await ApiService.storage.read(key: 'userId');
     if (userId == null) {
-      Get.snackbar('Erreur', 'Utilisateur non connecté', backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', 'User not logged in', backgroundColor: Styles.defaultRedColor);
       Get.offNamed('/login');
     }
     if (mounted) setState(() {});
@@ -59,44 +58,41 @@ class _AddCardScreenState extends State<AddCardScreen> {
       cardNumber = creditCardModel.cardNumber.replaceAll(' ', '');
       expiryDate = creditCardModel.expiryDate;
       cvv = creditCardModel.cvvCode;
-      cardHolderName = creditCardModel.cardHolderName;
       isCvvFocused = creditCardModel.isCvvFocused;
     });
   }
 
   void _addCardManually() async {
     if (formKey.currentState!.validate() && userId != null) {
-      setState(() => isLoading = true);
+      setState(() => isVerifying = true);
       try {
-        await ApiService.addCard(userId!, cardNumber, expiryDate, cvv);
-        Get.snackbar('Succès', 'Carte ajoutée avec succès',
-            backgroundColor: Styles.defaultBlueColor, colorText: Styles.defaultYellowColor);
-        Get.offNamed('/card-list');
+        await Future.delayed(Duration(seconds: 2)); // Simuler la connexion à l'émetteur
+        Get.to(() => CardVerificationScreen(
+              userId: userId!,
+              cardNumber: cardNumber,
+              expiryDate: expiryDate,
+              cvv: cvv,
+            ));
       } catch (e) {
-        Get.snackbar('Erreur', e.toString(),
-            backgroundColor: Styles.defaultRedColor, colorText: Styles.defaultLightWhiteColor);
+        Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
       } finally {
-        setState(() => isLoading = false);
+        setState(() => isVerifying = false);
       }
     } else {
-      Get.snackbar('Erreur', 'Veuillez vérifier vos informations',
-          backgroundColor: Styles.defaultRedColor, colorText: Styles.defaultLightWhiteColor);
+      Get.snackbar('Error', 'Please verify your information', backgroundColor: Styles.defaultRedColor);
     }
   }
 
   void _scanCard() async {
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
-      Get.snackbar('Erreur', 'Caméra non disponible',
-          backgroundColor: Styles.defaultRedColor, colorText: Styles.defaultLightWhiteColor);
+      Get.snackbar('Error', 'Camera not available', backgroundColor: Styles.defaultRedColor);
       return;
     }
     if (userId == null) {
-      Get.snackbar('Erreur', 'Utilisateur non connecté',
-          backgroundColor: Styles.defaultRedColor, colorText: Styles.defaultLightWhiteColor);
+      Get.snackbar('Error', 'User not logged in', backgroundColor: Styles.defaultRedColor);
       return;
     }
 
-    setState(() => isLoading = true);
     try {
       final image = await _cameraController!.takePicture();
       final inputImage = InputImage.fromFilePath(image.path);
@@ -126,21 +122,28 @@ class _AddCardScreenState extends State<AddCardScreen> {
           expiryDate = extractedExpiryDate!;
           cvv = extractedCvv!;
         });
-        await ApiService.addCard(userId!, cardNumber, expiryDate, cvv);
-        Get.snackbar('Succès', 'Carte scannée et ajoutée avec succès',
-            backgroundColor: Styles.defaultBlueColor, colorText: Styles.defaultYellowColor);
-        Get.offNamed('/card-list');
+
+        setState(() => isVerifying = true);
+        try {
+          await Future.delayed(Duration(seconds: 2)); // Simuler la connexion à l'émetteur
+          Get.to(() => CardVerificationScreen(
+                userId: userId!,
+                cardNumber: cardNumber,
+                expiryDate: expiryDate,
+                cvv: cvv,
+              ));
+        } catch (e) {
+          Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+        } finally {
+          setState(() => isVerifying = false);
+        }
       } else {
-        Get.snackbar('Erreur', 'Impossible de détecter les informations de la carte',
-            backgroundColor: Styles.defaultRedColor, colorText: Styles.defaultLightWhiteColor);
+        Get.snackbar('Error', 'Could not detect card information', backgroundColor: Styles.defaultRedColor);
       }
 
       await textRecognizer.close();
     } catch (e) {
-      Get.snackbar('Erreur', 'Échec du scan: $e',
-          backgroundColor: Styles.defaultRedColor, colorText: Styles.defaultLightWhiteColor);
-    } finally {
-      setState(() => isLoading = false);
+      Get.snackbar('Error', 'Scan failed: $e', backgroundColor: Styles.defaultRedColor);
     }
   }
 
@@ -148,220 +151,283 @@ class _AddCardScreenState extends State<AddCardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
+        title: Text('Add a Card', style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor)),
         backgroundColor: Styles.scaffoldBackgroundColor,
-        title: Text(
-          'Ajouter une carte',
-          style: TextStyle(
-            fontFamily: 'Rubik',
-            color: Styles.defaultYellowColor,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Styles.defaultYellowColor),
+          icon: Icon(Icons.arrow_back, color: Styles.defaultYellowColor),
           onPressed: () => Get.back(),
         ),
       ),
       backgroundColor: Styles.scaffoldBackgroundColor,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: EdgeInsets.all(Styles.defaultPadding * 1.5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Titre de section
-                Text(
-                  'Informations de la carte',
-                  style: TextStyle(
-                    fontFamily: 'Rubik',
-                    fontSize: 18,
-                    color: Styles.defaultLightWhiteColor,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: Styles.defaultPadding),
-                // Carte affichée
-                CreditCardWidget(
-                  cardNumber: cardNumber,
-                  expiryDate: expiryDate,
-                  cardHolderName: cardHolderName,
-                  cvvCode: cvv,
-                  showBackView: isCvvFocused,
-                  onCreditCardWidgetChange: (creditCardBrand) {},
-                  cardBgColor: Styles.defaultGreyColor,
-                  glassmorphismConfig: Glassmorphism.defaultConfig(),
-                  textStyle: TextStyle(
-                    fontFamily: 'Rubik',
-                    color: Styles.defaultYellowColor,
-                    fontSize: 16,
-                  ),
-                  animationDuration: Duration(milliseconds: 300),
-                ),
-                SizedBox(height: Styles.defaultPadding * 1.5),
-                // Formulaire avec animation
-                AnimatedContainer(
-                  duration: Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                  child: CreditCardForm(
-                    formKey: formKey,
-                    obscureCvv: true,
-                    obscureNumber: false,
-                    cardNumber: cardNumber,
-                    cvvCode: cvv,
-                    expiryDate: expiryDate,
-                    cardHolderName: cardHolderName,
-                    onCreditCardModelChange: _onCreditCardModelChange,
-                    inputConfiguration: InputConfiguration(
-                      cardNumberDecoration: InputDecoration(
-                        prefixIcon: Icon(Icons.credit_card, color: Styles.defaultYellowColor),
-                        labelText: 'Numéro de carte',
-                        hintText: 'XXXX XXXX XXXX XXXX',
-                        border: OutlineInputBorder(
-                          borderRadius: Styles.defaultBorderRadius,
-                          borderSide: BorderSide(color: Styles.defaultLightGreyColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: Styles.defaultBorderRadius,
-                          borderSide: BorderSide(color: Styles.defaultYellowColor, width: 2),
-                        ),
-                        labelStyle: TextStyle(color: Styles.defaultLightWhiteColor, fontFamily: 'Rubik'),
-                        hintStyle: TextStyle(color: Styles.defaultLightGreyColor, fontFamily: 'Rubik'),
-                        filled: true,
-                        fillColor: Styles.defaultLightGreyColor.withOpacity(0.1),
-                      ),
-                      expiryDateDecoration: InputDecoration(
-                        prefixIcon: Icon(Icons.calendar_today, color: Styles.defaultYellowColor),
-                        labelText: 'Date d’expiration',
-                        hintText: 'MM/YY',
-                        border: OutlineInputBorder(
-                          borderRadius: Styles.defaultBorderRadius,
-                          borderSide: BorderSide(color: Styles.defaultLightGreyColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: Styles.defaultBorderRadius,
-                          borderSide: BorderSide(color: Styles.defaultYellowColor, width: 2),
-                        ),
-                        labelStyle: TextStyle(color: Styles.defaultLightWhiteColor, fontFamily: 'Rubik'),
-                        hintStyle: TextStyle(color: Styles.defaultLightGreyColor, fontFamily: 'Rubik'),
-                        filled: true,
-                        fillColor: Styles.defaultLightGreyColor.withOpacity(0.1),
-                      ),
-                      cvvCodeDecoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock, color: Styles.defaultYellowColor),
-                        labelText: 'CVV',
-                        hintText: 'XXX',
-                        border: OutlineInputBorder(
-                          borderRadius: Styles.defaultBorderRadius,
-                          borderSide: BorderSide(color: Styles.defaultLightGreyColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: Styles.defaultBorderRadius,
-                          borderSide: BorderSide(color: Styles.defaultYellowColor, width: 2),
-                        ),
-                        labelStyle: TextStyle(color: Styles.defaultLightWhiteColor, fontFamily: 'Rubik'),
-                        hintStyle: TextStyle(color: Styles.defaultLightGreyColor, fontFamily: 'Rubik'),
-                        filled: true,
-                        fillColor: Styles.defaultLightGreyColor.withOpacity(0.1),
-                      ),
-                      cardHolderDecoration: InputDecoration(
-                        prefixIcon: Icon(Icons.person, color: Styles.defaultYellowColor),
-                        labelText: 'Titulaire (optionnel)',
-                        border: OutlineInputBorder(
-                          borderRadius: Styles.defaultBorderRadius,
-                          borderSide: BorderSide(color: Styles.defaultLightGreyColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: Styles.defaultBorderRadius,
-                          borderSide: BorderSide(color: Styles.defaultYellowColor, width: 2),
-                        ),
-                        labelStyle: TextStyle(color: Styles.defaultLightWhiteColor, fontFamily: 'Rubik'),
-                        hintStyle: TextStyle(color: Styles.defaultLightGreyColor, fontFamily: 'Rubik'),
-                        filled: true,
-                        fillColor: Styles.defaultLightGreyColor.withOpacity(0.1),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: Styles.defaultPadding * 2),
-                // Boutons avec gradient et icônes
-                _buildActionButton(
-                  text: 'Ajouter manuellement',
-                  icon: Icons.add_card,
-                  gradient: LinearGradient(
-                    colors: [Styles.defaultBlueColor, Styles.defaultBlueColor.withOpacity(0.8)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  onPressed: _addCardManually,
-                ),
-                SizedBox(height: Styles.defaultPadding),
-                _buildActionButton(
-                  text: 'Scanner la carte',
-                  icon: Icons.camera_alt,
-                  gradient: LinearGradient(
-                    colors: [Styles.defaultGreyColor, Styles.defaultGreyColor.withOpacity(0.8)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  onPressed: _scanCard,
-                ),
-              ],
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(Styles.defaultPadding),
+        child: Column(
+          children: [
+            CreditCardWidget(
+              cardNumber: cardNumber,
+              expiryDate: expiryDate,
+              cardHolderName: '',
+              cvvCode: cvv,
+              showBackView: isCvvFocused,
+              onCreditCardWidgetChange: (creditCardBrand) {},
+              cardBgColor: Styles.defaultGreyColor,
+              textStyle: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
             ),
-          ),
-          // Indicateur de chargement
-          if (isLoading)
-            Container(
-              color: Colors.black.withOpacity(0.5),
-              child: Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Styles.defaultYellowColor),
+            CreditCardForm(
+              formKey: formKey,
+              obscureCvv: true,
+              obscureNumber: false,
+              cardNumber: cardNumber,
+              cvvCode: cvv,
+              expiryDate: expiryDate,
+              cardHolderName: '',
+              onCreditCardModelChange: _onCreditCardModelChange,
+              inputConfiguration: InputConfiguration(
+                cardNumberDecoration: InputDecoration(
+                  labelText: 'Card Number',
+                  hintText: 'XXXX XXXX XXXX XXXX',
+                  border: OutlineInputBorder(borderRadius: Styles.defaultBorderRadius),
+                  labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
+                  hintStyle: TextStyle(color: Styles.defaultLightGreyColor),
+                  filled: true,
+                  fillColor: Styles.defaultLightGreyColor.withOpacity(0.2),
+                ),
+                expiryDateDecoration: InputDecoration(
+                  labelText: 'Expiry Date',
+                  hintText: 'MM/YY',
+                  border: OutlineInputBorder(borderRadius: Styles.defaultBorderRadius),
+                  labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
+                  hintStyle: TextStyle(color: Styles.defaultLightGreyColor),
+                  filled: true,
+                  fillColor: Styles.defaultLightGreyColor.withOpacity(0.2),
+                ),
+                cvvCodeDecoration: InputDecoration(
+                  labelText: 'CVV',
+                  hintText: 'XXX',
+                  border: OutlineInputBorder(borderRadius: Styles.defaultBorderRadius),
+                  labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
+                  hintStyle: TextStyle(color: Styles.defaultLightGreyColor),
+                  filled: true,
+                  fillColor: Styles.defaultLightGreyColor.withOpacity(0.2),
+                ),
+                cardHolderDecoration: InputDecoration(
+                  labelText: 'Card Holder Name (filled next step)',
+                  hintText: 'Filled next step',
+                  border: OutlineInputBorder(borderRadius: Styles.defaultBorderRadius),
+                  labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
+                  hintStyle: TextStyle(color: Styles.defaultLightGreyColor),
+                  filled: true,
+                  fillColor: Styles.defaultLightGreyColor.withOpacity(0.2),
+                  enabled: false,
                 ),
               ),
             ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionButton({
-    required String text,
-    required IconData icon,
-    required Gradient gradient,
-    required VoidCallback onPressed,
-  }) {
-    return InkWell(
-      onTap: isLoading ? null : onPressed,
-      borderRadius: Styles.defaultBorderRadius,
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 15),
-        decoration: BoxDecoration(
-          gradient: gradient,
-          borderRadius: Styles.defaultBorderRadius,
-          boxShadow: [
-            BoxShadow(
-              color: Styles.defaultBlueColor.withOpacity(0.3),
-              blurRadius: 10,
-              offset: Offset(0, 4),
+            SizedBox(height: Styles.defaultPadding),
+            ElevatedButton(
+              onPressed: isVerifying ? null : _addCardManually,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Styles.defaultBlueColor,
+                foregroundColor: Styles.defaultYellowColor,
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+              ),
+              child: isVerifying
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircularProgressIndicator(
+                          color: Styles.defaultYellowColor,
+                          strokeWidth: 2,
+                        ),
+                        SizedBox(width: 10),
+                        Text('Connecting to issuer...', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
+                      ],
+                    )
+                  : Text('Add Manually', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
+            ),
+            SizedBox(height: Styles.defaultPadding),
+            ElevatedButton(
+              onPressed: isVerifying ? null : _scanCard,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Styles.defaultGreyColor,
+                foregroundColor: Styles.defaultYellowColor,
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+              ),
+              child: isVerifying
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircularProgressIndicator(
+                          color: Styles.defaultYellowColor,
+                          strokeWidth: 2,
+                        ),
+                        SizedBox(width: 10),
+                        Text('Connecting to issuer...', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
+                      ],
+                    )
+                  : Text('Scan Card', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
             ),
           ],
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+      ),
+    );
+  }
+}
+
+class CardVerificationScreen extends StatefulWidget {
+  final String userId;
+  final String cardNumber;
+  final String expiryDate;
+  final String cvv;
+
+  CardVerificationScreen({
+    required this.userId,
+    required this.cardNumber,
+    required this.expiryDate,
+    required this.cvv,
+  });
+
+  @override
+  _CardVerificationScreenState createState() => _CardVerificationScreenState();
+}
+
+class _CardVerificationScreenState extends State<CardVerificationScreen> {
+  String cardHolderName = '';
+  String cardSecurityCode = '';
+  bool isVerifying = false;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  void _verifyAndAddCard() async {
+    if (formKey.currentState!.validate() && cardSecurityCode.length == 4) {
+      setState(() => isVerifying = true);
+      try {
+        await Future.delayed(Duration(seconds: 2)); 
+        await ApiService.addCard(
+          widget.userId,
+          widget.cardNumber,
+          widget.expiryDate,
+          widget.cvv,
+          cardHolderName,
+          cardSecurityCode,
+        );
+        Get.snackbar('Success', 'Card added successfully', backgroundColor: Styles.defaultBlueColor);
+        Get.offNamed('/home');
+      } catch (e) {
+        Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      } finally {
+        setState(() => isVerifying = false);
+      }
+    } else {
+      Get.snackbar('Error', 'Please enter valid information', backgroundColor: Styles.defaultRedColor);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(' Card Details', style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor)),
+        backgroundColor: Styles.scaffoldBackgroundColor,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Styles.defaultYellowColor),
+          onPressed: () => Get.back(),
+        ),
+      ),
+      backgroundColor: Styles.scaffoldBackgroundColor,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(Styles.defaultPadding),
+        child: Column(
           children: [
-            Icon(icon, color: Styles.defaultYellowColor, size: 20),
-            SizedBox(width: 10),
-            Text(
-              text,
-              style: TextStyle(
-                fontFamily: 'Rubik',
-                fontSize: 16,
-                color: Styles.defaultYellowColor,
-                fontWeight: FontWeight.bold,
+            CreditCardWidget(
+              cardNumber: widget.cardNumber,
+              expiryDate: widget.expiryDate,
+              cardHolderName: cardHolderName,
+              cvvCode: widget.cvv,
+              showBackView: false,
+              onCreditCardWidgetChange: (creditCardBrand) {},
+              cardBgColor: Styles.defaultGreyColor,
+              textStyle: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
+            ),
+            SizedBox(height: Styles.defaultPadding),
+            Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Card Holder Name',
+                      hintText: 'Enter your name',
+                      border: OutlineInputBorder(borderRadius: Styles.defaultBorderRadius),
+                      labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
+                      hintStyle: TextStyle(color: Styles.defaultLightGreyColor),
+                      filled: true,
+                      fillColor: Styles.defaultLightGreyColor.withOpacity(0.2),
+                    ),
+                    style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik'),
+                    onChanged: (value) {
+                      setState(() {
+                        cardHolderName = value;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: Styles.defaultPadding),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Card Security Code (4 digits)',
+                      hintText: 'XXXX',
+                      border: OutlineInputBorder(borderRadius: Styles.defaultBorderRadius),
+                      labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
+                      hintStyle: TextStyle(color: Styles.defaultLightGreyColor),
+                      filled: true,
+                      fillColor: Styles.defaultLightGreyColor.withOpacity(0.2),
+                    ),
+                    style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik'),
+                    keyboardType: TextInputType.number,
+                    maxLength: 4,
+                    onChanged: (value) {
+                      setState(() {
+                        cardSecurityCode = value;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.length != 4 || !RegExp(r'^\d{4}$').hasMatch(value)) {
+                        return 'Please enter a 4-digit security code';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
               ),
+            ),
+            SizedBox(height: Styles.defaultPadding),
+            ElevatedButton(
+              onPressed: isVerifying ? null : _verifyAndAddCard,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Styles.defaultBlueColor,
+                foregroundColor: Styles.defaultYellowColor,
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+              ),
+              child: isVerifying
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircularProgressIndicator(
+                          color: Styles.defaultYellowColor,
+                          strokeWidth: 2,
+                        ),
+                        SizedBox(width: 10),
+                        Text('Verifying...', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
+                      ],
+                    )
+                  : Text('Verify and Add', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
             ),
           ],
         ),

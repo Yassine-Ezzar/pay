@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
 
   Future<String> _getInitialRoute() async {
     String? userId = await _storage.read(key: 'userId');
-    return userId != null ? '/home' : '/splash'; 
+    return userId != null ? '/add-card' : '/splash'; 
   }
 
   @override

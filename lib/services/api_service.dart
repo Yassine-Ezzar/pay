@@ -53,7 +53,14 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> addCard(String userId, String cardNumber, String expiryDate, String cvv) async {
+static Future<Map<String, dynamic>> addCard(
+    String userId,
+    String cardNumber,
+    String expiryDate,
+    String cvv,
+    String cardHolderName,
+    String cardSecurityCode,
+  ) async {
     final response = await http.post(
       Uri.parse('$cardBaseUrl/add'),
       headers: {'Content-Type': 'application/json'},
@@ -62,6 +69,8 @@ class ApiService {
         'cardNumber': cardNumber,
         'expiryDate': expiryDate,
         'cvv': cvv,
+        'cardHolderName': cardHolderName,
+        'cardSecurityCode': cardSecurityCode,
       }),
     );
 
