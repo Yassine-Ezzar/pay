@@ -302,7 +302,7 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
     if (formKey.currentState!.validate() && cardSecurityCode.length == 4) {
       setState(() => isVerifying = true);
       try {
-        await Future.delayed(Duration(seconds: 2)); 
+        await Future.delayed(Duration(seconds: 2)); // Simuler la vérification finale
         await ApiService.addCard(
           widget.userId,
           widget.cardNumber,
@@ -327,7 +327,7 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(' Card Details', style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor)),
+        title: Text('Card Details', style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor)),
         backgroundColor: Styles.scaffoldBackgroundColor,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Styles.defaultYellowColor),
