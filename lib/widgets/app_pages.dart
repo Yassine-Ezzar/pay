@@ -22,7 +22,7 @@ class AppPages {
     GetPage(name: '/success', page: () => SuccessScreen()),
     GetPage(name: '/add-card', page: () => AddCardScreen()),
     GetPage(name: '/card-list', page: () => CardListScreen()),
-    GetPage(name: '/bracelet-connect', page: () => BraceletConnectScreen()), // New
+    GetPage(name: '/bracelet-connect', page: () => BraceletConnectScreen()), 
     GetPage(name: '/bracelet-management', page: () => BraceletManagementScreen()),
     GetPage(name: '/card-verification', page: () => CardVerificationScreen(userId: '', cardNumber: '', expiryDate: '', cvv: '',)), // Ajout
   ];

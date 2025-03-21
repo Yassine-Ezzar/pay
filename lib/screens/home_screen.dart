@@ -12,9 +12,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   List<dynamic> cards = [];
-  List<dynamic> payments = []; // Add payment history
+  List<dynamic> payments = [];
   bool isLoadingCards = true;
-  bool isLoadingPayments = true; // Separate loading state for payments
+  bool isLoadingPayments = true;
+  bool isRefreshing = false; // État pour gérer l'animation de rafraîchissement
   late AnimationController _controller;
   late Animation<double> _animation;
   int _currentCarouselIndex = 0;
@@ -43,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       Get.offNamed('/login');
     } else {
       _fetchCards();
-      _fetchPayments(); // Fetch payment history
+      _fetchPayments();
     }
   }
 
@@ -62,15 +63,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   Future<void> _fetchPayments() async {
-    setState(() => isLoadingPayments = true);
+    setState(() {
+      isLoadingPayments = true;
+      isRefreshing = true; // Activer l'état de rafraîchissement
+    });
     try {
       final fetchedPayments = await ApiService.getPaymentHistory(userId!);
       setState(() {
         payments = fetchedPayments;
         isLoadingPayments = false;
+        isRefreshing = false; // Désactiver l'état de rafraîchissement
       });
     } catch (e) {
-      setState(() => isLoadingPayments = false);
+      setState(() {
+        isLoadingPayments = false;
+        isRefreshing = false;
+      });
       Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
     }
   }
@@ -89,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Color(0xFF1A1A1A), Color(0xFF2D2D2D)],
+                  colors: const [Color(0xFF1A1A1A), Color(0xFF2D2D2D)],
                 ),
               ),
               child: SafeArea(
@@ -111,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               fontSize: 26,
                               fontWeight: FontWeight.bold,
                               color: Styles.defaultYellowColor,
-                              shadows: [
+                              shadows: const [
                                 Shadow(
                                   color: Colors.black45,
                                   offset: Offset(1, 1),
@@ -237,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                           fontFamily: 'Rubik',
                                                           color: Styles.defaultYellowColor,
                                                           fontSize: 16,
-                                                          shadows: [
+                                                          shadows: const [
                                                             Shadow(
                                                               color: Colors.black26,
                                                               offset: Offset(1, 1),
@@ -309,7 +317,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: Styles.defaultYellowColor,
-                          shadows: [
+                          shadows: const [
                             Shadow(
                               color: Colors.black26,
                               offset: Offset(1, 1),
@@ -319,14 +327,31 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'See all',
-                          style: TextStyle(
-                            fontFamily: 'Rubik',
-                            color: Styles.defaultYellowColor,
-                            fontSize: 16,
-                          ),
+                        onPressed: _fetchPayments, // Appeler _fetchPayments pour rafraîchir
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (isRefreshing) // Afficher un indicateur de chargement pendant le rafraîchissement
+                              Padding(
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    color: Styles.defaultYellowColor,
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              ),
+                            Text(
+                              'REFRESH',
+                              style: TextStyle(
+                                fontFamily: 'Rubik',
+                                color: Styles.defaultYellowColor,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -341,7 +366,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 decoration: BoxDecoration(
                                   color: Colors.white.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(15),
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                       color: Colors.black12,
                                       offset: Offset(0, 2),
@@ -404,7 +429,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         unselectedLabelStyle: TextStyle(fontFamily: 'Rubik'),
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home, size: 28),
             label: 'Home',
