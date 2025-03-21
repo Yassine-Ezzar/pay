@@ -33,6 +33,7 @@ dependencies:
     sdk: flutter
   flutter_gen: ^5.10.0
   carousel_slider: ^5.0.0
+  flutter_bluetooth_serial: ^0.4.0
 
 dev_dependencies:
   flutter_test:

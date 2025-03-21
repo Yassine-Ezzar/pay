@@ -114,7 +114,7 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
               SlideTransition(
                 position: _buttonSlideAnimation,
                 child: GestureDetector(
-                  onTap: () => Get.offNamed('/add-card'),
+                  onTap: () => Get.offNamed('/bracelet-connect'),
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       vertical: Styles.defaultPadding,

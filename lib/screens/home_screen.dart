@@ -1,7 +1,7 @@
-import 'package:app/services/api_service.dart';
-import 'package:app/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:app/services/api_service.dart';
+import 'package:app/styles/styles.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -12,10 +12,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   List<dynamic> cards = [];
-  bool isLoading = true;
+  List<dynamic> payments = []; // Add payment history
+  bool isLoadingCards = true;
+  bool isLoadingPayments = true; // Separate loading state for payments
   late AnimationController _controller;
   late Animation<double> _animation;
   int _currentCarouselIndex = 0;
+  String? userId;
 
   @override
   void initState() {
@@ -25,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       duration: Duration(milliseconds: 800),
     )..repeat(reverse: true);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
-    _fetchCards();
+    _loadUserId();
   }
 
   @override
@@ -34,22 +37,40 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     super.dispose();
   }
 
+  Future<void> _loadUserId() async {
+    userId = await ApiService.storage.read(key: 'userId');
+    if (userId == null) {
+      Get.offNamed('/login');
+    } else {
+      _fetchCards();
+      _fetchPayments(); // Fetch payment history
+    }
+  }
+
   Future<void> _fetchCards() async {
-    setState(() => isLoading = true);
+    setState(() => isLoadingCards = true);
     try {
-      final userId = await ApiService.storage.read(key: 'userId');
-      if (userId != null) {
-        final fetchedCards = await ApiService.getCards(userId);
-        setState(() {
-          cards = fetchedCards;
-          isLoading = false;
-        });
-      } else {
-        Get.snackbar('Error', 'User not logged in.', backgroundColor: Styles.defaultRedColor);
-        Get.offNamed('/login');
-      }
+      final fetchedCards = await ApiService.getCards(userId!);
+      setState(() {
+        cards = fetchedCards;
+        isLoadingCards = false;
+      });
     } catch (e) {
-      setState(() => isLoading = false);
+      setState(() => isLoadingCards = false);
+      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+    }
+  }
+
+  Future<void> _fetchPayments() async {
+    setState(() => isLoadingPayments = true);
+    try {
+      final fetchedPayments = await ApiService.getPaymentHistory(userId!);
+      setState(() {
+        payments = fetchedPayments;
+        isLoadingPayments = false;
+      });
+    } catch (e) {
+      setState(() => isLoadingPayments = false);
       Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
     }
   }
@@ -106,7 +127,43 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               size: 28,
                             ),
                             onPressed: () {
-                              // Add menu logic here
+                              showModalBottomSheet(
+                                context: context,
+                                backgroundColor: Styles.scaffoldBackgroundColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                                ),
+                                builder: (context) => Container(
+                                  padding: EdgeInsets.all(Styles.defaultPadding),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      ListTile(
+                                        leading: Icon(Icons.watch, color: Styles.defaultYellowColor),
+                                        title: Text(
+                                          'Bracelet',
+                                          style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
+                                        ),
+                                        onTap: () {
+                                          Get.back();
+                                          Get.toNamed('/bracelet-management');
+                                        },
+                                      ),
+                                      ListTile(
+                                        leading: Icon(Icons.logout, color: Styles.defaultRedColor),
+                                        title: Text(
+                                          'Logout',
+                                          style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultRedColor),
+                                        ),
+                                        onTap: () async {
+                                          await ApiService.storage.deleteAll();
+                                          Get.offAllNamed('/login');
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
                             },
                           ),
                         ],
@@ -115,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     SizedBox(height: Styles.defaultPadding),
                     // Cards Carousel
                     Expanded(
-                      child: isLoading
+                      child: isLoadingCards
                           ? Center(
                               child: CircularProgressIndicator(
                                 color: Styles.defaultYellowColor,
@@ -226,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ),
             ),
           ),
-          // Lower half: Transactions
+          // Lower half: Transactions (now showing payment history)
           Expanded(
             flex: 1,
             child: Container(
@@ -276,32 +333,57 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                   SizedBox(height: Styles.defaultPadding),
                   Expanded(
-                    child: Container(
-                      padding: EdgeInsets.all(Styles.defaultPadding),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(0, 2),
-                            blurRadius: 6,
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Your transactions will appear here soon.\nStay tuned!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'Rubik',
-                            color: Styles.defaultLightWhiteColor,
-                            fontSize: 16,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                      ),
-                    ),
+                    child: isLoadingPayments
+                        ? Center(child: CircularProgressIndicator(color: Styles.defaultYellowColor))
+                        : payments.isEmpty
+                            ? Container(
+                                padding: EdgeInsets.all(Styles.defaultPadding),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      offset: Offset(0, 2),
+                                      blurRadius: 6,
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'No transactions yet.\nMake a payment with your bracelet to see it here.',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: 'Rubik',
+                                      color: Styles.defaultLightWhiteColor,
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: payments.length,
+                                itemBuilder: (context, index) {
+                                  final payment = payments[index];
+                                  return Card(
+                                    elevation: 5,
+                                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                                    color: Colors.white.withOpacity(0.1),
+                                    child: ListTile(
+                                      leading: Icon(Icons.payment, color: Styles.defaultYellowColor),
+                                      title: Text(
+                                        payment['merchant'],
+                                        style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
+                                      ),
+                                      subtitle: Text(
+                                        'Amount: \$${payment['amount'].toStringAsFixed(2)}\nDate: ${DateTime.parse(payment['date']).toLocal().toString().split('.')[0]}',
+                                        style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultLightWhiteColor),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                   ),
                 ],
               ),
