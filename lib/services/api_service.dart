@@ -8,6 +8,7 @@ class ApiService {
   static const String braceletBaseUrl = 'http://192.168.1.18:6000/api/bracelets';
   static const String paymentBaseUrl = 'http://192.168.1.18:6000/api/payments';
   
+  
   static const storage = FlutterSecureStorage();
 
   static Future<Map<String, dynamic>> register(String name, String pin, String securityAnswer, bool biometricEnabled) async {
@@ -79,9 +80,19 @@ static Future<Map<String, dynamic>> addCard(
 
     final data = jsonDecode(response.body);
     if (response.statusCode == 201) {
+      final cardId = data['card']['_id'];
+      await storage.write(key: 'cardSecurityCode_$cardId', value: cardSecurityCode);
       return data;
     }
     throw Exception(data['message']);
+  }
+
+  static Future<String?> getCardSecurityCode(String cardId) async {
+    return await storage.read(key: 'cardSecurityCode_$cardId');
+  }
+
+  static Future<void> deleteCardSecurityCode(String cardId) async {
+    await storage.delete(key: 'cardSecurityCode_$cardId');
   }
 
   static Future<List<dynamic>> getCards(String userId) async {
@@ -92,11 +103,13 @@ static Future<Map<String, dynamic>> addCard(
     }
     throw Exception(data['message']);
   }
-
   static Future<void> deleteCard(String cardId) async {
     final response = await http.delete(Uri.parse('$cardBaseUrl/$cardId'));
     final data = jsonDecode(response.body);
-    if (response.statusCode != 200) {
+    if (response.statusCode == 200) {
+      // Supprimer le cardSecurityCode du stockage
+      await deleteCardSecurityCode(cardId);
+    } else {
       throw Exception(data['message']);
     }
   }
@@ -160,8 +173,13 @@ static Future<Map<String, dynamic>> addCard(
     throw Exception(data['message']);
   }
 
-  // Payment-related methods
   static Future<Map<String, dynamic>> makePayment(String braceletId, String cardId, double amount, String merchant) async {
+    // Récupérer le cardSecurityCode depuis le stockage
+    final cardSecurityCode = await getCardSecurityCode(cardId);
+    if (cardSecurityCode == null) {
+      throw Exception('Card security code not found. Please add the card again.');
+    }
+
     final response = await http.post(
       Uri.parse('$paymentBaseUrl/make'),
       headers: {'Content-Type': 'application/json'},
@@ -170,6 +188,7 @@ static Future<Map<String, dynamic>> addCard(
         'cardId': cardId,
         'amount': amount,
         'merchant': merchant,
+        'cardSecurityCode': cardSecurityCode, 
       }),
     );
 

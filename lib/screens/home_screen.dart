@@ -327,11 +327,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                       ),
                       TextButton(
-                        onPressed: _fetchPayments, // Appeler _fetchPayments pour rafraîchir
+                        onPressed: _fetchPayments, 
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            if (isRefreshing) // Afficher un indicateur de chargement pendant le rafraîchissement
+                            if (isRefreshing) 
                               Padding(
                                 padding: EdgeInsets.only(right: 8.0),
                                 child: SizedBox(
@@ -449,7 +449,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         ],
         currentIndex: 0,
         onTap: (index) {
-          // Add navigation logic if needed
+        
         },
         elevation: 15,
       ),

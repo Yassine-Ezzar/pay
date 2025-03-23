@@ -66,7 +66,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
     if (formKey.currentState!.validate() && userId != null) {
       setState(() => isVerifying = true);
       try {
-        await Future.delayed(Duration(seconds: 2)); // Simuler la connexion à l'émetteur
+        await Future.delayed(const Duration(seconds: 2)); // Simuler la connexion à l'émetteur
         Get.to(() => CardVerificationScreen(
               userId: userId!,
               cardNumber: cardNumber,
@@ -125,7 +125,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
 
         setState(() => isVerifying = true);
         try {
-          await Future.delayed(Duration(seconds: 2)); // Simuler la connexion à l'émetteur
+          await Future.delayed(const Duration(seconds: 2)); // Simuler la connexion à l'émetteur
           Get.to(() => CardVerificationScreen(
                 userId: userId!,
                 cardNumber: cardNumber,
@@ -228,7 +228,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Styles.defaultBlueColor,
                 foregroundColor: Styles.defaultYellowColor,
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                 shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
               ),
               child: isVerifying
@@ -239,11 +239,11 @@ class _AddCardScreenState extends State<AddCardScreen> {
                           color: Styles.defaultYellowColor,
                           strokeWidth: 2,
                         ),
-                        SizedBox(width: 10),
-                        Text('Connecting to issuer...', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
+                        const SizedBox(width: 10),
+                        const Text('Connecting to issuer...', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
                       ],
                     )
-                  : Text('Add Manually', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
+                  : const Text('Add Manually', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
             ),
             SizedBox(height: Styles.defaultPadding),
             ElevatedButton(
@@ -251,7 +251,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Styles.defaultGreyColor,
                 foregroundColor: Styles.defaultYellowColor,
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                 shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
               ),
               child: isVerifying
@@ -262,11 +262,11 @@ class _AddCardScreenState extends State<AddCardScreen> {
                           color: Styles.defaultYellowColor,
                           strokeWidth: 2,
                         ),
-                        SizedBox(width: 10),
-                        Text('Connecting to issuer...', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
+                        const SizedBox(width: 10),
+                        const Text('Connecting to issuer...', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
                       ],
                     )
-                  : Text('Scan Card', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
+                  : const Text('Scan Card', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
             ),
           ],
         ),
@@ -274,6 +274,9 @@ class _AddCardScreenState extends State<AddCardScreen> {
     );
   }
 }
+
+
+
 
 class CardVerificationScreen extends StatefulWidget {
   final String userId;
@@ -302,7 +305,7 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
     if (formKey.currentState!.validate() && cardSecurityCode.length == 4) {
       setState(() => isVerifying = true);
       try {
-        await Future.delayed(Duration(seconds: 2)); // Simuler la vérification finale
+        await Future.delayed(const Duration(seconds: 2)); // Simuler la vérification finale
         await ApiService.addCard(
           widget.userId,
           widget.cardNumber,
@@ -412,7 +415,7 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Styles.defaultBlueColor,
                 foregroundColor: Styles.defaultYellowColor,
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                 shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
               ),
               child: isVerifying
@@ -423,11 +426,11 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
                           color: Styles.defaultYellowColor,
                           strokeWidth: 2,
                         ),
-                        SizedBox(width: 10),
-                        Text('Verifying...', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
+                        const SizedBox(width: 10),
+                        const Text('Verifying...', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
                       ],
                     )
-                  : Text('Verify and Add', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
+                  : const Text('Verify and Add', style: TextStyle(fontFamily: 'Rubik', fontSize: 16)),
             ),
           ],
         ),
