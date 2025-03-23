@@ -3,6 +3,9 @@ import 'package:app/screens/bracelet_connect_screen.dart';
 import 'package:app/screens/bracelet_management_screen.dart';
 import 'package:app/screens/card_list_screen.dart';
 import 'package:app/screens/home_screen.dart';
+import 'package:app/screens/location_screen.dart';
+import 'package:app/screens/notifications_screen.dart';
+import 'package:app/screens/profile_screen.dart';
 import 'package:app/screens/splash_screen.dart';
 import 'package:app/screens/success_screen.dart';
 import 'package:get/get.dart';
@@ -24,6 +27,9 @@ class AppPages {
     GetPage(name: '/card-list', page: () => CardListScreen()),
     GetPage(name: '/bracelet-connect', page: () => BraceletConnectScreen()), 
     GetPage(name: '/bracelet-management', page: () => BraceletManagementScreen()),
-    GetPage(name: '/card-verification', page: () => CardVerificationScreen(userId: '', cardNumber: '', expiryDate: '', cvv: '',)), // Ajout
+    GetPage(name: '/card-verification', page: () => CardVerificationScreen(userId: '', cardNumber: '', expiryDate: '', cvv: '',)), 
+    GetPage(name: '/location', page: () => LocationScreen()), 
+    GetPage(name: '/notifications', page: () => NotificationsScreen()), 
+    GetPage(name: '/profile', page: () => ProfileScreen()), 
   ];
 }

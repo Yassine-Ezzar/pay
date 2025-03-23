@@ -1,4 +1,5 @@
 import 'package:app/screens/menu.dart' show Menu;
+import 'package:app/screens/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:app/services/api_service.dart';
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   late Animation<double> _animation;
   int _currentCarouselIndex = 0;
   String? userId;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -59,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       });
     } catch (e) {
       setState(() => isLoadingCards = false);
-      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(), backgroundColor: Colors.redAccent);
     }
   }
 
@@ -80,333 +82,352 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         isLoadingPayments = false;
         isRefreshing = false;
       });
-      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(), backgroundColor: Colors.redAccent);
+    }
+  }
+
+  void _onNavItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    switch (index) {
+      case 0:
+        Get.offNamed('/home');
+        break;
+      case 1:
+        Get.offNamed('/location');
+        break;
+      case 2:
+        Get.offNamed('/notifications');
+        break;
+      case 3:
+        Get.offNamed('/profile');
+        break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Styles.scaffoldBackgroundColor,
-      body: Column(
+      backgroundColor: const Color(0xFF0A0E21), // Consistent background color
+      body: Stack(
         children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: const [Color(0xFF1A1A1A), Color(0xFF2D2D2D)],
-                ),
-              ),
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    // Header
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: Styles.defaultPadding,
-                        vertical: Styles.defaultPadding / 2,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Your Cards',
-                            style: TextStyle(
-                              fontFamily: 'Rubik',
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                              color: Styles.defaultYellowColor,
-                              shadows: const [
-                                Shadow(
-                                  color: Colors.black45,
-                                  offset: Offset(1, 1),
-                                  blurRadius: 3,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Menu(), 
-                        ],
-                      ),
+          Column(
+            children: [
+              // Upper half: Cards Section
+              Expanded(
+                flex: 1,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xFF98b5e4), Color(0xFF477bd0)],
                     ),
-                    SizedBox(height: Styles.defaultPadding),
-                    // Cards Carousel
-                    Expanded(
-                      child: isLoadingCards
-                          ? Center(
-                              child: CircularProgressIndicator(
-                                color: Styles.defaultYellowColor,
-                                strokeWidth: 3,
+                  ),
+                  child: SafeArea(
+                    child: Column(
+                      children: [
+                        // Header
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Styles.defaultPadding,
+                            vertical: Styles.defaultPadding / 2,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Your Cards',
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                  letterSpacing: 1.2,
+                                ),
                               ),
-                            )
-                          : cards.isEmpty
-                              ? Center(
-                                  child: Text(
-                                    'No cards added yet.\nTap the + button to add a card.',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: 'Rubik',
-                                      color: Styles.defaultLightWhiteColor,
-                                      fontSize: 16,
-                                      fontStyle: FontStyle.italic,
-                                    ),
+                              const Menu(),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: Styles.defaultPadding),
+                        // Cards Carousel
+                        Expanded(
+                          child: isLoadingCards
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 3,
                                   ),
                                 )
-                              : Column(
-                                  children: [
-                                    Expanded(
-                                      child: CarouselSlider(
-                                        options: CarouselOptions(
-                                          height: 200,
-                                          enlargeCenterPage: true,
-                                          autoPlay: true,
-                                          autoPlayInterval: Duration(seconds: 5),
-                                          autoPlayAnimationDuration: Duration(milliseconds: 800),
-                                          aspectRatio: 16 / 9,
-                                          viewportFraction: 0.75,
-                                          enableInfiniteScroll: true,
-                                          onPageChanged: (index, reason) {
-                                            setState(() {
-                                              _currentCarouselIndex = index;
-                                            });
-                                          },
+                              : cards.isEmpty
+                                  ? const Center(
+                                      child: Text(
+                                        'No cards added yet.\nTap the + button to add a card.',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white70,
+                                          fontSize: 16,
+                                          fontStyle: FontStyle.italic,
                                         ),
-                                        items: cards.map((card) {
-                                          return Builder(
-                                            builder: (BuildContext context) {
-                                              return AnimatedBuilder(
-                                                animation: _animation,
-                                                builder: (context, child) {
-                                                  return Transform.scale(
-                                                    scale: 1.0 + (_animation.value * 0.05),
-                                                    child: Card(
-                                                      elevation: 10,
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.circular(20),
-                                                      ),
-                                                      shadowColor: Colors.black45,
-                                                      child: CreditCardWidget(
-                                                        cardNumber: card['cardNumber'],
-                                                        expiryDate: card['expiryDate'],
-                                                        cardHolderName: card['cardHolderName'] ?? 'No Name',
-                                                        cvvCode: card['cvv'],
-                                                        showBackView: false,
-                                                        onCreditCardWidgetChange: (creditCardBrand) {},
-                                                        cardBgColor: Color(0xFF1E3A8A),
-                                                        textStyle: TextStyle(
-                                                          fontFamily: 'Rubik',
-                                                          color: Styles.defaultYellowColor,
-                                                          fontSize: 16,
-                                                          shadows: const [
-                                                            Shadow(
-                                                              color: Colors.black26,
-                                                              offset: Offset(1, 1),
-                                                              blurRadius: 2,
+                                      ),
+                                    )
+                                  : Column(
+                                      children: [
+                                        Expanded(
+                                          child: CarouselSlider(
+                                            options: CarouselOptions(
+                                              height: 200,
+                                              enlargeCenterPage: true,
+                                              autoPlay: true,
+                                              autoPlayInterval: const Duration(seconds: 5),
+                                              autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                                              aspectRatio: 16 / 9,
+                                              viewportFraction: 0.85,
+                                              enableInfiniteScroll: true,
+                                              onPageChanged: (index, reason) {
+                                                setState(() {
+                                                  _currentCarouselIndex = index;
+                                                });
+                                              },
+                                            ),
+                                            items: cards.map((card) {
+                                              return Builder(
+                                                builder: (BuildContext context) {
+                                                  return AnimatedBuilder(
+                                                    animation: _animation,
+                                                    builder: (context, child) {
+                                                      return Transform(
+                                                        transform: Matrix4.identity()
+                                                          ..setEntry(3, 2, 0.001)
+                                                          ..rotateY(_animation.value * 0.1),
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(20),
+                                                            boxShadow: const [
+                                                              BoxShadow(
+                                                                color: Colors.black54,
+                                                                offset: Offset(0, 4),
+                                                                blurRadius: 10,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          child: ClipRRect(
+                                                            borderRadius: BorderRadius.circular(20),
+                                                            child: CreditCardWidget(
+                                                              cardNumber: card['cardNumber'],
+                                                              expiryDate: card['expiryDate'],
+                                                              cardHolderName: card['cardHolderName'] ?? 'No Name',
+                                                              cvvCode: card['cvv'],
+                                                              showBackView: false,
+                                                              onCreditCardWidgetChange: (creditCardBrand) {},
+                                                              cardBgColor: const Color(0xFF1E3A8A),
+                                                              glassmorphismConfig: Glassmorphism.defaultConfig(),
+                                                              textStyle: const TextStyle(
+                                                                fontFamily: 'Montserrat',
+                                                                color: Colors.white,
+                                                                fontSize: 16,
+                                                                fontWeight: FontWeight.w600,
+                                                              ),
                                                             ),
-                                                          ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ),
+                                                      );
+                                                    },
                                                   );
                                                 },
                                               );
-                                            },
-                                          );
-                                        }).toList(),
+                                            }).toList(),
+                                          ),
+                                        ),
+                                        SizedBox(height: Styles.defaultPadding / 2),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: cards.asMap().entries.map((entry) {
+                                            return GestureDetector(
+                                              onTap: () => setState(() => _currentCarouselIndex = entry.key),
+                                              child: Container(
+                                                width: _currentCarouselIndex == entry.key ? 10 : 6,
+                                                height: _currentCarouselIndex == entry.key ? 10 : 6,
+                                                margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: _currentCarouselIndex == entry.key
+                                                      ? Colors.white
+                                                      : Colors.white.withOpacity(0.4),
+                                                ),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ],
+                                    ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              // Lower half: Transactions
+              Expanded(
+                flex: 1,
+                child: Container(
+                  color: const Color(0xFF0A0E21), // Consistent color
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: Styles.defaultPadding,
+                          vertical: Styles.defaultPadding / 2,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Transactions',
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: _fetchPayments,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (isRefreshing)
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8.0),
+                                      child: SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                          strokeWidth: 2,
+                                        ),
                                       ),
                                     ),
-                                    SizedBox(height: Styles.defaultPadding / 2),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: cards.asMap().entries.map((entry) {
-                                        return GestureDetector(
-                                          onTap: () => setState(() => _currentCarouselIndex = entry.key),
-                                          child: Container(
-                                            width: _currentCarouselIndex == entry.key ? 10 : 6,
-                                            height: _currentCarouselIndex == entry.key ? 10 : 6,
-                                            margin: EdgeInsets.symmetric(horizontal: 4.0),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: _currentCarouselIndex == entry.key
-                                                  ? Styles.defaultYellowColor
-                                                  : Styles.defaultLightGreyColor.withOpacity(0.4),
-                                            ),
-                                          ),
-                                        );
-                                      }).toList(),
+                                  const Text(
+                                    'REFRESH',
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  ],
-                                ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          // Lower half: Transactions (now showing payment history)
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.blue[300]!, Colors.blue[600]!],
-                ),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-              ),
-              padding: EdgeInsets.all(Styles.defaultPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Transactions',
-                        style: TextStyle(
-                          fontFamily: 'Rubik',
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Styles.defaultYellowColor,
-                          shadows: const [
-                            Shadow(
-                              color: Colors.black26,
-                              offset: Offset(1, 1),
-                              blurRadius: 3,
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      TextButton(
-                        onPressed: _fetchPayments,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (isRefreshing)
-                              Padding(
-                                padding: EdgeInsets.only(right: 8.0),
-                                child: SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child: CircularProgressIndicator(
-                                    color: Styles.defaultYellowColor,
-                                    strokeWidth: 2,
+                      Expanded(
+                        child: isLoadingPayments
+                            ? const Center(child: CircularProgressIndicator(color: Colors.white))
+                            : payments.isEmpty
+                                ? Container(
+                                    margin: EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
+                                    padding: EdgeInsets.all(Styles.defaultPadding),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.05),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'No transactions yet.\nMake a payment with your bracelet to see it here.',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Colors.white70,
+                                          fontSize: 16,
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    padding: EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
+                                    itemCount: payments.length,
+                                    itemBuilder: (context, index) {
+                                      final payment = payments[index];
+                                      return Card(
+                                        elevation: 0,
+                                        color: Colors.white.withOpacity(0.05),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        child: ListTile(
+                                          leading: Container(
+                                            padding: const EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white.withOpacity(0.1),
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: const Icon(
+                                              Icons.store,
+                                              color: Colors.white,
+                                              size: 20,
+                                            ),
+                                          ),
+                                          title: Text(
+                                            payment['merchant'],
+                                            style: const TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          subtitle: Text(
+                                            'Date: ${DateTime.parse(payment['date']).toLocal().toString().split('.')[0]}',
+                                            style: const TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              color: Colors.white70,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          trailing: Text(
+                                            '-\$${payment['amount'].toStringAsFixed(2)}',
+                                            style: const TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              color: Colors.redAccent,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                ),
-                              ),
-                            Text(
-                              'REFRESH',
-                              style: TextStyle(
-                                fontFamily: 'Rubik',
-                                color: Styles.defaultYellowColor,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: Styles.defaultPadding),
-                  Expanded(
-                    child: isLoadingPayments
-                        ? Center(child: CircularProgressIndicator(color: Styles.defaultYellowColor))
-                        : payments.isEmpty
-                            ? Container(
-                                padding: EdgeInsets.all(Styles.defaultPadding),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      offset: Offset(0, 2),
-                                      blurRadius: 6,
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'No transactions yet.\nMake a payment with your bracelet to see it here.',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: 'Rubik',
-                                      color: Styles.defaultLightWhiteColor,
-                                      fontSize: 16,
-                                      fontStyle: FontStyle.italic,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : ListView.builder(
-                                itemCount: payments.length,
-                                itemBuilder: (context, index) {
-                                  final payment = payments[index];
-                                  return Card(
-                                    elevation: 5,
-                                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-                                    color: Colors.white.withOpacity(0.1),
-                                    child: ListTile(
-                                      leading: Icon(Icons.payment, color: Styles.defaultYellowColor),
-                                      title: Text(
-                                        payment['merchant'],
-                                        style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
-                                      ),
-                                      subtitle: Text(
-                                        'Amount: \$${payment['amount'].toStringAsFixed(2)}\nDate: ${DateTime.parse(payment['date']).toLocal().toString().split('.')[0]}',
-                                        style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultLightWhiteColor),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              const SizedBox(height: 90), // Increased padding to avoid FAB overlap
+            ],
+          ),
+          CustomNavBar(
+            selectedIndex: _selectedIndex,
+            onItemTapped: _onNavItemTapped,
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed('/add-card'),
-        backgroundColor: Styles.defaultBlueColor,
-        child: Icon(Icons.add, color: Styles.defaultYellowColor),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blue[600],
-        selectedItemColor: Styles.defaultYellowColor,
-        unselectedItemColor: Styles.defaultLightWhiteColor.withOpacity(0.6),
-        selectedLabelStyle: TextStyle(fontFamily: 'Rubik', fontWeight: FontWeight.bold),
-        unselectedLabelStyle: TextStyle(fontFamily: 'Rubik'),
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, size: 28),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search, size: 28),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications, size: 28),
-            label: 'Notifications',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, size: 28),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: 0,
-        onTap: (index) {
-          // Add navigation logic if needed
-        },
-        elevation: 15,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 90.0), // Move FAB above the navbar
+        child: FloatingActionButton(
+          onPressed: () => Get.toNamed('/add-card'),
+          backgroundColor: Colors.white,
+          elevation: 8,
+          child: const Icon(Icons.add, color: Color(0xFF98b5e4), size: 28),
+        ),
       ),
     );
   }
