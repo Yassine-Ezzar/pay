@@ -13,19 +13,25 @@ class CardListScreen extends StatefulWidget {
 class _CardListScreenState extends State<CardListScreen> {
   String? userId;
   List<dynamic> cards = [];
-  final PageController _pageController = PageController(viewportFraction: 0.85);
+  final PageController _pageController = PageController(viewportFraction: 0.9);
   bool isLoading = false;
+  int _currentPage = 0;
 
   @override
   void initState() {
     super.initState();
     _loadUserId();
+    _pageController.addListener(() {
+      setState(() {
+        _currentPage = _pageController.page?.round() ?? 0;
+      });
+    });
   }
 
   Future<void> _loadUserId() async {
     userId = await ApiService.storage.read(key: 'userId');
     if (userId == null) {
-      Get.snackbar('Erreur', 'Utilisateur non connecté',
+      Get.snackbar('Error', 'User not logged in',
           backgroundColor: Styles.defaultRedColor, colorText: Styles.defaultLightWhiteColor);
       Get.offNamed('/login');
     } else {
@@ -42,7 +48,7 @@ class _CardListScreenState extends State<CardListScreen> {
           cards = fetchedCards;
         });
       } catch (e) {
-        Get.snackbar('Erreur', e.toString(),
+        Get.snackbar('Error', e.toString(),
             backgroundColor: Styles.defaultRedColor, colorText: Styles.defaultLightWhiteColor);
       } finally {
         setState(() => isLoading = false);
@@ -56,10 +62,10 @@ class _CardListScreenState extends State<CardListScreen> {
       try {
         await ApiService.deleteCard(cardId);
         _fetchCards();
-        Get.snackbar('Succès', 'Carte supprimée',
+        Get.snackbar('Success', 'Card deleted',
             backgroundColor: Styles.defaultBlueColor, colorText: Styles.defaultYellowColor);
       } catch (e) {
-        Get.snackbar('Erreur', e.toString(),
+        Get.snackbar('Error', e.toString(),
             backgroundColor: Styles.defaultRedColor, colorText: Styles.defaultLightWhiteColor);
       } finally {
         setState(() => isLoading = false);
@@ -76,190 +82,176 @@ class _CardListScreenState extends State<CardListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black, // Fond sombre comme Revolut
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Styles.scaffoldBackgroundColor,
+        backgroundColor: Colors.transparent,
         title: Text(
-          'Mes cartes',
+          'Your Cards',
           style: TextStyle(
             fontFamily: 'Rubik',
-            color: Styles.defaultYellowColor,
+            color: Colors.white,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Styles.defaultYellowColor),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Get.back(),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add, color: Colors.white, size: 28),
+            onPressed: () => Get.toNamed('/add-card')?.then((_) => _fetchCards()),
+          ),
+        ],
       ),
-      backgroundColor: Styles.scaffoldBackgroundColor,
       body: Stack(
         children: [
-          Column(
-            children: [
-              Expanded(
-                child: cards.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.black, Colors.grey[900]!],
+              ),
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  child: cards.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.credit_card_off,
+                                size: 80,
+                                color: Colors.white.withOpacity(0.5),
+                              ),
+                              SizedBox(height: Styles.defaultPadding),
+                              Text(
+                                'No Cards Added',
+                                style: TextStyle(
+                                  fontFamily: 'Rubik',
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(height: Styles.defaultPadding),
+                              Text(
+                                'Add a card to get started',
+                                style: TextStyle(
+                                  fontFamily: 'Rubik',
+                                  fontSize: 16,
+                                  color: Colors.grey[400],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Stack(
                           children: [
-                            Icon(
-                              Icons.credit_card_off,
-                              size: 80,
-                              color: Styles.defaultYellowColor.withOpacity(0.5),
-                            ),
-                            SizedBox(height: Styles.defaultPadding),
-                            Text(
-                              'Aucune carte ajoutée',
-                              style: TextStyle(
-                                fontFamily: 'Rubik',
-                                fontSize: 20,
-                                color: Styles.defaultYellowColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            SizedBox(height: Styles.defaultPadding),
-                            Text(
-                              'Ajoutez une carte pour commencer',
-                              style: TextStyle(
-                                fontFamily: 'Rubik',
-                                fontSize: 16,
-                                color: Styles.defaultLightGreyColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          SizedBox(height: Styles.defaultPadding * 2),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.5,
-                            child: PageView.builder(
+                            PageView.builder(
                               controller: _pageController,
+                              scrollDirection: Axis.vertical, // Carrousel vertical comme Revolut
                               itemCount: cards.length,
                               itemBuilder: (context, index) {
                                 final card = cards[index];
                                 return Padding(
                                   padding: EdgeInsets.symmetric(
-                                    horizontal: Styles.defaultPadding / 2,
-                                    vertical: Styles.defaultPadding,
+                                    horizontal: Styles.defaultPadding,
+                                    vertical: Styles.defaultPadding / 2,
                                   ),
-                                  child: _buildCardItem(card),
+                                  child: _buildCardItem(card, index),
                                 );
                               },
                             ),
-                          ),
-                          SizedBox(height: Styles.defaultPadding),
-                          SmoothPageIndicator(
-                            controller: _pageController,
-                            count: cards.length,
-                            effect: WormEffect(
-                              dotColor: Styles.defaultLightGreyColor,
-                              activeDotColor: Styles.defaultYellowColor,
-                              dotHeight: 10,
-                              dotWidth: 10,
-                              spacing: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-              ),
-            ],
+                            if (cards.length > 1)
+                              Positioned(
+                                right: 20,
+                                top: MediaQuery.of(context).size.height * 0.3,
+                                child: SmoothPageIndicator(
+                                  controller: _pageController,
+                                  count: cards.length,
+                                  axisDirection: Axis.vertical,
+                                  effect: WormEffect(
+                                    dotColor: Colors.grey[700]!,
+                                    activeDotColor: Colors.white,
+                                    dotHeight: 8,
+                                    dotWidth: 8,
+                                    spacing: 12,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                ),
+              ],
+            ),
           ),
           if (isLoading)
             Container(
               color: Colors.black.withOpacity(0.5),
               child: Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Styles.defaultYellowColor),
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               ),
             ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed('/add-card')?.then((_) => _fetchCards()), // Rafraîchit après ajout
-        backgroundColor: Styles.defaultBlueColor,
-        elevation: 6,
-        child: Icon(Icons.add, color: Styles.defaultYellowColor, size: 28),
-      ),
     );
   }
 
-  Widget _buildCardItem(dynamic card) {
+  Widget _buildCardItem(dynamic card, int index) {
+    // Couleurs différentes pour chaque carte (inspiré de Revolut)
+    final List<Color> cardColors = [
+      Color(0xFF1E3A8A), // Bleu foncé
+      Color(0xFF6B21A8), // Violet
+      Color(0xFF047857), // Vert
+    ];
+    final cardColor = cardColors[index % cardColors.length];
+
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       decoration: BoxDecoration(
-        borderRadius: Styles.defaultBorderRadius,
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Styles.defaultBlueColor.withOpacity(0.2),
+            color: Colors.black.withOpacity(0.3),
             blurRadius: 15,
             offset: Offset(0, 8),
           ),
         ],
       ),
-      child: Column(
+      child: Stack(
         children: [
           CreditCardWidget(
             cardNumber: card['cardNumber'],
             expiryDate: card['expiryDate'],
-            cardHolderName: '',
+            cardHolderName: card['cardHolderName'] ?? '',
             cvvCode: card['cvv'],
             showBackView: false,
             onCreditCardWidgetChange: (creditCardBrand) {},
-            cardBgColor: Styles.defaultGreyColor,
-            glassmorphismConfig: Glassmorphism.defaultConfig(),
+            cardBgColor: cardColor,
             textStyle: TextStyle(
               fontFamily: 'Rubik',
-              color: Styles.defaultYellowColor,
+              color: Colors.white,
               fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
             animationDuration: Duration(milliseconds: 300),
+            padding: 20,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
-            child: InkWell(
-              onTap: () => _deleteCard(card['_id']),
-              borderRadius: Styles.defaultBorderRadius,
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 12),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Styles.defaultRedColor, Styles.defaultRedColor.withOpacity(0.8)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: Styles.defaultBorderRadius,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Styles.defaultRedColor.withOpacity(0.3),
-                      blurRadius: 10,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.delete, color: Styles.defaultYellowColor, size: 20),
-                    SizedBox(width: 10),
-                    Text(
-                      'Supprimer',
-                      style: TextStyle(
-                        fontFamily: 'Rubik',
-                        fontSize: 16,
-                        color: Styles.defaultYellowColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+          Positioned(
+            top: 20,
+            right: 20,
+            child: IconButton(
+              icon: Icon(Icons.delete, color: Colors.white.withOpacity(0.8), size: 24),
+              onPressed: () => _deleteCard(card['_id']),
             ),
           ),
         ],

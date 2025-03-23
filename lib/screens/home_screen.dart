@@ -1,3 +1,4 @@
+import 'package:app/screens/menu.dart' show Menu;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:app/services/api_service.dart';
@@ -15,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   List<dynamic> payments = [];
   bool isLoadingCards = true;
   bool isLoadingPayments = true;
-  bool isRefreshing = false; // État pour gérer l'animation de rafraîchissement
+  bool isRefreshing = false;
   late AnimationController _controller;
   late Animation<double> _animation;
   int _currentCarouselIndex = 0;
@@ -65,14 +66,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Future<void> _fetchPayments() async {
     setState(() {
       isLoadingPayments = true;
-      isRefreshing = true; // Activer l'état de rafraîchissement
+      isRefreshing = true;
     });
     try {
       final fetchedPayments = await ApiService.getPaymentHistory(userId!);
       setState(() {
         payments = fetchedPayments;
         isLoadingPayments = false;
-        isRefreshing = false; // Désactiver l'état de rafraîchissement
+        isRefreshing = false;
       });
     } catch (e) {
       setState(() {
@@ -89,7 +90,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       backgroundColor: Styles.scaffoldBackgroundColor,
       body: Column(
         children: [
-          // Upper half: Card Section with AppBar integrated
           Expanded(
             flex: 1,
             child: Container(
@@ -128,52 +128,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               ],
                             ),
                           ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.menu,
-                              color: Styles.defaultYellowColor,
-                              size: 28,
-                            ),
-                            onPressed: () {
-                              showModalBottomSheet(
-                                context: context,
-                                backgroundColor: Styles.scaffoldBackgroundColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                                ),
-                                builder: (context) => Container(
-                                  padding: EdgeInsets.all(Styles.defaultPadding),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ListTile(
-                                        leading: Icon(Icons.watch, color: Styles.defaultYellowColor),
-                                        title: Text(
-                                          'Bracelet',
-                                          style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
-                                        ),
-                                        onTap: () {
-                                          Get.back();
-                                          Get.toNamed('/bracelet-management');
-                                        },
-                                      ),
-                                      ListTile(
-                                        leading: Icon(Icons.logout, color: Styles.defaultRedColor),
-                                        title: Text(
-                                          'Logout',
-                                          style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultRedColor),
-                                        ),
-                                        onTap: () async {
-                                          await ApiService.storage.deleteAll();
-                                          Get.offAllNamed('/login');
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                          const Menu(), 
                         ],
                       ),
                     ),
@@ -327,11 +282,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                       ),
                       TextButton(
-                        onPressed: _fetchPayments, 
+                        onPressed: _fetchPayments,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            if (isRefreshing) 
+                            if (isRefreshing)
                               Padding(
                                 padding: EdgeInsets.only(right: 8.0),
                                 child: SizedBox(
@@ -449,7 +404,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         ],
         currentIndex: 0,
         onTap: (index) {
-        
+          // Add navigation logic if needed
         },
         elevation: 15,
       ),
