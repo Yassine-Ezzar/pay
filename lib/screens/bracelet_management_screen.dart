@@ -15,8 +15,6 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
   String? userId;
   final _ble = FlutterReactiveBle();
   List<DiscoveredDevice> _devices = [];
-  DiscoveredDevice? _selectedDevice;
-  bool _isConnecting = false;
   bool _isScanning = false;
 
   @override
@@ -36,15 +34,11 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
   }
 
   Future<void> _initBle() async {
-    // Check BLE status and request permissions if needed
     _ble.statusStream.listen((status) {
       if (status != BleStatus.ready) {
         Get.snackbar('Bluetooth Error', 'Please enable Bluetooth', backgroundColor: Styles.defaultRedColor);
       }
     });
-
-    // Scan for devices
-    _startScan();
   }
 
   void _startScan() {
@@ -61,8 +55,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
       setState(() => _isScanning = false);
     });
 
-    // Stop scanning after 10 seconds
-    Future.delayed(Duration(seconds: 10), () {
+    Future.delayed(const Duration(seconds: 10), () {
       setState(() => _isScanning = false);
     });
   }
@@ -111,114 +104,8 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
     }
   }
 
-  Future<void> _addBracelet() async {
-    if (_selectedDevice == null) {
-      Get.snackbar('Error', 'Please select a bracelet', backgroundColor: Styles.defaultRedColor);
-      return;
-    }
-
-    setState(() => _isConnecting = true);
-    try {
-      // Connect to the device via BLE
-      await _ble.connectToDevice(id: _selectedDevice!.id).firstWhere((status) => status.connectionState == DeviceConnectionState.connected);
-      await ApiService.addBracelet(userId!, _selectedDevice!.id, _selectedDevice!.name ?? 'My Bracelet');
-      await ApiService.connectBracelet(_selectedDevice!.id);
-      Get.snackbar('Success', 'Bracelet added and connected successfully', backgroundColor: Styles.defaultBlueColor);
-      _fetchBracelets();
-      Get.back();
-    } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
-    } finally {
-      setState(() => _isConnecting = false);
-    }
-  }
-
-  void _showAddBraceletDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Styles.scaffoldBackgroundColor,
-        shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-        title: Text(
-          'Add a New Bracelet',
-          style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (_isScanning)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(color: Styles.defaultYellowColor),
-                  SizedBox(width: 10),
-                  Text('Scanning...', style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultLightWhiteColor)),
-                ],
-              )
-            else
-              ElevatedButton(
-                onPressed: _startScan,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Styles.defaultBlueColor,
-                  foregroundColor: Styles.defaultYellowColor,
-                  shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-                ),
-                child: Text('Scan for Bracelets', style: TextStyle(fontFamily: 'Rubik')),
-              ),
-            SizedBox(height: Styles.defaultPadding),
-            DropdownButton<DiscoveredDevice>(
-              hint: Text(
-                'Select a Bracelet',
-                style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultLightWhiteColor),
-              ),
-              value: _selectedDevice,
-              items: _devices.map((device) {
-                return DropdownMenuItem<DiscoveredDevice>(
-                  value: device,
-                  child: Text(
-                    device.name?.isNotEmpty == true ? device.name! : 'Unknown Device (${device.id})',
-                    style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
-                  ),
-                );
-              }).toList(),
-              onChanged: (device) {
-                setState(() {
-                  _selectedDevice = device;
-                });
-              },
-              dropdownColor: Styles.defaultGreyColor,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: Text('Cancel', style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultRedColor)),
-          ),
-          ElevatedButton(
-            onPressed: _isConnecting ? null : _addBracelet,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Styles.defaultBlueColor,
-              foregroundColor: Styles.defaultYellowColor,
-              shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-            ),
-            child: _isConnecting
-                ? Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CircularProgressIndicator(
-                        color: Styles.defaultYellowColor,
-                        strokeWidth: 2,
-                      ),
-                      SizedBox(width: 10),
-                      Text('Connecting...', style: TextStyle(fontFamily: 'Rubik')),
-                    ],
-                  )
-                : Text('Add & Connect', style: TextStyle(fontFamily: 'Rubik')),
-          ),
-        ],
-      ),
-    );
+  void _navigateToAddBracelet() {
+    Get.toNamed('/bracelet-connect', arguments: {'isAddingNew': true});
   }
 
   @override
@@ -236,7 +123,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -341,7 +228,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _showAddBraceletDialog,
+        onPressed: _navigateToAddBracelet,
         backgroundColor: Styles.defaultBlueColor,
         child: Icon(Icons.add, color: Styles.defaultYellowColor),
       ),
