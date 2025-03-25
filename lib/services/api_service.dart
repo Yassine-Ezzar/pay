@@ -7,6 +7,7 @@ class ApiService {
   static const String cardBaseUrl = 'http://192.168.1.18:6000/api/cards';
   static const String braceletBaseUrl = 'http://192.168.1.18:6000/api/bracelets';
   static const String paymentBaseUrl = 'http://192.168.1.18:6000/api/payments';
+  static const String locationBaseUrl = 'http://192.168.1.18:6000/api/locations';
   
   
   static const storage = FlutterSecureStorage();
@@ -107,7 +108,6 @@ static Future<Map<String, dynamic>> addCard(
     final response = await http.delete(Uri.parse('$cardBaseUrl/$cardId'));
     final data = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      // Supprimer le cardSecurityCode du stockage
       await deleteCardSecurityCode(cardId);
     } else {
       throw Exception(data['message']);
@@ -174,7 +174,6 @@ static Future<Map<String, dynamic>> addCard(
   }
 
   static Future<Map<String, dynamic>> makePayment(String braceletId, String cardId, double amount, String merchant) async {
-    // Récupérer le cardSecurityCode depuis le stockage
     final cardSecurityCode = await getCardSecurityCode(cardId);
     if (cardSecurityCode == null) {
       throw Exception('Card security code not found. Please add the card again.');
@@ -201,6 +200,36 @@ static Future<Map<String, dynamic>> addCard(
 
   static Future<List<dynamic>> getPaymentHistory(String userId) async {
     final response = await http.get(Uri.parse('$paymentBaseUrl/history?userId=$userId'));
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+
+
+
+  static Future<Map<String, dynamic>> updateBraceletLocation(String braceletId, double latitude, double longitude) async {
+    final response = await http.post(
+      Uri.parse('$locationBaseUrl/update'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'braceletId': braceletId,
+        'latitude': latitude,
+        'longitude': longitude,
+      }),
+    );
+
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<Map<String, dynamic>> getBraceletLocation(String braceletId) async {
+    final response = await http.get(Uri.parse('$locationBaseUrl?braceletId=$braceletId'));
     final data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       return data;

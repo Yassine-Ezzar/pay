@@ -2,23 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	
+	<string>Pay</string>
+	<key>io.flutter.embedded_views_preview</key>
+    <true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>NSCameraUsageDescription</key>
-<string>Autorisation pour scanner les cartes</string>
+    <string>Autorisation pour scanner les cartes</string>
 	<key>CFBundleDisplayName</key>
-	<string>Pay</string>
-	<key>io.flutter.embedded_views_preview</key>
-<true/>
-<key>io.flutter.enableImpeller</key>
-<false/>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>We need your location to show the bracelet on the map.</string>
+    <key>io.flutter.enableImpeller</key>
+    <false/>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
-<key>NSBluetoothAlwaysUsageDescription</key>
-<string>We need to use Bluetooth to connect to your RFID bracelet.</string>
-<key>NSBluetoothPeripheralUsageDescription</key>
-<string>We need to use Bluetooth to connect to your RFID bracelet.</string>
-
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>We need to use Bluetooth to connect to your RFID bracelet.</string>
+    <key>NSBluetoothPeripheralUsageDescription</key>
+    <string>We need to use Bluetooth to connect to your RFID bracelet.</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
