@@ -37,7 +37,7 @@ class CustomNavBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _buildNavItem(Icons.home, 'Home', 0),
-            _buildNavItem(Icons.location_on, 'Location', 1), // Changed to geolocation icon
+            _buildNavItem(Icons.location_on, 'Location', 1), 
             _buildNavItem(Icons.notifications, 'Notifications', 2),
             _buildNavItem(Icons.person, 'Profile', 3),
           ],

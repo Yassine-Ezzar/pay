@@ -27,7 +27,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
     _braceletAnimation = Tween<double>(begin: 0.95, end: 1.05).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
@@ -84,7 +84,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
       setState(() => _isScanning = false);
     });
 
-    Future.delayed(Duration(seconds: 10), () {
+    Future.delayed(const Duration(seconds: 10), () {
       setState(() => _isScanning = false);
     });
   }
@@ -116,7 +116,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -140,7 +140,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                         fontWeight: FontWeight.bold,
                         color: Styles.defaultYellowColor,
                         shadows: [
-                          Shadow(
+                          const Shadow(
                             color: Colors.black45,
                             offset: Offset(2, 2),
                             blurRadius: 5,
@@ -150,7 +150,6 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                     ),
                   ),
                   SizedBox(height: Styles.defaultPadding * 2),
-                  // Bracelet illustration with animation
                   FadeIn(
                     child: AnimatedBuilder(
                       animation: _braceletAnimation,
@@ -170,7 +169,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.blueAccent.withOpacity(0.5),
-                                  offset: Offset(0, 6),
+                                  offset: const Offset(0, 6),
                                   blurRadius: 12,
                                   spreadRadius: 2,
                                 ),
@@ -193,7 +192,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                       shape: BoxShape.circle,
                                       color: _isConnecting ? Colors.green : Colors.grey,
                                     ),
-                                    child: Center(
+                                    child: const Center(
                                       child: Icon(
                                         Icons.bluetooth,
                                         size: 12,
@@ -218,7 +217,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                         color: Colors.white.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(15),
                         boxShadow: [
-                          BoxShadow(
+                          const BoxShadow(
                             color: Colors.black26,
                             offset: Offset(0, 4),
                             blurRadius: 8,
@@ -259,7 +258,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             baseColor: Styles.defaultBlueColor,
                             highlightColor: Styles.defaultYellowColor,
                             child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                               decoration: BoxDecoration(
                                 borderRadius: Styles.defaultBorderRadius,
                                 color: Styles.defaultBlueColor,
@@ -271,7 +270,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                     color: Styles.defaultYellowColor,
                                     strokeWidth: 2,
                                   ),
-                                  SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                                   Text(
                                     'Scanning...',
                                     style: TextStyle(
@@ -300,12 +299,12 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.blueAccent.withOpacity(0.3),
-                                    offset: Offset(0, 4),
+                                    offset: const Offset(0, 4),
                                     blurRadius: 8,
                                   ),
                                 ],
                               ),
-                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                               child: Text(
                                 'Scan for Bracelets',
                                 style: TextStyle(
@@ -318,10 +317,9 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                           ),
                   ),
                   SizedBox(height: Styles.defaultPadding),
-                  // Device selection dropdown
                   FadeInUp(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                       decoration: BoxDecoration(
                         color: Styles.defaultGreyColor.withOpacity(0.3),
                         borderRadius: Styles.defaultBorderRadius,
@@ -349,13 +347,12 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                         },
                         dropdownColor: Styles.defaultGreyColor,
                         isExpanded: true,
-                        underline: SizedBox(),
+                        underline: const SizedBox(),
                         icon: Icon(Icons.arrow_drop_down, color: Styles.defaultYellowColor),
                       ),
                     ),
                   ),
                   SizedBox(height: Styles.defaultPadding * 2),
-                  // Connect button
                   FadeInUp(
                     child: ElevatedButton(
                       onPressed: _isConnecting ? null : _connectToBracelet,
@@ -373,12 +370,12 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                           boxShadow: [
                             BoxShadow(
                               color: Colors.blueAccent.withOpacity(0.3),
-                              offset: Offset(0, 4),
+                              offset: const Offset(0, 4),
                               blurRadius: 8,
                             ),
                           ],
                         ),
-                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                         child: _isConnecting
                             ? Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -387,7 +384,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                     color: Styles.defaultYellowColor,
                                     strokeWidth: 2,
                                   ),
-                                  SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                                   Text(
                                     'Connecting...',
                                     style: TextStyle(fontFamily: 'Rubik', fontSize: 16, color: Styles.defaultYellowColor),
@@ -402,7 +399,6 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                     ),
                   ),
                   SizedBox(height: Styles.defaultPadding),
-                  // Skip button
                   FadeInUp(
                     child: TextButton(
                       onPressed: () => Get.offNamed('/home'),

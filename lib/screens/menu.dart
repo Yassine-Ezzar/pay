@@ -27,14 +27,14 @@ class Menu extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: Icon(Icons.credit_card, color: Styles.defaultYellowColor), // Icône pour "Cards"
+                  leading: Icon(Icons.credit_card, color: Styles.defaultYellowColor), 
                   title: Text(
                     'Cards',
                     style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
                   ),
                   onTap: () {
-                    Get.back(); // Ferme le menu
-                    Get.toNamed('/card-list'); // Redirige vers CardListScreen
+                    Get.back(); 
+                    Get.toNamed('/card-list'); 
                   },
                 ),
                 ListTile(

@@ -152,7 +152,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ),
                         ),
                         SizedBox(height: Styles.defaultPadding),
-                        // Cards Carousel
                         Expanded(
                           child: isLoadingCards
                               ? const Center(
@@ -411,7 +410,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                 ),
               ),
-              const SizedBox(height: 90), // Increased padding to avoid FAB overlap
+              const SizedBox(height: 90), 
             ],
           ),
           CustomNavBar(
@@ -421,9 +420,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         ],
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 90.0), // Move FAB above the navbar
+        padding: const EdgeInsets.only(bottom: 90.0), 
         child: FloatingActionButton(
-          onPressed: () => Get.toNamed('/add-card'),
+          onPressed: () => Get.toNamed('/add-card-guide'),
           backgroundColor: Colors.white,
           elevation: 8,
           child: const Icon(Icons.add, color: Color(0xFF98b5e4), size: 28),

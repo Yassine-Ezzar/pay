@@ -86,7 +86,7 @@ class _CardListScreenState extends State<CardListScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: Text(
+        title: const Text(
           'Your Cards',
           style: TextStyle(
             fontFamily: 'Rubik',
@@ -96,13 +96,13 @@ class _CardListScreenState extends State<CardListScreen> {
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () => Get.back(),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.add, color: Colors.white, size: 28),
-            onPressed: () => Get.toNamed('/add-card')?.then((_) => _fetchCards()),
+            icon: const Icon(Icons.add, color: Colors.white, size: 28),
+            onPressed: () => Get.toNamed('/add-card-guide')?.then((_) => _fetchCards()),
           ),
         ],
       ),
@@ -130,7 +130,7 @@ class _CardListScreenState extends State<CardListScreen> {
                                 color: Colors.white.withOpacity(0.5),
                               ),
                               SizedBox(height: Styles.defaultPadding),
-                              Text(
+                              const Text(
                                 'No Cards Added',
                                 style: TextStyle(
                                   fontFamily: 'Rubik',
@@ -155,7 +155,7 @@ class _CardListScreenState extends State<CardListScreen> {
                           children: [
                             PageView.builder(
                               controller: _pageController,
-                              scrollDirection: Axis.vertical, // Carrousel vertical comme Revolut
+                              scrollDirection: Axis.vertical, 
                               itemCount: cards.length,
                               itemBuilder: (context, index) {
                                 final card = cards[index];
@@ -194,7 +194,7 @@ class _CardListScreenState extends State<CardListScreen> {
           if (isLoading)
             Container(
               color: Colors.black.withOpacity(0.5),
-              child: Center(
+              child: const Center(
                 child: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
@@ -206,16 +206,15 @@ class _CardListScreenState extends State<CardListScreen> {
   }
 
   Widget _buildCardItem(dynamic card, int index) {
-    // Couleurs différentes pour chaque carte (inspiré de Revolut)
     final List<Color> cardColors = [
-      Color(0xFF1E3A8A), // Bleu foncé
-      Color(0xFF6B21A8), // Violet
-      Color(0xFF047857), // Vert
+      const Color(0xFF1E3A8A), // Bleu foncé
+      const Color(0xFF6B21A8), // Violet
+      const Color(0xFF047857), // Vert
     ];
     final cardColor = cardColors[index % cardColors.length];
 
     return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -223,7 +222,7 @@ class _CardListScreenState extends State<CardListScreen> {
           BoxShadow(
             color: Colors.black.withOpacity(0.3),
             blurRadius: 15,
-            offset: Offset(0, 8),
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -237,13 +236,13 @@ class _CardListScreenState extends State<CardListScreen> {
             showBackView: false,
             onCreditCardWidgetChange: (creditCardBrand) {},
             cardBgColor: cardColor,
-            textStyle: TextStyle(
+            textStyle: const TextStyle(
               fontFamily: 'Rubik',
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w500,
             ),
-            animationDuration: Duration(milliseconds: 300),
+            animationDuration: const Duration(milliseconds: 300),
             padding: 20,
           ),
           Positioned(
