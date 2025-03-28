@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -338,6 +339,21 @@ static Future<Map<String, dynamic>> createProfile({
     final data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       await saveProfileToLocal(data['profile']); 
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<Map<String, dynamic>> uploadProfilePicture(String userId, File image) async {
+    var request = http.MultipartRequest('POST', Uri.parse('$profileBaseUrl/upload-picture'));
+    request.fields['userId'] = userId;
+    request.files.add(await http.MultipartFile.fromPath('profilePicture', image.path));
+
+    var response = await request.send();
+    var responseData = await http.Response.fromStream(response);
+
+    final data = jsonDecode(responseData.body);
+    if (response.statusCode == 200) {
       return data;
     }
     throw Exception(data['message']);
