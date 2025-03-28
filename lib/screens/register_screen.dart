@@ -58,10 +58,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               _nameController.text.isNotEmpty
                   ? _nameController.text
                   : 'FaceIDUser_${DateTime.now().millisecondsSinceEpoch}',
-              '0000', // PIN par défaut pour biométrie
+              '0000',
               _answerController.text.isNotEmpty ? _answerController.text : 'default',
               true,
             );
+            await ApiService.clearProfileFromLocal(); // Explicitly clear profile data
             Get.back();
             Get.offNamed('/success');
           } catch (e) {
@@ -98,10 +99,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               _nameController.text.isNotEmpty
                   ? _nameController.text
                   : 'TouchIDUser_${DateTime.now().millisecondsSinceEpoch}',
-              '0000', // PIN par défaut pour biométrie
+              '0000',
               _answerController.text.isNotEmpty ? _answerController.text : 'default',
               true,
             );
+            await ApiService.clearProfileFromLocal(); // Explicitly clear profile data
             Get.back();
             Get.offNamed('/success');
           } catch (e) {
@@ -128,6 +130,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _answerController.text,
         _biometricEnabled,
       );
+      await ApiService.clearProfileFromLocal(); // Explicitly clear profile data
       Get.offNamed('/success');
     } catch (e) {
       Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
@@ -257,7 +260,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
-                    
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(

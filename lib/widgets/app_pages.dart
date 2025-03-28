@@ -5,6 +5,7 @@ import 'package:app/screens/bracelet_connect_screen.dart';
 import 'package:app/screens/bracelet_management_screen.dart';
 import 'package:app/screens/card_list_screen.dart';
 import 'package:app/screens/card_verification_screen.dart';
+import 'package:app/screens/edit_profile_screen.dart';
 import 'package:app/screens/home_screen.dart';
 import 'package:app/screens/location_screen.dart';
 import 'package:app/screens/notifications_screen.dart';
@@ -36,6 +37,7 @@ GetPage(name: '/add-card-manual', page: () => AddCardManualScreen()), // New
      GetPage(name: '/location', page: () => LocationScreen()), 
     GetPage(name: '/notifications', page: () => NotificationsScreen()), 
     GetPage(name: '/profile', page: () => ProfileScreen()), 
+    GetPage(name: '/edit-profile', page: () => EditProfileScreen()),
 
   ];
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   static const String authBaseUrl = 'http://192.168.1.18:6000/api/auth';
@@ -8,9 +9,32 @@ class ApiService {
   static const String braceletBaseUrl = 'http://192.168.1.18:6000/api/bracelets';
   static const String paymentBaseUrl = 'http://192.168.1.18:6000/api/payments';
   static const String locationBaseUrl = 'http://192.168.1.18:6000/api/locations';
+  static const String profileBaseUrl = 'http://192.168.1.18:6000/api/profiles';
   
   
   static const storage = FlutterSecureStorage();
+
+// Save profile to SharedPreferences
+  static Future<void> saveProfileToLocal(Map<String, dynamic> profile) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userProfile', jsonEncode(profile));
+  }
+
+  // Retrieve profile from SharedPreferences
+  static Future<Map<String, dynamic>?> getProfileFromLocal() async {
+    final prefs = await SharedPreferences.getInstance();
+    final profileString = prefs.getString('userProfile');
+    if (profileString != null) {
+      return jsonDecode(profileString) as Map<String, dynamic>;
+    }
+    return null;
+  }
+
+  // Clear profile from SharedPreferences (for new user registration)
+  static Future<void> clearProfileFromLocal() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('userProfile');
+  }
 
   static Future<Map<String, dynamic>> register(String name, String pin, String securityAnswer, bool biometricEnabled) async {
     final response = await http.post(
@@ -22,7 +46,8 @@ class ApiService {
     final data = jsonDecode(response.body);
     if (response.statusCode == 201) {
       await storage.write(key: 'token', value: data['token']);
-      await storage.write(key: 'userId', value: data['userId'].toString()); // Stocke userId
+      await storage.write(key: 'userId', value: data['userId'].toString());
+      await clearProfileFromLocal(); 
       return data;
     }
     throw Exception(data['message']);
@@ -232,6 +257,87 @@ static Future<Map<String, dynamic>> addCard(
     final response = await http.get(Uri.parse('$locationBaseUrl?braceletId=$braceletId'));
     final data = jsonDecode(response.body);
     if (response.statusCode == 200) {
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+static Future<Map<String, dynamic>> createProfile({
+    required String userId,
+    required String fullName,
+    required String email,
+    String? nickname,
+    String? phoneNumber,
+    String? country,
+    String? gender,
+    String? address,
+  }) async {
+    final response = await http.post(
+      Uri.parse('$profileBaseUrl/create'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'userId': userId,
+        'fullName': fullName,
+        'nickname': nickname,
+        'email': email,
+        'phoneNumber': phoneNumber,
+        'country': country,
+        'gender': gender,
+        'address': address,
+      }),
+    );
+
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 201) {
+      await saveProfileToLocal(data['profile']); 
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<Map<String, dynamic>> getProfile(String userId) async {
+    final localProfile = await getProfileFromLocal();
+    if (localProfile != null) {
+      return localProfile;
+    }
+
+    final response = await http.get(Uri.parse('$profileBaseUrl?userId=$userId'));
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      await saveProfileToLocal(data);
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<Map<String, dynamic>> updateProfile({
+    required String userId,
+    required String fullName,
+    required String email,
+    String? nickname,
+    String? phoneNumber,
+    String? country,
+    String? gender,
+    String? address,
+  }) async {
+    final response = await http.put(
+      Uri.parse('$profileBaseUrl/update'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'userId': userId,
+        'fullName': fullName,
+        'nickname': nickname,
+        'email': email,
+        'phoneNumber': phoneNumber,
+        'country': country,
+        'gender': gender,
+        'address': address,
+      }),
+    );
+
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      await saveProfileToLocal(data['profile']); 
       return data;
     }
     throw Exception(data['message']);
