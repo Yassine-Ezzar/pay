@@ -1,4 +1,4 @@
-import 'dart:io'; // Pour Platform
+import 'dart:io';
 import 'package:app/services/api_service.dart';
 import 'package:app/services/biometric_service.dart';
 import 'package:app/styles/styles.dart';
@@ -17,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _biometricService = BiometricService();
   final _storage = const FlutterSecureStorage();
   String _enteredPin = '';
+  bool isLoading = false;
 
   void _addNumber(String number) {
     if (_enteredPin.length < 4) {
@@ -42,11 +43,18 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Styles.defaultRedColor);
       return;
     }
+    setState(() => isLoading = true);
     try {
-      await ApiService.login(_nameController.text, _enteredPin);
-      Get.offNamed('/home');
+      final data = await ApiService.login(_nameController.text, _enteredPin);
+      if (data['role'] == 'admin') {
+        Get.offAllNamed('/admin-dashboard');
+      } else {
+        Get.offAllNamed('/home');
+      }
     } catch (e) {
       Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+    } finally {
+      setState(() => isLoading = false);
     }
   }
 
@@ -71,9 +79,13 @@ class _LoginScreenState extends State<LoginScreen> {
           final name = await _storage.read(key: 'name');
           if (name != null) {
             try {
-              await ApiService.login(name, ''); 
+              final data = await ApiService.login(name, '', faceId: true);
               Get.back();
-              Get.offNamed('/home');
+              if (data['role'] == 'admin') {
+                Get.offAllNamed('/admin-dashboard');
+              } else {
+                Get.offAllNamed('/home');
+              }
             } catch (e) {
               Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
             }
@@ -109,9 +121,13 @@ class _LoginScreenState extends State<LoginScreen> {
           final name = await _storage.read(key: 'name');
           if (name != null) {
             try {
-              await ApiService.login(name, ''); 
+              final data = await ApiService.login(name, '', touchId: true);
               Get.back();
-              Get.offNamed('/home');
+              if (data['role'] == 'admin') {
+                Get.offAllNamed('/admin-dashboard');
+              } else {
+                Get.offAllNamed('/home');
+              }
             } catch (e) {
               Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
             }
@@ -175,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isIOS = Platform.isIOS; // Détection de la plateforme
+    bool isIOS = Platform.isIOS;
 
     return Scaffold(
       appBar: AppBar(
@@ -202,15 +218,13 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           SizedBox(height: Styles.defaultPadding * 2),
-      
-
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 width: 150,
                 child: ElevatedButton(
-                  onPressed: isIOS ? _loginWithFaceId : _loginWithTouchId,
+                  onPressed: isLoading ? null : (isIOS ? _loginWithFaceId : _loginWithTouchId),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     padding: EdgeInsets.zero,
@@ -240,14 +254,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                
               ),
-              
               SizedBox(width: Styles.defaultPadding),
               SizedBox(
                 width: 150,
                 child: ElevatedButton(
-                  onPressed: isIOS ? _loginWithTouchId : _loginWithFaceId,
+                  onPressed: isLoading ? null : (isIOS ? _loginWithTouchId : _loginWithFaceId),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     padding: EdgeInsets.zero,
@@ -279,9 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ],
-            
           ),
-          
           SizedBox(height: Styles.defaultPadding / 2),
           Text(
             'Or',
@@ -293,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: Styles.defaultPadding),
-      TextField(
+          TextField(
             controller: _nameController,
             decoration: InputDecoration(
               labelText: 'Name',
@@ -337,7 +347,7 @@ class _LoginScreenState extends State<LoginScreen> {
             childAspectRatio: 1.5,
             children: List.generate(9, (index) {
               return ElevatedButton(
-                onPressed: () => _addNumber('${index + 1}'),
+                onPressed: isLoading ? null : () => _addNumber('${index + 1}'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Styles.defaultLightGreyColor,
                   foregroundColor: Colors.black,
@@ -348,9 +358,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(fontSize: 20, fontFamily: 'Rubik'),
                 ),
               );
-            })..addAll([
+            })
+              ..addAll([
                 ElevatedButton(
-                  onPressed: _deleteNumber,
+                  onPressed: isLoading ? null : _deleteNumber,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Styles.defaultLightGreyColor,
                     foregroundColor: Colors.black,
@@ -359,7 +370,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Icon(Icons.backspace, size: 20),
                 ),
                 ElevatedButton(
-                  onPressed: () => _addNumber('0'),
+                  onPressed: isLoading ? null : () => _addNumber('0'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Styles.defaultLightGreyColor,
                     foregroundColor: Colors.black,
@@ -377,24 +388,26 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(
             width: 200,
             child: ElevatedButton(
-              onPressed: _enteredPin.length == 4 && _nameController.text.isNotEmpty
-                  ? _loginWithPin
-                  : null,
+              onPressed: isLoading || _enteredPin.length != 4 || _nameController.text.isEmpty
+                  ? null
+                  : _loginWithPin,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Styles.defaultBlueColor,
                 foregroundColor: Styles.defaultYellowColor,
                 padding: EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
               ),
-              child: Text(
-                'Login with PIN',
-                style: TextStyle(fontSize: 18, fontFamily: 'Rubik'),
-              ),
+              child: isLoading
+                  ? CircularProgressIndicator(color: Styles.defaultYellowColor)
+                  : Text(
+                      'Login with PIN',
+                      style: TextStyle(fontSize: 18, fontFamily: 'Rubik'),
+                    ),
             ),
           ),
           SizedBox(height: Styles.defaultPadding),
           TextButton(
-            onPressed: () => Get.toNamed('/reset-pin'),
+            onPressed: isLoading ? null : () => Get.toNamed('/reset-pin'),
             child: Text(
               'Forgot PIN? Reset it',
               style: TextStyle(

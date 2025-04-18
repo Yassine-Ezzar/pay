@@ -18,9 +18,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   final storage = const FlutterSecureStorage();
-  String? selectedAvatar; // To store the selected avatar identifier
+  String? selectedAvatar;
 
-  // List of available avatars (using icons for simplicity; you can replace with asset images)
   final List<Map<String, dynamic>> avatars = [
     {'id': 'avatar1', 'icon': Icons.person},
     {'id': 'avatar2', 'icon': Icons.face},
@@ -60,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   Future<void> _loadAvatar() async {
     String? savedAvatar = await storage.read(key: 'selectedAvatar');
     setState(() {
-      selectedAvatar = savedAvatar ?? 'avatar1'; // Default to avatar1 if none is saved
+      selectedAvatar = savedAvatar ?? 'avatar1';
     });
   }
 
@@ -82,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       });
     } catch (e) {
       setState(() {
-        profile = null; // Profile not found
+        profile = null;
         isLoading = false;
       });
     }
@@ -370,13 +369,13 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                       _buildProfileOption(
                                         icon: Icons.notifications,
                                         title: 'Notifications',
-                                        subtitle: 'ON',
+                                        onTap: () => Get.toNamed('/notifications-settings'),
                                       ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(
                                         icon: Icons.language,
                                         title: 'Language',
-                                        subtitle: 'English',
+                                        onTap: () => Get.toNamed('/language-settings'),
                                       ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(
@@ -388,22 +387,25 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                       _buildProfileOption(
                                         icon: Icons.brightness_6,
                                         title: 'Theme',
-                                        subtitle: 'Dark Mode',
+                                        onTap: () => Get.toNamed('/theme-settings'),
                                       ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(
                                         icon: Icons.help,
                                         title: 'Help & Support',
+                                        onTap: () => Get.toNamed('/help-support'),
                                       ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(
                                         icon: Icons.support_agent,
                                         title: 'Contact Us',
+                                        onTap: () => Get.toNamed('/contact-us'),
                                       ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(
                                         icon: Icons.privacy_tip,
                                         title: 'Privacy Policy',
+                                        onTap: () => Get.toNamed('/privacy-policy'),
                                       ),
                                       const SizedBox(height: 20),
                                       _buildProfileOption(

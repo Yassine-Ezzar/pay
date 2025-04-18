@@ -22,4 +22,12 @@ class Styles {
     thickness: WidgetStateProperty.all(10.0),
     radius: const Radius.circular(20),
   );
+
+  static var lightScaffoldBackgroundColor;
+
+  static var lightDefaultBlueColor;
+
+  static var lightDefaultYellowColor;
+
+  static var lightDefaultGreyColor;
 }

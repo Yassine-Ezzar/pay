@@ -11,11 +11,11 @@ class ApiService {
   static const String paymentBaseUrl = 'http://192.168.1.18:6000/api/payments';
   static const String locationBaseUrl = 'http://192.168.1.18:6000/api/locations';
   static const String profileBaseUrl = 'http://192.168.1.18:6000/api/profiles';
-  
-  
+  static const String adminBaseUrl = 'http://192.168.1.18:6000/api/admin'; // New
+
   static const storage = FlutterSecureStorage();
 
-// Save profile to SharedPreferences
+  // Save profile to SharedPreferences
   static Future<void> saveProfileToLocal(Map<String, dynamic> profile) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userProfile', jsonEncode(profile));
@@ -37,35 +37,53 @@ class ApiService {
     await prefs.remove('userProfile');
   }
 
-  static Future<Map<String, dynamic>> register(String name, String pin, String securityAnswer, bool biometricEnabled) async {
+  static Future<Map<String, dynamic>> register(
+      String name, String pin, String securityAnswer, bool biometricEnabled) async {
     final response = await http.post(
       Uri.parse('$authBaseUrl/register'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'name': name, 'pin': pin, 'securityAnswer': securityAnswer, 'biometricEnabled': biometricEnabled}),
+      body: jsonEncode({
+        'name': name,
+        'pin': pin,
+        'securityAnswer': securityAnswer,
+        'biometricEnabled': biometricEnabled,
+      }),
     );
 
     final data = jsonDecode(response.body);
     if (response.statusCode == 201) {
       await storage.write(key: 'token', value: data['token']);
       await storage.write(key: 'userId', value: data['userId'].toString());
-      await clearProfileFromLocal(); 
+      await storage.write(key: 'name', value: name);
+      await storage.write(key: 'role', value: 'user');
+      await clearProfileFromLocal();
       return data;
     }
     throw Exception(data['message']);
   }
 
-  static Future<Map<String, dynamic>> login(String name, String pin) async {
+  static Future<Map<String, dynamic>> login(String name, String pin, {bool faceId = false, bool touchId = false}) async {
     final response = await http.post(
       Uri.parse('$authBaseUrl/login'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'name': name, 'pin': pin}),
+      body: jsonEncode({
+        'name': name,
+        'pin': pin,
+        'faceId': faceId,
+        'touchId': touchId,
+      }),
     );
 
     final data = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      await storage.write(key: 'token', value: data['token']);
-      await storage.write(key: 'userId', value: data['userId'].toString()); // Stocke userId
       await storage.write(key: 'name', value: name);
+      await storage.write(key: 'role', value: data['role']);
+      await storage.write(key: 'userId', value: data['userId'].toString());
+      if (data['role'] == 'user') {
+        await storage.write(key: 'token', value: data['token']);
+      } else {
+        await storage.delete(key: 'token'); // Ensure no token for admin
+      }
       return data;
     }
     throw Exception(data['message']);
@@ -84,7 +102,7 @@ class ApiService {
     }
   }
 
-static Future<Map<String, dynamic>> addCard(
+  static Future<Map<String, dynamic>> addCard(
     String userId,
     String cardNumber,
     String expiryDate,
@@ -130,6 +148,7 @@ static Future<Map<String, dynamic>> addCard(
     }
     throw Exception(data['message']);
   }
+
   static Future<void> deleteCard(String cardId) async {
     final response = await http.delete(Uri.parse('$cardBaseUrl/$cardId'));
     final data = jsonDecode(response.body);
@@ -199,7 +218,8 @@ static Future<Map<String, dynamic>> addCard(
     throw Exception(data['message']);
   }
 
-  static Future<Map<String, dynamic>> makePayment(String braceletId, String cardId, double amount, String merchant) async {
+  static Future<Map<String, dynamic>> makePayment(
+      String braceletId, String cardId, double amount, String merchant) async {
     final cardSecurityCode = await getCardSecurityCode(cardId);
     if (cardSecurityCode == null) {
       throw Exception('Card security code not found. Please add the card again.');
@@ -213,7 +233,7 @@ static Future<Map<String, dynamic>> addCard(
         'cardId': cardId,
         'amount': amount,
         'merchant': merchant,
-        'cardSecurityCode': cardSecurityCode, 
+        'cardSecurityCode': cardSecurityCode,
       }),
     );
 
@@ -233,10 +253,8 @@ static Future<Map<String, dynamic>> addCard(
     throw Exception(data['message']);
   }
 
-
-
-
-  static Future<Map<String, dynamic>> updateBraceletLocation(String braceletId, double latitude, double longitude) async {
+  static Future<Map<String, dynamic>> updateBraceletLocation(
+      String braceletId, double latitude, double longitude) async {
     final response = await http.post(
       Uri.parse('$locationBaseUrl/update'),
       headers: {'Content-Type': 'application/json'},
@@ -263,7 +281,7 @@ static Future<Map<String, dynamic>> addCard(
     throw Exception(data['message']);
   }
 
-static Future<Map<String, dynamic>> createProfile({
+  static Future<Map<String, dynamic>> createProfile({
     required String userId,
     required String fullName,
     required String email,
@@ -290,7 +308,7 @@ static Future<Map<String, dynamic>> createProfile({
 
     final data = jsonDecode(response.body);
     if (response.statusCode == 201) {
-      await saveProfileToLocal(data['profile']); 
+      await saveProfileToLocal(data['profile']);
       return data;
     }
     throw Exception(data['message']);
@@ -338,7 +356,7 @@ static Future<Map<String, dynamic>> createProfile({
 
     final data = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      await saveProfileToLocal(data['profile']); 
+      await saveProfileToLocal(data['profile']);
       return data;
     }
     throw Exception(data['message']);
@@ -353,6 +371,88 @@ static Future<Map<String, dynamic>> createProfile({
     var responseData = await http.Response.fromStream(response);
 
     final data = jsonDecode(responseData.body);
+    if (response.statusCode == 200) {
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+  // Admin-specific methods
+  static Future<List<dynamic>> getAllUsers() async {
+    final response = await http.get(Uri.parse('$adminBaseUrl/users'));
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<void> deleteUser(String userId) async {
+    final response = await http.delete(Uri.parse('$adminBaseUrl/users/$userId'));
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<List<dynamic>> getAllCards() async {
+    final response = await http.get(Uri.parse('$adminBaseUrl/cards'));
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<void> deleteCardAdmin(String cardId) async {
+    final response = await http.delete(Uri.parse('$adminBaseUrl/cards/$cardId'));
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<List<dynamic>> getAllBracelets() async {
+    final response = await http.get(Uri.parse('$adminBaseUrl/bracelets'));
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<void> deleteBraceletAdmin(String braceletId) async {
+    final response = await http.delete(Uri.parse('$adminBaseUrl/bracelets/$braceletId'));
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<List<dynamic>> getAllPayments() async {
+    final response = await http.get(Uri.parse('$adminBaseUrl/payments'));
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<List<dynamic>> getAllLocations() async {
+    final response = await http.get(Uri.parse('$adminBaseUrl/locations'));
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return data;
+    }
+    throw Exception(data['message']);
+  }
+
+  static Future<Map<String, dynamic>> getDashboardStats() async {
+    final response = await http.get(Uri.parse('$adminBaseUrl/stats'));
+    final data = jsonDecode(response.body);
     if (response.statusCode == 200) {
       return data;
     }

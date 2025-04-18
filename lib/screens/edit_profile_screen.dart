@@ -60,36 +60,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
       try {
         final profileData = {
           'userId': userId!,
-          'fullName': _fullNameController.text,
-          'nickname': _nicknameController.text,
-          'email': _emailController.text,
-          'phoneNumber': _phoneNumberController.text,
-          'country': _countryController.text,
+          'fullName': _fullNameController.text.trim(),
+          'nickname': _nicknameController.text.trim(),
+          'email': _emailController.text.trim(),
+          'phoneNumber': _phoneNumberController.text.trim(),
+          'country': _countryController.text.trim(),
           'gender': _selectedGender,
-          'address': _addressController.text,
+          'address': _addressController.text.trim(),
         };
 
         if (Get.arguments == null) {
           await ApiService.createProfile(
             userId: userId!,
-            fullName: _fullNameController.text,
-            email: _emailController.text,
-            nickname: _nicknameController.text,
-            phoneNumber: _phoneNumberController.text,
-            country: _countryController.text,
+            fullName: _fullNameController.text.trim(),
+            email: _emailController.text.trim(),
+            nickname: _nicknameController.text.trim(),
+            phoneNumber: _phoneNumberController.text.trim(),
+            country: _countryController.text.trim(),
             gender: _selectedGender,
-            address: _addressController.text,
+            address: _addressController.text.trim(),
           );
         } else {
           await ApiService.updateProfile(
             userId: userId!,
-            fullName: _fullNameController.text,
-            email: _emailController.text,
-            nickname: _nicknameController.text,
-            phoneNumber: _phoneNumberController.text,
-            country: _countryController.text,
+            fullName: _fullNameController.text.trim(),
+            email: _emailController.text.trim(),
+            nickname: _nicknameController.text.trim(),
+            phoneNumber: _phoneNumberController.text.trim(),
+            country: _countryController.text.trim(),
             gender: _selectedGender,
-            address: _addressController.text,
+            address: _addressController.text.trim(),
           );
         }
 
@@ -172,8 +172,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                               controller: _fullNameController,
                               label: 'Full Name',
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value == null || value.trim().isEmpty) {
                                   return 'Please enter your full name';
+                                }
+                                if (value.trim().length < 2) {
+                                  return 'Full name must be at least 2 characters long';
+                                }
+                                if (value.trim().length > 50) {
+                                  return 'Full name cannot exceed 50 characters';
+                                }
+                                if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                  return 'Full name can only contain letters and spaces';
                                 }
                                 return null;
                               },
@@ -182,6 +191,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                             _buildTextField(
                               controller: _nicknameController,
                               label: 'Nickname',
+                              validator: (value) {
+                                if (value != null && value.trim().isNotEmpty) {
+                                  if (value.trim().length < 2) {
+                                    return 'Nickname must be at least 2 characters long';
+                                  }
+                                  if (value.trim().length > 30) {
+                                    return 'Nickname cannot exceed 30 characters';
+                                  }
+                                  if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
+                                    return 'Nickname can only contain letters, numbers, and underscores';
+                                  }
+                                }
+                                return null; // Nickname is optional
+                              },
                             ),
                             const SizedBox(height: 15),
                             _buildTextField(
@@ -189,11 +212,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                               label: 'Email',
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value == null || value.trim().isEmpty) {
                                   return 'Please enter your email';
                                 }
                                 if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                                  return 'Please enter a valid email';
+                                  return 'Please enter a valid email (e.g., example@domain.com)';
                                 }
                                 return null;
                               },
@@ -203,6 +226,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                               controller: _phoneNumberController,
                               label: 'Phone Number',
                               keyboardType: TextInputType.phone,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please enter your phone number';
+                                }
+                                if (!RegExp(r'^\+?[1-9]\d{1,14}$').hasMatch(value)) {
+                                  return 'Please enter a valid phone number (e.g., +1234567890)';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 15),
                             Row(
@@ -211,6 +243,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                   child: _buildTextField(
                                     controller: _countryController,
                                     label: 'Country',
+                                    validator: (value) {
+                                      if (value == null || value.trim().isEmpty) {
+                                        return 'Please enter your country';
+                                      }
+                                      if (value.trim().length < 2) {
+                                        return 'Country name must be at least 2 characters long';
+                                      }
+                                      if (value.trim().length > 50) {
+                                        return 'Country name cannot exceed 50 characters';
+                                      }
+                                      if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                                        return 'Country name can only contain letters and spaces';
+                                      }
+                                      return null;
+                                    },
                                   ),
                                 ),
                                 const SizedBox(width: 15),
@@ -234,6 +281,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide: const BorderSide(color: Colors.white),
                                       ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(color: Colors.redAccent),
+                                      ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(color: Colors.redAccent),
+                                      ),
+                                      errorStyle: const TextStyle(color: Colors.redAccent),
                                     ),
                                     items: ['Male', 'Female', 'Other'].map((String gender) {
                                       return DropdownMenuItem<String>(
@@ -249,6 +305,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                         _selectedGender = value;
                                       });
                                     },
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return 'Please select your gender';
+                                      }
+                                      return null;
+                                    },
                                     dropdownColor: const Color(0xFF1E2A44),
                                     iconEnabledColor: Colors.white,
                                   ),
@@ -259,6 +321,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                             _buildTextField(
                               controller: _addressController,
                               label: 'Address',
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please enter your address';
+                                }
+                                if (value.trim().length < 5) {
+                                  return 'Address must be at least 5 characters long';
+                                }
+                                if (value.trim().length > 100) {
+                                  return 'Address cannot exceed 100 characters';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 30),
                             SizedBox(
@@ -339,6 +413,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
       style: const TextStyle(color: Colors.white),
       keyboardType: keyboardType,
       validator: validator,
+      autovalidateMode: AutovalidateMode.onUserInteraction, 
     );
   }
 }
