@@ -20,7 +20,7 @@ class CustomNavBar extends StatelessWidget {
         height: 70,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xFF0A0E21), Color(0xFF1E2A44)],
+            colors: [Color.fromARGB(255, 255, 255, 255), Color.fromARGB(255, 255, 255, 255)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -54,7 +54,7 @@ class CustomNavBar extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white.withOpacity(0.2) : Colors.transparent,
+          color: isSelected ? const Color(0xFF000080).withOpacity(0.2) : const Color(0x00000000),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -63,7 +63,7 @@ class CustomNavBar extends StatelessWidget {
             Icon(
               icon,
               size: 28,
-              color: isSelected ? Colors.white : Colors.white.withOpacity(0.5),
+              color: isSelected ? const Color(0xFF000080) : const Color(0xFF000080).withOpacity(0.9),
             ),
             const SizedBox(height: 4),
             Text(
@@ -72,7 +72,7 @@ class CustomNavBar extends StatelessWidget {
                 fontFamily: 'Montserrat',
                 fontSize: 12,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                color: isSelected ? Colors.white : Colors.white.withOpacity(0.5),
+                color: isSelected ? const Color(0xFF000080) : const Color(0xFF000080).withOpacity(0.9),
               ),
             ),
           ],

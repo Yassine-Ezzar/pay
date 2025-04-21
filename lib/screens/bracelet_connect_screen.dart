@@ -120,7 +120,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF1A1A1A), Color(0xFF2D2D2D)],
+            colors: [Color.fromARGB(255, 255, 255, 255), Color.fromARGB(255, 255, 255, 255)],
           ),
         ),
         child: SafeArea(

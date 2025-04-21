@@ -94,7 +94,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
         }
 
         Get.back();
-        Get.snackbar('Success', 'Profile updated successfully', backgroundColor: Colors.green);
+        Get.snackbar('Success', 'Profile updated successfully', backgroundColor: const Color.fromARGB(68, 76, 175, 79));
       } catch (e) {
         Get.snackbar('Error', e.toString(), backgroundColor: Colors.redAccent);
       } finally {
@@ -125,18 +125,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFF98b5e4), Color(0xFF477bd0)],
+              colors: [Color(0xFF98b5e4), Color.fromARGB(255, 255, 255, 255)],
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.all(Styles.defaultPadding),
+            padding: EdgeInsets.all(Styles.defaultPadding * 1.5), 
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back, color: Color(0xFF000080)),
                       onPressed: () => Get.back(),
                     ),
                     const SizedBox(width: 10),
@@ -145,11 +145,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                       style: TextStyle(
                         fontFamily: 'Montserrat',
                         fontSize: 24,
-                        color: Colors.white,
+                        color: Color(0xFF000080),
                         fontWeight: FontWeight.bold,
                         shadows: [
                           Shadow(
-                            color: Colors.black26,
+                            color: Color.fromARGB(66, 0, 0, 0),
                             offset: Offset(1, 1),
                             blurRadius: 3,
                           ),
@@ -158,7 +158,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: Styles.defaultPadding * 2), // Increased spacing after header
                 Expanded(
                   child: SlideTransition(
                     position: _slideAnimation,
@@ -187,7 +187,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                 return null;
                               },
                             ),
-                            const SizedBox(height: 15),
+                            SizedBox(height: Styles.defaultPadding * 2), // Increased spacing between fields
                             _buildTextField(
                               controller: _nicknameController,
                               label: 'Nickname',
@@ -203,10 +203,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                     return 'Nickname can only contain letters, numbers, and underscores';
                                   }
                                 }
-                                return null; // Nickname is optional
+                                return null;
                               },
                             ),
-                            const SizedBox(height: 15),
+                            SizedBox(height: Styles.defaultPadding * 2),
                             _buildTextField(
                               controller: _emailController,
                               label: 'Email',
@@ -221,7 +221,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                 return null;
                               },
                             ),
-                            const SizedBox(height: 15),
+                            SizedBox(height: Styles.defaultPadding * 2),
                             _buildTextField(
                               controller: _phoneNumberController,
                               label: 'Phone Number',
@@ -236,7 +236,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                 return null;
                               },
                             ),
-                            const SizedBox(height: 15),
+                            SizedBox(height: Styles.defaultPadding * 2),
                             Row(
                               children: [
                                 Expanded(
@@ -260,15 +260,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                     },
                                   ),
                                 ),
-                                const SizedBox(width: 15),
+                                SizedBox(width: Styles.defaultPadding * 1.5),
                                 Expanded(
                                   child: DropdownButtonFormField<String>(
                                     value: _selectedGender,
                                     decoration: InputDecoration(
                                       labelText: 'Gender',
-                                      labelStyle: const TextStyle(color: Colors.white70),
+                                      labelStyle: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                                       filled: true,
-                                      fillColor: Colors.white.withOpacity(0.1),
+                                      fillColor: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.1),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide: BorderSide.none,
@@ -291,7 +291,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                       ),
                                       errorStyle: const TextStyle(color: Colors.redAccent),
                                     ),
-                                    items: ['Male', 'Female', 'Other'].map((String gender) {
+                                    items: ['Male', 'Female'].map((String gender) {
                                       return DropdownMenuItem<String>(
                                         value: gender,
                                         child: Text(
@@ -317,7 +317,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 15),
+                            SizedBox(height: Styles.defaultPadding * 2),
                             _buildTextField(
                               controller: _addressController,
                               label: 'Address',
@@ -334,14 +334,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                 return null;
                               },
                             ),
-                            const SizedBox(height: 30),
+                            SizedBox(height: Styles.defaultPadding * 8), 
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: _isLoading ? null : _submitProfile,
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  foregroundColor: const Color(0xFF477bd0),
+                                  backgroundColor: const Color(0xFF0066FF),
+                                  foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                                   padding: const EdgeInsets.symmetric(vertical: 15),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
@@ -356,11 +356,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                           fontFamily: 'Montserrat',
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
-                                          color: Color(0xFF477bd0),
+                                          color: Color.fromARGB(255, 255, 255, 255),
                                         ),
                                       ),
                               ),
                             ),
+                            SizedBox(height: Styles.defaultPadding * 2), 
                           ],
                         ),
                       ),
@@ -385,16 +386,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.white70),
+        labelStyle: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.1),
+        fillColor: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.1),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+          borderSide: BorderSide(color: const Color(0xFF000080).withOpacity(0.3)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -410,10 +411,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
         ),
         errorStyle: const TextStyle(color: Colors.redAccent),
       ),
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
       keyboardType: keyboardType,
       validator: validator,
-      autovalidateMode: AutovalidateMode.onUserInteraction, 
+      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
 }

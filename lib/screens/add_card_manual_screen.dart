@@ -19,7 +19,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
   String _cardSecurityCode = '';
   String? userId;
   bool _isLoading = false;
-  bool _showBackView = false; // To toggle between front and back of the card
+  bool _showBackView = false;
 
   @override
   void initState() {
@@ -39,9 +39,8 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
       _formKey.currentState!.save();
       setState(() => _isLoading = true);
       try {
-        // Proceed to verification
         Get.toNamed('/card-verification', arguments: {
-          'cardNumber': _cardNumber.replaceAll(' ', ''), // Remove spaces for backend
+          'cardNumber': _cardNumber.replaceAll(' ', ''),
           'cardHolderName': _cardHolderName,
           'expiryDate': _expiryDate,
           'cvv': _cvv,
@@ -59,9 +58,9 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0E21),
+      backgroundColor: const Color(0xFF000080),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0A0E21),
+        backgroundColor: const Color(0xFF000080),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -79,7 +78,6 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Dynamic Credit Card Illustration
             Padding(
               padding: EdgeInsets.symmetric(
                 vertical: Styles.defaultPadding,
@@ -121,7 +119,6 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    // Card Number
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Card Number',
@@ -139,7 +136,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(16),
-                        CardNumberInputFormatter(), // Custom formatter for spacing
+                        CardNumberInputFormatter(),
                       ],
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -158,7 +155,6 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                       onSaved: (value) => _cardNumber = value!,
                     ),
                     const SizedBox(height: 20),
-                    // Cardholder Name
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Cardholder Name',
@@ -186,10 +182,8 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                       onSaved: (value) => _cardHolderName = value!,
                     ),
                     const SizedBox(height: 20),
-                    // Expiry Date and CVV
                     Row(
                       children: [
-                        // Expiry Date
                         Expanded(
                           child: TextFormField(
                             decoration: InputDecoration(
@@ -208,7 +202,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                               LengthLimitingTextInputFormatter(4),
-                              ExpiryDateInputFormatter(), // Custom formatter for MM/YY
+                              ExpiryDateInputFormatter(),
                             ],
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -246,7 +240,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(3), // Limit to 3 digits
+                              LengthLimitingTextInputFormatter(3),
                             ],
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -260,12 +254,12 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                             onChanged: (value) {
                               setState(() {
                                 _cvv = value;
-                                _showBackView = true; // Show back view when CVV is focused
+                                _showBackView = true;
                               });
                             },
                             onFieldSubmitted: (value) {
                               setState(() {
-                                _showBackView = false; // Hide back view when done
+                                _showBackView = false;
                               });
                             },
                             onSaved: (value) => _cvv = value!,
@@ -304,27 +298,30 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                     ),
                     const SizedBox(height: 30),
                     Center(
-                      child: ElevatedButton(
-                        onPressed: _isLoading ? null : _submitCard,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                      child: SizedBox(
+                        width: 363, // Set width to 363 pixels
+                        height: 68, // Set height to 68 pixels
+                        child: ElevatedButton(
+                          onPressed: _isLoading ? null : _submitCard,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                            foregroundColor: const Color(0xFF000080),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15), // Set border radius to 15
+                            ),
+                            elevation: 5,
                           ),
-                          elevation: 5,
-                        ),
-                        child: _isLoading
-                            ? const CircularProgressIndicator(color: Colors.white)
-                            : const Text(
-                                'Continue',
-                                style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                          child: _isLoading
+                              ? const CircularProgressIndicator(color: Color(0xFFFFFFFF))
+                              : const Text(
+                                  'Continue',
+                                  style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              ),
+                        ),
                       ),
                     ),
                   ],
@@ -338,7 +335,6 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
   }
 }
 
-// Custom formatter for card number (adds space every 4 digits)
 class CardNumberInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
@@ -360,7 +356,6 @@ class CardNumberInputFormatter extends TextInputFormatter {
   }
 }
 
-// Custom formatter for expiry date (adds slash after MM)
 class ExpiryDateInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {

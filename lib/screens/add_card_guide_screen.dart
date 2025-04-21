@@ -11,7 +11,7 @@ class AddCardGuideScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.blue),
+          icon: const Icon(Icons.arrow_back, color: Color.fromARGB(255, 0, 0, 0)),
           onPressed: () => Get.back(),
         ),
       ),
@@ -21,10 +21,10 @@ class AddCardGuideScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 300, 
+              width: 300,
               height: 180,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9), 
+                color: Colors.white.withOpacity(0.9),
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
@@ -174,22 +174,25 @@ class AddCardGuideScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () => Get.toNamed('/add-card'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+            SizedBox(
+              width: 363, 
+              height: 68, 
+              child: ElevatedButton(
+                onPressed: () => Get.toNamed('/add-card'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF000080),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15), 
+                  ),
                 ),
-              ),
-              child: const Text(
-                'Continue',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                child: const Text(
+                  'Continue',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 19,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),

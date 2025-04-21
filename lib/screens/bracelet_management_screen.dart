@@ -36,7 +36,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
   Future<void> _initBle() async {
     _ble.statusStream.listen((status) {
       if (status != BleStatus.ready) {
-        Get.snackbar('Bluetooth Error', 'Please enable Bluetooth', backgroundColor: Styles.defaultRedColor);
+        Get.snackbar('Bluetooth', 'Please Turn Bluetooth On', backgroundColor: const Color.fromARGB(160, 244, 67, 54));
       }
     });
   }
@@ -51,7 +51,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
         });
       }
     }, onError: (e) {
-      Get.snackbar('Scan Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Scan Error', e.toString(), backgroundColor: Colors.red);
       setState(() => _isScanning = false);
     });
 
@@ -69,7 +69,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
         isLoading = false;
       });
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(), backgroundColor: Colors.red);
       setState(() => isLoading = false);
     }
   }
@@ -77,30 +77,30 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
   Future<void> _connectBracelet(String braceletId) async {
     try {
       await ApiService.connectBracelet(braceletId);
-      Get.snackbar('Success', 'Bracelet connected', backgroundColor: Styles.defaultBlueColor);
+      Get.snackbar('Success', 'Bracelet connected', backgroundColor: const Color(0xFF85C6EB));
       _fetchBracelets();
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(), backgroundColor: Colors.red);
     }
   }
 
   Future<void> _disconnectBracelet(String braceletId) async {
     try {
       await ApiService.disconnectBracelet(braceletId);
-      Get.snackbar('Success', 'Bracelet disconnected', backgroundColor: Styles.defaultBlueColor);
+      Get.snackbar('Success', 'Bracelet disconnected', backgroundColor: const Color(0xFF85C6EB));
       _fetchBracelets();
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(), backgroundColor: Colors.red);
     }
   }
 
   Future<void> _deleteBracelet(String braceletId) async {
     try {
       await ApiService.deleteBracelet(braceletId);
-      Get.snackbar('Success', 'Bracelet deleted', backgroundColor: Styles.defaultBlueColor);
+      Get.snackbar('Success', 'Bracelet deleted', backgroundColor: const Color(0xFF85C6EB));
       _fetchBracelets();
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(), backgroundColor: Colors.red);
     }
   }
 
@@ -111,30 +111,41 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Manage Bracelets', style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor)),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Styles.defaultYellowColor),
-          onPressed: () => Get.back(),
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70), 
+        child: AppBar(
+          title: Padding(
+            padding: EdgeInsets.only(top: 33), 
+            child: Text(
+              'Manage Bracelets',
+              style: TextStyle(
+                fontFamily: 'Rubik',
+                color: const Color(0xFF000080),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: Padding(
+            padding: EdgeInsets.only(top: 33), 
+            child: IconButton(
+              icon: Icon(Icons.arrow_back, color: const Color(0xFF000080), size: 20),
+              onPressed: () => Get.back(),
+            ),
+          ),
+          toolbarHeight: 70,
         ),
       ),
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.transparent,
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF1A1A1A), Color(0xFF2D2D2D)],
-          ),
-        ),
+        color: Colors.white,
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.all(Styles.defaultPadding),
+            padding: EdgeInsets.symmetric(horizontal: Styles.defaultPadding / 2, vertical: Styles.defaultPadding / 4), 
             child: isLoading
-                ? Center(child: CircularProgressIndicator(color: Styles.defaultYellowColor))
+                ? Center(child: CircularProgressIndicator(color: Colors.blue))
                 : bracelets.isEmpty
                     ? Center(
                         child: Column(
@@ -142,17 +153,17 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                           children: [
                             Icon(
                               Icons.watch_off,
-                              size: 80,
-                              color: Styles.defaultLightWhiteColor,
+                              size: 60,
+                              color: Colors.grey.shade600,
                             ),
-                            SizedBox(height: Styles.defaultPadding),
+                            SizedBox(height: Styles.defaultPadding / 2),
                             Text(
                               'No bracelets found.\nTap the + button to connect a new bracelet.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: 'Rubik',
-                                color: Styles.defaultLightWhiteColor,
-                                fontSize: 16,
+                                color: Colors.grey.shade800,
+                                fontSize: 14,
                                 fontStyle: FontStyle.italic,
                               ),
                             ),
@@ -161,26 +172,26 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                       )
                     : ListView.builder(
                         itemCount: bracelets.length,
+                        padding: EdgeInsets.zero,
                         itemBuilder: (context, index) {
                           final bracelet = bracelets[index];
                           return Card(
-                            elevation: 8,
+                            elevation: 4,
                             shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-                            color: Colors.white.withOpacity(0.1),
+                            color: Colors.grey.shade100,
+                            margin: EdgeInsets.symmetric(vertical: Styles.defaultPadding / 4), 
                             child: ListTile(
                               leading: Icon(
                                 Icons.watch,
-                                color: bracelet['connected']
-                                    ? Styles.defaultBlueColor
-                                    : Styles.defaultLightGreyColor,
-                                size: 30,
+                                color: bracelet['connected'] ? Colors.blue : Colors.grey.shade600,
+                                size: 24,
                               ),
                               title: Text(
                                 bracelet['name'],
                                 style: TextStyle(
                                   fontFamily: 'Rubik',
-                                  color: Styles.defaultYellowColor,
-                                  fontSize: 18,
+                                  color: Colors.black87,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -188,8 +199,8 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                                 'ID: ${bracelet['braceletId']}\nStatus: ${bracelet['connected'] ? 'Connected' : 'Disconnected'}',
                                 style: TextStyle(
                                   fontFamily: 'Rubik',
-                                  color: Styles.defaultLightWhiteColor,
-                                  fontSize: 14,
+                                  color: Colors.grey.shade700,
+                                  fontSize: 12,
                                 ),
                               ),
                               trailing: Row(
@@ -200,9 +211,8 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                                       bracelet['connected']
                                           ? Icons.bluetooth_disabled
                                           : Icons.bluetooth_connected,
-                                      color: bracelet['connected']
-                                          ? Styles.defaultRedColor
-                                          : Styles.defaultBlueColor,
+                                      color: bracelet['connected'] ? Colors.red : Colors.blue,
+                                      size: 20,
                                     ),
                                     onPressed: () {
                                       if (bracelet['connected']) {
@@ -214,7 +224,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                                     tooltip: bracelet['connected'] ? 'Disconnect' : 'Connect',
                                   ),
                                   IconButton(
-                                    icon: Icon(Icons.delete, color: Styles.defaultRedColor),
+                                    icon: Icon(Icons.delete, color: Colors.red, size: 20),
                                     onPressed: () => _deleteBracelet(bracelet['braceletId']),
                                     tooltip: 'Delete',
                                   ),
@@ -227,11 +237,15 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _navigateToAddBracelet,
-        backgroundColor: Styles.defaultBlueColor,
-        child: Icon(Icons.add, color: Styles.defaultYellowColor),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 30), 
+        child: FloatingActionButton(
+          onPressed: _navigateToAddBracelet,
+          backgroundColor: Colors.blue,
+          child: Icon(Icons.add, color: Colors.white, size: 24),
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat, 
     );
   }
 }

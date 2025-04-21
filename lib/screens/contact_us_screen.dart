@@ -5,21 +5,21 @@ class ContactUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0E21),
+      backgroundColor: Colors.white, 
       appBar: AppBar(
         title: const Text(
-          'Contact Us',
+          'Contactez-Nous',
           style: TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.black, 
           ),
         ),
-        backgroundColor: const Color(0xFF0A0E21),
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -30,57 +30,48 @@ class ContactUsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Get in Touch',
+                'Notre équipe est à votre écoute',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Color(0xFF000080), 
                 ),
               ),
               const SizedBox(height: 10),
+              const Text(
+                'pour répondre à vos demandes, suggestions ou signalements de bugs.',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 14,
+                  color: Colors.black54,
+                ),
+              ),
+              const SizedBox(height: 20),
               _buildContactItem(
                 icon: Icons.email,
-                title: 'Email',
-                subtitle: 'sbi@gmail.com',
+                title: ' Email',
+                subtitle: '',  
               ),
               _buildContactItem(
                 icon: Icons.phone,
-                title: 'Phone',
-                subtitle: '+216 123456789',
+                title: ' Téléphone',
+                subtitle: '',
+              ),
+              _buildContactItem(
+                icon: Icons.chat,
+                title: ' Chat en direct',
+                subtitle: 'Disponible dans l’application du lundi au vendredi de 9h à 18h.',
               ),
               _buildContactItem(
                 icon: Icons.location_on,
-                title: 'Address',
-                subtitle: '123 Tunis, Tunisia',
+                title: ' Adresse postale',
+                subtitle: 'SmartBracelet Technologies\n12, Rue de l’Innovation\n75008 Paris, France',
               ),
-              const SizedBox(height: 20),
-              const Text(
-                'Follow Us',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.facebook, color: Colors.white),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.camera_alt, color: Colors.white), // Instagram icon
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.message, color: Colors.white), // Twitter/X icon
-                    onPressed: () {},
-                  ),
-                ],
+              _buildContactItem(
+                icon: Icons.timer,
+                title: ' Temps de réponse estimé',
+                subtitle: 'Entre 24h et 48h maximum.',
               ),
             ],
           ),
@@ -90,23 +81,39 @@ class ContactUsScreen extends StatelessWidget {
   }
 
   Widget _buildContactItem({required IconData icon, required String title, required String subtitle}) {
-    return ListTile(
-      leading: Icon(icon, color: Colors.white70),
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontFamily: 'Montserrat',
-          fontSize: 16,
-          color: Colors.white,
-        ),
-      ),
-      subtitle: Text(
-        subtitle,
-        style: const TextStyle(
-          fontFamily: 'Montserrat',
-          fontSize: 14,
-          color: Colors.white70,
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: const Color(0xFF000080), size: 24), 
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black, 
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 14,
+                    color: Colors.black54, 
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -68,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     setState(() {
       selectedAvatar = avatarId;
     });
-    Get.snackbar('Success', 'Avatar updated successfully', backgroundColor: Colors.green);
+    Get.snackbar('Success', 'Avatar updated successfully', backgroundColor: const Color.fromARGB(68, 76, 175, 79));
   }
 
   Future<void> _fetchProfile() async {
@@ -221,7 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF), // Fixed typo: FFFFFFFF to FFFFFF
+      backgroundColor: const Color(0xFFFFFFFF), 
       body: Stack(
         children: [
           Column(
@@ -239,7 +239,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                   gradient: LinearGradient(
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
-                                    colors: [Color(0xFF85C6EB), Color(0xFF85C6EB)],
+                                    colors: [Color.fromARGB(145, 133, 198, 235), Color.fromARGB(87, 133, 198, 235)],
                                   ),
                                 ),
                                 padding: EdgeInsets.symmetric(

@@ -5,65 +5,66 @@ class PrivacyPolicyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0E21),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          'Privacy Policy',
+          'Politique de Confidentialité',
           style: TextStyle(
             fontFamily: 'Montserrat',
-            fontSize: 24,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
-        backgroundColor: const Color(0xFF0A0E21),
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Padding(
         padding: EdgeInsets.all(Styles.defaultPadding),
-        child: SingleChildScrollView(
+        child: const SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Privacy Policy',
+              Text(
+                'Politique de Confidentialité',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
-              const SizedBox(height: 10),
-              const Text(
-                'Last updated: April 03, 2025\n\n'
-                'We value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and share your data when you use our app.\n\n'
-                '1. Information We Collect\n'
-                'We may collect the following types of information:\n'
-                '- Personal Information: Name, email, phone number, etc.\n'
-                '- Payment Information: Card details (encrypted).\n'
-                '- Location Data: To locate your bracelet if lost.\n\n'
-                '2. How We Use Your Information\n'
-                'We use your information to:\n'
-                '- Provide and improve our services.\n'
-                '- Process payments securely.\n'
-                '- Locate your bracelet on a map.\n\n'
-                '3. Sharing Your Information\n'
-                'We do not share your personal information with third parties except as required by law or to provide our services (e.g., payment processing).\n\n'
-                '4. Security\n'
-                'We implement industry-standard security measures to protect your data.\n\n'
-                '5. Contact Us\n'
-                'If you have any questions about this Privacy Policy, please contact us at support@example.com.',
+              SizedBox(height: 10),
+              Text(
+                'La sécurité de vos données est une priorité. Cette politique de confidentialité explique les informations que nous collectons, comment nous les utilisons et comment nous les protégeons.\n\n'
+                '📍 Données collectées\n'
+                'Nous collectons les données suivantes :\n'
+                '- Informations personnelles (nom, adresse email)\n'
+                '- Données GPS (pour la localisation du bracelet)\n'
+                '- Historique des paiements (liés à l’utilisation du bracelet RFID)\n\n'
+                '🔐 Utilisation des données\n'
+                'Les données servent uniquement à :\n'
+                '- Gérer vos transactions\n'
+                '- Suivre la position de votre bracelet\n'
+                '- Améliorer nos services et notre support client\n\n'
+                '🔒 Sécurité\n'
+                'Nous utilisons un chiffrement avancé pour stocker vos données et empêchons tout accès non autorisé. Nos serveurs sont hébergés dans des centres certifiés et conformes au RGPD.\n\n'
+                '📤 Partage de données\n'
+                'Aucune donnée n’est vendue. Certaines informations peuvent être partagées avec des prestataires de services (paiement, maintenance), mais toujours sous accord de confidentialité strict.\n\n'
+                '🗑️ Suppression de vos données\n'
+                'Vous pouvez demander à tout moment la suppression de vos données personnelles via les paramètres de votre compte.',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
-                  color: Colors.white70,
+                  color: Colors.black87,
                 ),
               ),
+              SizedBox(height: 20),
+         
             ],
           ),
         ),
