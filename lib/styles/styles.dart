@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Styles {
-  static Color scaffoldBackgroundColor = const Color(0xFF7098da);
-  static Color defaultRedColor = const Color(0xFF6eb6ff);
-  static Color defaultYellowColor = const Color(0xFFFFFFFF);
-  static Color defaultBlueColor = const Color(0xFF98b5e4);
-  static Color defaultGreyColor = const Color(0xFF477bd0);
+  static Color scaffoldBackgroundColor = const Color.fromARGB(255, 255, 255, 255);
+  static Color defaultRedColor = const Color(0xFF0066FF);
+  static Color defaultYellowColor = const Color(0xFF000080);
+  static Color defaultBlueColor = const Color(0xFF0066FF);
+  static Color defaultGreyColor = const Color(0xFF000080);
   static Color defaultLightGreyColor = const Color(0xFFa1d0ff);
   static Color defaultLightWhiteColor = const Color(0xFFa1d0ff);
 
@@ -23,11 +23,11 @@ class Styles {
     radius: const Radius.circular(20),
   );
 
-  static var lightScaffoldBackgroundColor;
 
-  static var lightDefaultBlueColor;
 
-  static var lightDefaultYellowColor;
+ 
 
-  static var lightDefaultGreyColor;
+  
+
+
 }

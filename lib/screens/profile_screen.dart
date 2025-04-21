@@ -221,7 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0E21),
+      backgroundColor: const Color(0xFFFFFFFF), // Fixed typo: FFFFFFFF to FFFFFF
       body: Stack(
         children: [
           Column(
@@ -233,14 +233,13 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       : SingleChildScrollView(
                           child: Column(
                             children: [
-                              // Profile Header
                               Container(
                                 width: double.infinity,
                                 decoration: const BoxDecoration(
                                   gradient: LinearGradient(
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
-                                    colors: [Color(0xFF98b5e4), Color(0xFF477bd0)],
+                                    colors: [Color(0xFF85C6EB), Color(0xFF85C6EB)],
                                   ),
                                 ),
                                 padding: EdgeInsets.symmetric(
@@ -253,12 +252,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                       children: [
                                         CircleAvatar(
                                           radius: 50,
-                                          backgroundColor: Colors.white.withOpacity(0.2),
+                                          backgroundColor: const Color(0xFF000080).withOpacity(0.2),
                                           child: selectedAvatar == null
                                               ? const Icon(
                                                   Icons.person,
                                                   size: 60,
-                                                  color: Colors.white,
+                                                  color: Color(0xFFFFFFFF),
                                                 )
                                               : Icon(
                                                   avatars.firstWhere((avatar) => avatar['id'] == selectedAvatar)['icon'],
@@ -294,7 +293,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                         fontFamily: 'Montserrat',
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.white,
+                                        color: Color.fromARGB(255, 0, 0, 0),
                                         shadows: [
                                           Shadow(
                                             color: Colors.black26,
@@ -310,7 +309,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                       style: const TextStyle(
                                         fontFamily: 'Montserrat',
                                         fontSize: 16,
-                                        color: Colors.white70,
+                                        color: Color.fromARGB(179, 0, 0, 0),
                                       ),
                                     ),
                                     const SizedBox(height: 15),
@@ -325,9 +324,9 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                           horizontal: 20,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: Colors.white.withOpacity(0.1),
+                                          color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.1),
                                           borderRadius: BorderRadius.circular(10),
-                                          border: Border.all(color: Colors.white.withOpacity(0.3)),
+                                          border: Border.all(color: const Color(0xFF85C6EB).withOpacity(0.3)),
                                         ),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
@@ -335,7 +334,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                             const Icon(
                                               Icons.edit,
                                               size: 16,
-                                              color: Colors.white,
+                                              color: Color.fromARGB(255, 0, 0, 0),
                                             ),
                                             const SizedBox(width: 5),
                                             Text(
@@ -345,7 +344,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                               style: const TextStyle(
                                                 fontFamily: 'Montserrat',
                                                 fontSize: 14,
-                                                color: Colors.white,
+                                                color: Color.fromARGB(255, 0, 0, 0),
                                                 decoration: TextDecoration.underline,
                                               ),
                                             ),
@@ -356,7 +355,6 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                   ],
                                 ),
                               ),
-                              // Profile Options
                               Padding(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: Styles.defaultPadding,
@@ -449,7 +447,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF1E2A44),
+          color: const Color(0xFFFFFFFF),
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
@@ -460,14 +458,17 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
           ],
         ),
         child: ListTile(
-          leading: Icon(icon, color: color ?? Colors.white70),
+          leading: Icon(
+            icon,
+            color: color ?? const Color(0xFF000080), // Apply 0xFF000080 to all icons except where color is specified
+          ),
           title: Text(
             title,
             style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: color ?? Colors.white,
+              color: color ?? const Color(0xFF000080),
             ),
           ),
           subtitle: subtitle != null
@@ -476,14 +477,14 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   style: const TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 14,
-                    color: Colors.white70,
+                    color: Color(0xFF000080),
                   ),
                 )
               : null,
           trailing: const Icon(
             Icons.arrow_forward_ios,
             size: 16,
-            color: Colors.white70,
+            color: Color(0xFF000080),
           ),
         ),
       ),

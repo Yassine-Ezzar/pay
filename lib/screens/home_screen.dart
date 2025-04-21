@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0E21), // Consistent background color
+      backgroundColor: const Color(0xFFFFFFFF), 
       body: Stack(
         children: [
           Column(
@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [Color(0xFF98b5e4), Color(0xFF477bd0)],
+                      colors: [Color(0xFFFFFFFF), Color(0xFFFFFFFF)],
                     ),
                   ),
                   child: SafeArea(
@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   fontFamily: 'Montserrat',
                                   fontSize: 28,
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.white,
+                                  color: Color(0xFF000080),
                                   letterSpacing: 1.2,
                                 ),
                               ),
@@ -269,11 +269,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                 ),
               ),
-              // Lower half: Transactions
               Expanded(
                 flex: 1,
                 child: Container(
-                  color: const Color(0xFF0A0E21), // Consistent color
+                  color: const Color(0xFFFFFFFF), 
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -291,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 fontFamily: 'Montserrat',
                                 fontSize: 22,
                                 fontWeight: FontWeight.w700,
-                                color: Colors.white,
+                                color: Color(0xFF000080),
                                 letterSpacing: 1.2,
                               ),
                             ),
@@ -307,7 +306,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         width: 16,
                                         height: 16,
                                         child: CircularProgressIndicator(
-                                          color: Colors.white,
+                                          color: const Color(0xFF000080),
                                           strokeWidth: 2,
                                         ),
                                       ),
@@ -316,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     'REFRESH',
                                     style: TextStyle(
                                       fontFamily: 'Montserrat',
-                                      color: Colors.white,
+                                      color: Color(0xFF000080),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -329,13 +328,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                       Expanded(
                         child: isLoadingPayments
-                            ? const Center(child: CircularProgressIndicator(color: Colors.white))
+                            ? const Center(child: CircularProgressIndicator(color: Color(0xFF000080)))
                             : payments.isEmpty
                                 ? Container(
                                     margin: EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
                                     padding: EdgeInsets.all(Styles.defaultPadding),
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.05),
+                                      color: const Color(0xFF000080).withOpacity(0.05),
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: const Center(
@@ -344,7 +343,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: 'Montserrat',
-                                          color: Colors.white70,
+                                          color: Color(0xFF000080),
                                           fontSize: 16,
                                           fontStyle: FontStyle.italic,
                                         ),
@@ -358,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                       final payment = payments[index];
                                       return Card(
                                         elevation: 0,
-                                        color: Colors.white.withOpacity(0.05),
+                                        color: const Color(0xFF000080).withOpacity(0.05),
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(12),
                                         ),
@@ -366,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           leading: Container(
                                             padding: const EdgeInsets.all(8),
                                             decoration: BoxDecoration(
-                                              color: Colors.white.withOpacity(0.1),
+                                              color: const Color(0xFF000080).withOpacity(0.1),
                                               shape: BoxShape.circle,
                                             ),
                                             child: const Icon(
@@ -379,7 +378,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                             payment['merchant'],
                                             style: const TextStyle(
                                               fontFamily: 'Montserrat',
-                                              color: Colors.white,
+                                              color: Color(0xFF000080),
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -388,7 +387,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                             'Date: ${DateTime.parse(payment['date']).toLocal().toString().split('.')[0]}',
                                             style: const TextStyle(
                                               fontFamily: 'Montserrat',
-                                              color: Colors.white70,
+                                              color: Color(0xFF000080),
                                               fontSize: 12,
                                             ),
                                           ),
@@ -423,7 +422,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         padding: const EdgeInsets.only(bottom: 90.0), 
         child: FloatingActionButton(
           onPressed: () => Get.toNamed('/add-card-guide'),
-          backgroundColor: Colors.white,
+          backgroundColor: const Color(0xFF000080),
           elevation: 8,
           child: const Icon(Icons.add, color: Color(0xFF98b5e4), size: 28),
         ),

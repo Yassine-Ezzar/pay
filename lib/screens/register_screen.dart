@@ -130,7 +130,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _answerController.text,
         _biometricEnabled,
       );
-      await ApiService.clearProfileFromLocal(); // Explicitly clear profile data
+      await ApiService.clearProfileFromLocal(); 
       Get.offNamed('/success');
     } catch (e) {
       Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
@@ -173,7 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       confirm: ElevatedButton(
         onPressed: onConfirm,
-        child: Text('Confirm', style: TextStyle(fontFamily: 'Rubik')),
+        child: const Text('Confirm', style: TextStyle(fontFamily: 'Rubik')),
       ),
       cancel: TextButton(
         onPressed: () => Get.back(),
@@ -232,7 +232,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -240,7 +240,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             isIOS ? Icons.face : Icons.fingerprint,
                             color: Styles.defaultYellowColor,
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Text(
                             isIOS ? 'Face ID' : 'Touch ID',
                             style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
@@ -267,7 +267,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -275,7 +275,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             isIOS ? Icons.fingerprint : Icons.face,
                             color: Styles.defaultYellowColor,
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Text(
                             isIOS ? 'Touch ID' : 'Face ID',
                             style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
@@ -331,7 +331,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(4, (index) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Container(
                     width: 16,
                     height: 16,
@@ -362,7 +362,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   child: Text(
                     '${index + 1}',
-                    style: TextStyle(fontFamily: 'Rubik', fontSize: 20),
+                    style: const TextStyle(fontFamily: 'Rubik', fontSize: 20),
                   ),
                 );
               })..addAll([
@@ -373,7 +373,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       foregroundColor: Styles.defaultYellowColor,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
-                    child: Icon(Icons.backspace),
+                    child: const Icon(Icons.backspace),
                   ),
                   ElevatedButton(
                     onPressed: () => _addNumber('0'),
@@ -382,9 +382,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       foregroundColor: Styles.defaultYellowColor,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
-                    child: Text('0', style: TextStyle(fontFamily: 'Rubik', fontSize: 20)),
+                    child: const Text('0', style: TextStyle(fontFamily: 'Rubik', fontSize: 20)),
                   ),
-                  SizedBox.shrink(),
+                  const SizedBox.shrink(),
                 ]),
             ),
             SizedBox(height: Styles.defaultPadding * 2),
@@ -399,10 +399,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Styles.defaultBlueColor,
                   foregroundColor: Styles.defaultYellowColor,
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
                 ),
-                child: Text(
+                child: const Text(
                   'Register with PIN',
                   style: TextStyle(
                       fontFamily: 'Rubik', fontSize: 16, fontWeight: FontWeight.bold),
