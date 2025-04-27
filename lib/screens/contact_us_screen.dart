@@ -5,23 +5,25 @@ class ContactUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, 
-      appBar: AppBar(
+      backgroundColor: Colors.white,
+    appBar: AppBar(
         title: const Text(
-          'Contactez-Nous',
+          'Contact Us',
           style: TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.black, 
+            color: Color(0xFF000080),
           ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF000080)),
           onPressed: () => Navigator.pop(context),
         ),
+        toolbarHeight: kToolbarHeight + Styles.defaultPadding * 3.5, 
+        titleSpacing: Styles.defaultPadding, 
       ),
       body: Padding(
         padding: EdgeInsets.all(Styles.defaultPadding),
@@ -30,17 +32,17 @@ class ContactUsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Notre équipe est à votre écoute',
+                'Our Team Is Here for You',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF000080), 
+                  color: Color(0xFF000080),
                 ),
               ),
               const SizedBox(height: 10),
               const Text(
-                'pour répondre à vos demandes, suggestions ou signalements de bugs.',
+                'to address your inquiries, suggestions, or bug reports.',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 14,
@@ -50,28 +52,28 @@ class ContactUsScreen extends StatelessWidget {
               const SizedBox(height: 20),
               _buildContactItem(
                 icon: Icons.email,
-                title: ' Email',
-                subtitle: '',  
+                title: 'Email',
+                subtitle: '',
               ),
               _buildContactItem(
                 icon: Icons.phone,
-                title: ' Téléphone',
+                title: 'Phone',
                 subtitle: '',
               ),
               _buildContactItem(
                 icon: Icons.chat,
-                title: ' Chat en direct',
-                subtitle: 'Disponible dans l’application du lundi au vendredi de 9h à 18h.',
+                title: 'Live Chat',
+                subtitle: 'Available in the app Monday to Friday, 9 AM to 6 PM.',
               ),
               _buildContactItem(
                 icon: Icons.location_on,
-                title: ' Adresse postale',
-                subtitle: 'SmartBracelet Technologies\n12, Rue de l’Innovation\n75008 Paris, France',
+                title: 'Mailing Address',
+                subtitle: 'SmartBracelet Technologies\n12 Innovation Street\n75008 Paris, France',
               ),
               _buildContactItem(
                 icon: Icons.timer,
-                title: ' Temps de réponse estimé',
-                subtitle: 'Entre 24h et 48h maximum.',
+                title: 'Estimated Response Time',
+                subtitle: 'Within 24 to 48 hours maximum.',
               ),
             ],
           ),
@@ -86,7 +88,7 @@ class ContactUsScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: const Color(0xFF000080), size: 24), 
+          Icon(icon, color: const Color(0xFF000080), size: 24),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -98,7 +100,7 @@ class ContactUsScreen extends StatelessWidget {
                     fontFamily: 'Montserrat',
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black, 
+                    color: Colors.black,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -107,7 +109,7 @@ class ContactUsScreen extends StatelessWidget {
                   style: const TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 14,
-                    color: Colors.black54, 
+                    color: Colors.black54,
                   ),
                 ),
               ],

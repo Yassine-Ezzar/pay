@@ -10,7 +10,8 @@ class AdminDashboardScreen extends StatefulWidget {
   _AdminDashboardScreenState createState() => _AdminDashboardScreenState();
 }
 
-class _AdminDashboardScreenState extends State<AdminDashboardScreen> with SingleTickerProviderStateMixin {
+class _AdminDashboardScreenState extends State<AdminDashboardScreen>
+    with SingleTickerProviderStateMixin {
   TabController? _tabController;
   List<dynamic> users = [];
   List<dynamic> cards = [];
@@ -95,30 +96,36 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
   Future<void> _deleteUser(String userId) async {
     try {
       await ApiService.deleteUser(userId);
-      Get.snackbar('Success', 'User deleted', backgroundColor: Styles.defaultBlueColor);
+      Get.snackbar('Success', 'User deleted',
+          backgroundColor: Styles.defaultBlueColor, colorText: Colors.white);
       _fetchData();
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(),
+          backgroundColor: Styles.defaultRedColor, colorText: Colors.white);
     }
   }
 
   Future<void> _deleteCard(String cardId) async {
     try {
       await ApiService.deleteCardAdmin(cardId);
-      Get.snackbar('Success', 'Card deleted', backgroundColor: Styles.defaultBlueColor);
+      Get.snackbar('Success', 'Card deleted',
+          backgroundColor: Styles.defaultBlueColor, colorText: Colors.white);
       _fetchData();
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(),
+          backgroundColor: Styles.defaultRedColor, colorText: Colors.white);
     }
   }
 
   Future<void> _deleteBracelet(String braceletId) async {
     try {
       await ApiService.deleteBraceletAdmin(braceletId);
-      Get.snackbar('Success', 'Bracelet deleted', backgroundColor: Styles.defaultBlueColor);
+      Get.snackbar('Success', 'Bracelet deleted',
+          backgroundColor: Styles.defaultBlueColor, colorText: Colors.white);
       _fetchData();
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(),
+          backgroundColor: Styles.defaultRedColor, colorText: Colors.white);
     }
   }
 
@@ -129,7 +136,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: _fetchData,
-          color: Styles.defaultYellowColor,
+          color: Styles.defaultBlueColor,
           child: errorMessage != null
               ? Center(
                   child: Column(
@@ -149,14 +156,17 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                         onPressed: _fetchData,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Styles.defaultBlueColor,
-                          shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-                          padding: EdgeInsets.symmetric(horizontal: Styles.defaultPadding, vertical: Styles.defaultPadding / 2),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: Styles.defaultBorderRadius),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Styles.defaultPadding,
+                              vertical: Styles.defaultPadding / 2),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Retry',
                           style: TextStyle(
                             fontFamily: 'Rubik',
-                            color: Styles.defaultYellowColor,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -165,25 +175,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                 )
               : CustomScrollView(
                   slivers: [
-                    // Header
                     SliverToBoxAdapter(
                       child: FadeInDown(
                         child: Container(
-                          padding: EdgeInsets.all(Styles.defaultPadding / 2),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Styles.defaultBlueColor, Styles.defaultBlueColor.withOpacity(0.7)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 8,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
+                          padding: EdgeInsets.fromLTRB(
+                              Styles.defaultPadding / 2,
+                              Styles.defaultPadding*2,
+                              Styles.defaultPadding / 2,
+                              Styles.defaultPadding / 2),
+                          color: Styles.cardBackgroundColor,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -193,11 +193,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                                   fontFamily: 'Rubik',
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Styles.defaultYellowColor,
+                                  color: Styles.defaultBlueColor,
                                 ),
                               ),
                               IconButton(
-                                icon: Icon(Icons.logout, color: Styles.defaultYellowColor, size: 20),
+                                icon: Icon(Icons.logout,
+                                    color: Styles.defaultBlueColor, size: 20),
                                 onPressed: () async {
                                   await ApiService.storage.deleteAll();
                                   Get.offAllNamed('/login');
@@ -208,17 +209,20 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                         ),
                       ),
                     ),
-                    // Overview Section
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(Styles.defaultPadding, Styles.defaultPadding, Styles.defaultPadding, Styles.defaultPadding / 2),
+                        padding: EdgeInsets.fromLTRB(
+                            Styles.defaultPadding,
+                            Styles.defaultPadding,
+                            Styles.defaultPadding,
+                            Styles.defaultPadding / 2),
                         child: Text(
                           'Overview',
                           style: TextStyle(
                             fontFamily: 'Rubik',
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Styles.defaultYellowColor,
+                            color: Styles.defaultBlueColor,
                           ),
                         ),
                       ),
@@ -227,9 +231,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                     SliverToBoxAdapter(
                       child: FadeInUp(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
                           child: isLoadingStats
-                              ? Center(child: CircularProgressIndicator(color: Styles.defaultYellowColor))
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                      color: Styles.defaultBlueColor))
                               : GridView.count(
                                   shrinkWrap: true,
                                   crossAxisCount: 2,
@@ -237,11 +244,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                                   mainAxisSpacing: Styles.defaultPadding / 2,
                                   physics: const NeverScrollableScrollPhysics(),
                                   children: [
-                                    _buildStatCard('Users', stats['totalUsers']?.toString() ?? '0', Icons.people),
-                                    _buildStatCard('Cards', stats['totalCards']?.toString() ?? '0', Icons.credit_card),
-                                    _buildStatCard('Bracelets', stats['totalBracelets']?.toString() ?? '0', Icons.watch),
-                                    _buildStatCard('Payments', stats['totalPayments']?.toString() ?? '0', Icons.payment),
-                                    _buildStatCard('Locations', stats['totalLocations']?.toString() ?? '0', Icons.location_on),
+                                    _buildStatCard('Users',
+                                        stats['totalUsers']?.toString() ?? '0', Icons.people),
+                                    _buildStatCard('Cards',
+                                        stats['totalCards']?.toString() ?? '0', Icons.credit_card),
+                                    _buildStatCard('Bracelets',
+                                        stats['totalBracelets']?.toString() ?? '0', Icons.watch),
+                                    _buildStatCard('Payments',
+                                        stats['totalPayments']?.toString() ?? '0', Icons.payment),
+                                    _buildStatCard('Locations',
+                                        stats['totalLocations']?.toString() ?? '0', Icons.location_on),
                                   ],
                                 ),
                         ),
@@ -250,14 +262,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                     // Analytics Section
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(Styles.defaultPadding, Styles.defaultPadding, Styles.defaultPadding, Styles.defaultPadding / 2),
+                        padding: EdgeInsets.fromLTRB(
+                            Styles.defaultPadding,
+                            Styles.defaultPadding,
+                            Styles.defaultPadding,
+                            Styles.defaultPadding / 2),
                         child: Text(
                           'Analytics',
                           style: TextStyle(
                             fontFamily: 'Rubik',
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Styles.defaultYellowColor,
+                            color: Styles.defaultBlueColor,
                           ),
                         ),
                       ),
@@ -267,13 +283,23 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                       child: FadeInUp(
                         delay: const Duration(milliseconds: 200),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
                           child: LayoutBuilder(
                             builder: (context, constraints) {
                               final chartHeight = constraints.maxWidth < 600 ? 160.0 : 200.0;
-                              return Container(
-                                height: chartHeight,
-                                child: _buildLineChart(),
+                              return Column(
+                                children: [
+                                  Container(
+                                    height: chartHeight,
+                                    child: _buildGenderPieChart(),
+                                  ),
+                                  SizedBox(height: Styles.defaultPadding / 2),
+                                  Container(
+                                    height: chartHeight,
+                                    child: _buildLineChart(),
+                                  ),
+                                ],
                               );
                             },
                           ),
@@ -283,14 +309,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                     // Details Section
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(Styles.defaultPadding, Styles.defaultPadding, Styles.defaultPadding, Styles.defaultPadding / 2),
+                        padding: EdgeInsets.fromLTRB(
+                            Styles.defaultPadding,
+                            Styles.defaultPadding,
+                            Styles.defaultPadding,
+                            Styles.defaultPadding / 2),
                         child: Text(
                           'Details',
                           style: TextStyle(
                             fontFamily: 'Rubik',
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Styles.defaultYellowColor,
+                            color: Styles.defaultBlueColor,
                           ),
                         ),
                       ),
@@ -302,10 +332,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                         TabBar(
                           controller: _tabController,
                           isScrollable: true,
-                          labelColor: Styles.defaultYellowColor,
-                          unselectedLabelColor: Styles.defaultLightWhiteColor,
-                          indicatorColor: Styles.defaultYellowColor,
-                          labelStyle: const TextStyle(fontFamily: 'Rubik', fontWeight: FontWeight.bold, fontSize: 12),
+                          labelColor: Styles.defaultBlueColor,
+                          unselectedLabelColor: Colors.grey,
+                          indicatorColor: Styles.defaultBlueColor,
+                          labelStyle: const TextStyle(
+                              fontFamily: 'Rubik',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12),
                           tabs: const [
                             Tab(text: 'Users'),
                             Tab(text: 'Cards'),
@@ -346,22 +379,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
       child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Styles.defaultBlueColor.withOpacity(0.9), Styles.defaultBlueColor.withOpacity(0.6)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: Styles.defaultBorderRadius,
-        ),
+        color: Styles.cardBackgroundColor,
         padding: EdgeInsets.all(Styles.defaultPadding / 2),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
               radius: 16,
-              backgroundColor: Styles.defaultYellowColor.withOpacity(0.2),
-              child: Icon(icon, color: Styles.defaultYellowColor, size: 20),
+              backgroundColor: Styles.defaultBlueColor.withOpacity(0.1),
+              child: Icon(icon, color: Styles.defaultBlueColor, size: 20),
             ),
             SizedBox(height: Styles.defaultPadding / 4),
             Text(
@@ -370,7 +396,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                 fontFamily: 'Rubik',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Styles.defaultYellowColor,
+                color: Styles.defaultBlueColor,
               ),
             ),
             Text(
@@ -387,8 +413,98 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
     );
   }
 
+  Widget _buildGenderPieChart() {
+    final genderStats = stats['genderStats'] as Map<String, dynamic>? ?? {};
+    final total = (genderStats['Male'] ?? 0) +
+        (genderStats['Female'] ?? 0) +
+        (genderStats['NotSpecified'] ?? 0);
+
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+      child: Container(
+        color: Styles.cardBackgroundColor,
+        padding: EdgeInsets.all(Styles.defaultPadding / 2),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Gender Distribution',
+              style: TextStyle(
+                fontFamily: 'Rubik',
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Styles.defaultBlueColor,
+              ),
+            ),
+            SizedBox(height: Styles.defaultPadding / 2),
+            Expanded(
+              child: total == 0
+                  ? Center(
+                      child: Text(
+                        'No data available',
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          color: Styles.defaultLightWhiteColor,
+                          fontSize: 12,
+                        ),
+                      ),
+                    )
+                  : PieChart(
+                      PieChartData(
+                        sections: [
+                          PieChartSectionData(
+                            color: Colors.blue,
+                            value: (genderStats['Male'] ?? 0).toDouble(),
+                            title:
+                                'Male\n${((genderStats['Male'] ?? 0) / total * 100).toStringAsFixed(1)}%',
+                            radius: 40,
+                            titleStyle: const TextStyle(
+                              fontFamily: 'Rubik',
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          PieChartSectionData(
+                            color: Colors.pink,
+                            value: (genderStats['Female'] ?? 0).toDouble(),
+                            title:
+                                'Female\n${((genderStats['Female'] ?? 0) / total * 100).toStringAsFixed(1)}%',
+                            radius: 40,
+                            titleStyle: const TextStyle(
+                              fontFamily: 'Rubik',
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          PieChartSectionData(
+                            color: Colors.grey,
+                            value: (genderStats['NotSpecified'] ?? 0).toDouble(),
+                            title:
+                                'N/A\n${((genderStats['NotSpecified'] ?? 0) / total * 100).toStringAsFixed(1)}%',
+                            radius: 40,
+                            titleStyle: const TextStyle(
+                              fontFamily: 'Rubik',
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                        sectionsSpace: 2,
+                        centerSpaceRadius: 20,
+                      ),
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildLineChart() {
-    // Dynamic data: Count users registered per month
     final userTrend = <double>[];
     final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
     if (users.isNotEmpty) {
@@ -400,13 +516,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
         userTrend.add(count.toDouble());
       }
     } else {
-      userTrend.addAll([0, 0, 0, 0, 0, 0, 0]); // Fallback
+      userTrend.addAll([0, 0, 0, 0, 0, 0, 0]);
     }
 
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
       child: Container(
+        color: Styles.cardBackgroundColor,
         padding: EdgeInsets.all(Styles.defaultPadding / 2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -417,7 +534,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                 fontFamily: 'Rubik',
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: Styles.defaultYellowColor,
+                color: Styles.defaultBlueColor,
               ),
             ),
             SizedBox(height: Styles.defaultPadding / 4),
@@ -429,7 +546,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                     drawVerticalLine: false,
                     horizontalInterval: 5,
                     getDrawingHorizontalLine: (value) => FlLine(
-                      color: Styles.defaultLightWhiteColor.withOpacity(0.2),
+                      color: Colors.grey.withOpacity(0.2),
                       strokeWidth: 1,
                     ),
                   ),
@@ -461,8 +578,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                         ),
                       ),
                     ),
-                    topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   ),
                   borderData: FlBorderData(show: false),
                   lineBarsData: [
@@ -473,17 +590,19 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                           .map((e) => FlSpot(e.key.toDouble(), e.value))
                           .toList(),
                       isCurved: true,
-                      color: Styles.defaultYellowColor,
+                      color: Styles.defaultBlueColor,
                       barWidth: 3,
-                      dotData: FlDotData(show: true),
+                      dotData: const FlDotData(show: true),
                       belowBarData: BarAreaData(
                         show: true,
-                        color: Styles.defaultYellowColor.withOpacity(0.3),
+                        color: Styles.defaultBlueColor.withOpacity(0.3),
                       ),
                     ),
                   ],
                   minY: 0,
-                  maxY: (userTrend.isEmpty ? 10 : userTrend.reduce((a, b) => a > b ? a : b) + 5),
+                  maxY: (userTrend.isEmpty
+                      ? 10
+                      : userTrend.reduce((a, b) => a > b ? a : b) + 5),
                 ),
               ),
             ),
@@ -495,7 +614,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
 
   Widget _buildUsersTab() {
     return isLoadingUsers
-        ? Center(child: CircularProgressIndicator(color: Styles.defaultYellowColor))
+        ? Center(child: CircularProgressIndicator(color: Styles.defaultBlueColor))
         : users.isEmpty
             ? Center(
                 child: Text(
@@ -520,9 +639,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                         backgroundColor: Styles.defaultBlueColor,
                         child: Text(
                           user['name']?.toString()[0].toUpperCase() ?? 'U',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Rubik',
-                            color: Styles.defaultYellowColor,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -530,7 +649,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                         user['name']?.toString() ?? 'Unknown',
                         style: TextStyle(
                           fontFamily: 'Rubik',
-                          color: Styles.defaultYellowColor,
+                          color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
@@ -555,7 +674,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
 
   Widget _buildCardsTab() {
     return isLoadingCards
-        ? Center(child: CircularProgressIndicator(color: Styles.defaultYellowColor))
+        ? Center(child: CircularProgressIndicator(color: Styles.defaultBlueColor))
         : cards.isEmpty
             ? Center(
                 child: Text(
@@ -576,12 +695,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                     elevation: 3,
                     shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
                     child: ListTile(
-                      leading: Icon(Icons.credit_card, color: Styles.defaultBlueColor, size: 20),
+                      leading: Icon(Icons.credit_card,
+                          color: Styles.defaultBlueColor, size: 20),
                       title: Text(
                         'Card: ${card['cardNumber']?.toString() ?? 'Unknown'}',
                         style: TextStyle(
                           fontFamily: 'Rubik',
-                          color: Styles.defaultYellowColor,
+                          color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
@@ -606,7 +726,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
 
   Widget _buildBraceletsTab() {
     return isLoadingBracelets
-        ? Center(child: CircularProgressIndicator(color: Styles.defaultYellowColor))
+        ? Center(child: CircularProgressIndicator(color: Styles.defaultBlueColor))
         : bracelets.isEmpty
             ? Center(
                 child: Text(
@@ -632,7 +752,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                         bracelet['name']?.toString() ?? 'Unknown',
                         style: TextStyle(
                           fontFamily: 'Rubik',
-                          color: Styles.defaultYellowColor,
+                          color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
@@ -647,7 +767,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                       ),
                       trailing: IconButton(
                         icon: Icon(Icons.delete, color: Styles.defaultRedColor, size: 20),
-                        onPressed: () => _deleteBracelet(bracelet['braceletId']?.toString() ?? ''),
+                        onPressed: () =>
+                            _deleteBracelet(bracelet['braceletId']?.toString() ?? ''),
                       ),
                     ),
                   );
@@ -657,7 +778,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
 
   Widget _buildPaymentsTab() {
     return isLoadingPayments
-        ? Center(child: CircularProgressIndicator(color: Styles.defaultYellowColor))
+        ? Center(child: CircularProgressIndicator(color: Styles.defaultBlueColor))
         : payments.isEmpty
             ? Center(
                 child: Text(
@@ -683,7 +804,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                         payment['merchant']?.toString() ?? 'Unknown',
                         style: TextStyle(
                           fontFamily: 'Rubik',
-                          color: Styles.defaultYellowColor,
+                          color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
@@ -704,7 +825,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
 
   Widget _buildLocationsTab() {
     return isLoadingLocations
-        ? Center(child: CircularProgressIndicator(color: Styles.defaultYellowColor))
+        ? Center(child: CircularProgressIndicator(color: Styles.defaultBlueColor))
         : locations.isEmpty
             ? Center(
                 child: Text(
@@ -725,12 +846,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                     elevation: 3,
                     shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
                     child: ListTile(
-                      leading: Icon(Icons.location_on, color: Styles.defaultBlueColor, size: 20),
+                      leading: Icon(Icons.location_on,
+                          color: Styles.defaultBlueColor, size: 20),
                       title: Text(
                         'Bracelet ID: ${location['braceletId']?.toString() ?? 'Unknown'}',
                         style: TextStyle(
                           fontFamily: 'Rubik',
-                          color: Styles.defaultYellowColor,
+                          color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
@@ -750,150 +872,275 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
   }
 
   Widget _buildStatsTab() {
+    final genderStats = stats['genderStats'] as Map<String, dynamic>? ?? {};
+    final countryStats = stats['countryStats'] as Map<String, dynamic>? ?? {};
+
     return isLoadingStats
-        ? Center(child: CircularProgressIndicator(color: Styles.defaultYellowColor))
+        ? Center(child: CircularProgressIndicator(color: Styles.defaultBlueColor))
         : Padding(
             padding: EdgeInsets.all(Styles.defaultPadding / 2),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'System Statistics',
-                  style: TextStyle(
-                    fontFamily: 'Rubik',
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Styles.defaultYellowColor,
-                  ),
-                ),
-                SizedBox(height: Styles.defaultPadding / 2),
-                Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-                  child: ListTile(
-                    leading: Icon(Icons.people, color: Styles.defaultBlueColor, size: 20),
-                    title: Text(
-                      'Total Users',
-                      style: TextStyle(
-                        fontFamily: 'Rubik',
-                        color: Styles.defaultYellowColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    subtitle: Text(
-                      stats['totalUsers']?.toString() ?? '0',
-                      style: TextStyle(
-                        fontFamily: 'Rubik',
-                        color: Styles.defaultLightWhiteColor,
-                        fontSize: 12,
-                      ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'System Statistics',
+                    style: TextStyle(
+                      fontFamily: 'Rubik',
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Styles.defaultBlueColor,
                     ),
                   ),
-                ),
-                Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-                  child: ListTile(
-                    leading: Icon(Icons.credit_card, color: Styles.defaultBlueColor, size: 20),
-                    title: Text(
-                      'Total Cards',
-                      style: TextStyle(
-                        fontFamily: 'Rubik',
-                        color: Styles.defaultYellowColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                  SizedBox(height: Styles.defaultPadding / 2),
+                  Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    child: ListTile(
+                      leading: Icon(Icons.people, color: Styles.defaultBlueColor, size: 20),
+                      title: Text(
+                        'Total Users',
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          color: Styles.defaultBlueColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
-                    subtitle: Text(
-                      stats['totalCards']?.toString() ?? '0',
-                      style: TextStyle(
-                        fontFamily: 'Rubik',
-                        color: Styles.defaultLightWhiteColor,
-                        fontSize: 12,
+                      subtitle: Text(
+                        stats['totalUsers']?.toString() ?? '0',
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          color: Styles.defaultLightWhiteColor,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-                  child: ListTile(
-                    leading: Icon(Icons.watch, color: Styles.defaultBlueColor, size: 20),
-                    title: Text(
-                      'Total Bracelets',
-                      style: TextStyle(
-                        fontFamily: 'Rubik',
-                        color: Styles.defaultYellowColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                  Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    child: ListTile(
+                      leading: Icon(Icons.credit_card,
+                          color: Styles.defaultBlueColor, size: 20),
+                      title: Text(
+                        'Total Cards',
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          color: Styles.defaultBlueColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
-                    subtitle: Text(
-                      stats['totalBracelets']?.toString() ?? '0',
-                      style: TextStyle(
-                        fontFamily: 'Rubik',
-                        color: Styles.defaultLightWhiteColor,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ),
-                Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-                  child: ListTile(
-                    leading: Icon(Icons.payment, color: Styles.defaultBlueColor, size: 20),
-                    title: Text(
-                      'Total Payments',
-                      style: TextStyle(
-                        fontFamily: 'Rubik',
-                        color: Styles.defaultYellowColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    subtitle: Text(
-                      stats['totalPayments']?.toString() ?? '0',
-                      style: TextStyle(
-                        fontFamily: 'Rubik',
-                        color: Styles.defaultLightWhiteColor,
-                        fontSize: 12,
+                      subtitle: Text(
+                        stats['totalCards']?.toString() ?? '0',
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          color: Styles.defaultLightWhiteColor,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-                  child: ListTile(
-                    leading: Icon(Icons.location_on, color: Styles.defaultBlueColor, size: 20),
-                    title: Text(
-                      'Total Locations',
-                      style: TextStyle(
-                        fontFamily: 'Rubik',
-                        color: Styles.defaultYellowColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                  Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    child: ListTile(
+                      leading: Icon(Icons.watch, color: Styles.defaultBlueColor, size: 20),
+                      title: Text(
+                        'Total Bracelets',
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          color: Styles.defaultBlueColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
-                    subtitle: Text(
-                      stats['totalLocations']?.toString() ?? '0',
-                      style: TextStyle(
-                        fontFamily: 'Rubik',
-                        color: Styles.defaultLightWhiteColor,
-                        fontSize: 12,
+                      subtitle: Text(
+                        stats['totalBracelets']?.toString() ?? '0',
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          color: Styles.defaultLightWhiteColor,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    child: ListTile(
+                      leading: Icon(Icons.payment, color: Styles.defaultBlueColor, size: 20),
+                      title: Text(
+                        'Total Payments',
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          color: Styles.defaultBlueColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      subtitle: Text(
+                        stats['totalPayments']?.toString() ?? '0',
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          color: Styles.defaultLightWhiteColor,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    child: ListTile(
+                      leading: Icon(Icons.location_on,
+                          color: Styles.defaultBlueColor, size: 20),
+                      title: Text(
+                        'Total Locations',
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          color: Styles.defaultBlueColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      subtitle: Text(
+                        stats['totalLocations']?.toString() ?? '0',
+                        style: TextStyle(
+                          fontFamily: 'Rubik',
+                          color: Styles.defaultLightWhiteColor,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: Styles.defaultPadding / 2),
+                  Text(
+                    'Gender Distribution',
+                    style: TextStyle(
+                      fontFamily: 'Rubik',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Styles.defaultBlueColor,
+                    ),
+                  ),
+                  SizedBox(height: Styles.defaultPadding / 4),
+                  Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: Icon(Icons.male, color: Styles.defaultBlueColor, size: 20),
+                          title: Text(
+                            'Male',
+                            style: TextStyle(
+                              fontFamily: 'Rubik',
+                              color: Styles.defaultBlueColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          subtitle: Text(
+                            genderStats['Male']?.toString() ?? '0',
+                            style: TextStyle(
+                              fontFamily: 'Rubik',
+                              color: Styles.defaultLightWhiteColor,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.female, color: Styles.defaultBlueColor, size: 20),
+                          title: Text(
+                            'Female',
+                            style: TextStyle(
+                              fontFamily: 'Rubik',
+                              color: Styles.defaultBlueColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          subtitle: Text(
+                            genderStats['Female']?.toString() ?? '0',
+                            style: TextStyle(
+                              fontFamily: 'Rubik',
+                              color: Styles.defaultLightWhiteColor,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.help_outline,
+                              color: Styles.defaultBlueColor, size: 20),
+                          title: Text(
+                            'Not Specified',
+                            style: TextStyle(
+                              fontFamily: 'Rubik',
+                              color: Styles.defaultBlueColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          subtitle: Text(
+                            genderStats['NotSpecified']?.toString() ?? '0',
+                            style: TextStyle(
+                              fontFamily: 'Rubik',
+                              color: Styles.defaultLightWhiteColor,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: Styles.defaultPadding / 2),
+                  Text(
+                    'Country Distribution',
+                    style: TextStyle(
+                      fontFamily: 'Rubik',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Styles.defaultBlueColor,
+                    ),
+                  ),
+                  SizedBox(height: Styles.defaultPadding / 4),
+                  Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    child: Column(
+                      children: countryStats.entries.map((entry) {
+                        return ListTile(
+                          leading: Icon(Icons.public, color: Styles.defaultBlueColor, size: 20),
+                          title: Text(
+                            entry.key,
+                            style: TextStyle(
+                              fontFamily: 'Rubik',
+                              color: Styles.defaultBlueColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          subtitle: Text(
+                            entry.value.toString(),
+                            style: TextStyle(
+                              fontFamily: 'Rubik',
+                              color: Styles.defaultLightWhiteColor,
+                              fontSize: 12,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
   }
 }
 
-// Custom Sliver Delegate for TabBar
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate(this._tabBar);
 

@@ -23,6 +23,8 @@ class Styles {
     radius: const Radius.circular(20),
   );
 
+  static var cardBackgroundColor;
+
 
 
  

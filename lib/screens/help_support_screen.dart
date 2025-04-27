@@ -8,12 +8,12 @@ class HelpSupportScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          'Aide & Support',
+          'Help & Support',
           style: TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Color(0xFF000080),
           ),
         ),
         backgroundColor: Colors.white,
@@ -22,15 +22,22 @@ class HelpSupportScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Color(0xFF000080)),
           onPressed: () => Navigator.pop(context),
         ),
+        toolbarHeight: kToolbarHeight + Styles.defaultPadding * 4, 
+        titleSpacing: Styles.defaultPadding, 
       ),
       body: Padding(
-        padding: EdgeInsets.all(Styles.defaultPadding),
+        padding: EdgeInsets.fromLTRB(
+          Styles.defaultPadding / 2, // Left
+          Styles.defaultPadding * 1, // Top (to push content below notch)
+          Styles.defaultPadding / 2, // Right
+          Styles.defaultPadding / 2, // Bottom
+        ),
         child: const SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Nous sommes là pour vous aider',
+                'We’re Here to Help',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 20,
@@ -40,7 +47,7 @@ class HelpSupportScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Vous avez une question ou vous rencontrez un problème avec votre bracelet ou l\'application ? Nous sommes là pour vous aider à chaque étape.',
+                'Have a question or facing an issue with your bracelet or app? We’re here to assist you every step of the way.',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 14,
@@ -48,13 +55,12 @@ class HelpSupportScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              // Technical Issues Section
               Row(
                 children: [
                   Icon(Icons.build, color: Color(0xFF000080), size: 20),
                   SizedBox(width: 8),
                   Text(
-                    'Problèmes techniques',
+                    'Technical Issues',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 18,
@@ -66,7 +72,7 @@ class HelpSupportScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Vous rencontrez un bug ? Votre bracelet ne se connecte pas correctement ou vous avez un souci lors d’un paiement ? Consultez notre FAQ pour des solutions rapides ou contactez notre support technique.',
+                'Experiencing a bug? Is your bracelet not connecting properly, or are you having trouble with a payment? Check our FAQ for quick solutions or contact our technical support.',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 14,
@@ -74,13 +80,12 @@ class HelpSupportScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              // Usage Guide Section
               Row(
                 children: [
                   Icon(Icons.book, color: Color(0xFF000080), size: 20),
                   SizedBox(width: 8),
                   Text(
-                    'Guide d’utilisation',
+                    'Usage Guide',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 18,
@@ -92,14 +97,13 @@ class HelpSupportScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Accédez à nos tutoriels détaillés pour apprendre à activer votre bracelet, ajouter un moyen de paiement, ou encore utiliser la géolocalisation pour retrouver votre bracelet perdu.',
+                'Access our detailed tutorials to learn how to activate your bracelet, add a payment method, or use geolocation to find your lost bracelet.',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 14,
                   color: Colors.black54,
                 ),
               ),
-             
               SizedBox(height: 20),
               // Personalized Assistance Section
               Row(
@@ -107,7 +111,7 @@ class HelpSupportScreen extends StatelessWidget {
                   Icon(Icons.support_agent, color: Color(0xFF000080), size: 20),
                   SizedBox(width: 8),
                   Text(
-                    'Assistance personnalisée',
+                    'Personalized Assistance',
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 18,
@@ -119,7 +123,7 @@ class HelpSupportScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'Si votre problème persiste ou si vous avez une question spécifique, notre équipe vous répond dans les plus brefs délais par mail ou via le chat intégré à l’application. Notre support est disponible 24h/24, 7j/7 pour vous offrir une assistance rapide et efficace.',
+                'If your issue persists or you have a specific question, our team will respond as soon as possible via email or through the in-app chat. Our support is available 24/7 to provide fast and effective assistance.',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 14,
@@ -127,31 +131,7 @@ class HelpSupportScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              // Contact Section
-              Row(
-                children: [
-                  Icon(Icons.email, color: Color(0xFF000080), size: 20),
-                  SizedBox(width: 8),
-                  Text(
-                    'Besoin de plus d’aide ?',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Visitez notre site web à www.sbi.com ou contactez-nous à SBI@gmail.com.',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 14,
-                  color: Colors.black54,
-                ),
-              ),
+            
             ],
           ),
         ),

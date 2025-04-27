@@ -6,22 +6,24 @@ class PrivacyPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
+   appBar: AppBar(
         title: const Text(
-          'Politique de Confidentialité',
+          'Privacy Policy',
           style: TextStyle(
             fontFamily: 'Montserrat',
-            fontSize: 22,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Color(0xFF000080),
           ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF000080)),
           onPressed: () => Navigator.pop(context),
         ),
+        toolbarHeight: kToolbarHeight + Styles.defaultPadding * 3.5, 
+        titleSpacing: Styles.defaultPadding, 
       ),
       body: Padding(
         padding: EdgeInsets.all(Styles.defaultPadding),
@@ -29,34 +31,26 @@ class PrivacyPolicyScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Politique de Confidentialité',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
+             
               SizedBox(height: 10),
               Text(
-                'La sécurité de vos données est une priorité. Cette politique de confidentialité explique les informations que nous collectons, comment nous les utilisons et comment nous les protégeons.\n\n'
-                '📍 Données collectées\n'
-                'Nous collectons les données suivantes :\n'
-                '- Informations personnelles (nom, adresse email)\n'
-                '- Données GPS (pour la localisation du bracelet)\n'
-                '- Historique des paiements (liés à l’utilisation du bracelet RFID)\n\n'
-                '🔐 Utilisation des données\n'
-                'Les données servent uniquement à :\n'
-                '- Gérer vos transactions\n'
-                '- Suivre la position de votre bracelet\n'
-                '- Améliorer nos services et notre support client\n\n'
-                '🔒 Sécurité\n'
-                'Nous utilisons un chiffrement avancé pour stocker vos données et empêchons tout accès non autorisé. Nos serveurs sont hébergés dans des centres certifiés et conformes au RGPD.\n\n'
-                '📤 Partage de données\n'
-                'Aucune donnée n’est vendue. Certaines informations peuvent être partagées avec des prestataires de services (paiement, maintenance), mais toujours sous accord de confidentialité strict.\n\n'
-                '🗑️ Suppression de vos données\n'
-                'Vous pouvez demander à tout moment la suppression de vos données personnelles via les paramètres de votre compte.',
+                'The security of your data is a priority. This privacy policy explains the information we collect, how we use it, and how we protect it.\n\n'
+                '📍 Data Collected\n'
+                'We collect the following data:\n'
+                '- Personal information (name, email address)\n'
+                '- GPS data (for bracelet location tracking)\n'
+                '- Payment history (related to RFID bracelet usage)\n\n'
+                '🔐 Use of Data\n'
+                'The data is used solely for:\n'
+                '- Managing your transactions\n'
+                '- Tracking your bracelet’s location\n'
+                '- Improving our services and customer support\n\n'
+                '🔒 Security\n'
+                'We use advanced encryption to store your data and prevent unauthorized access. Our servers are hosted in certified data centers compliant with GDPR.\n\n'
+                '📤 Data Sharing\n'
+                'No data is sold. Some information may be shared with service providers (payment processing, maintenance), but always under strict confidentiality agreements.\n\n'
+                '🗑️ Data Deletion\n'
+                'You can request the deletion of your personal data at any time through your account settings.',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
@@ -64,7 +58,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-         
             ],
           ),
         ),

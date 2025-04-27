@@ -20,7 +20,7 @@ class _LocationScreenState extends State<LocationScreen> {
   LatLng? braceletLocation;
   LatLng? userLocation;
   String? braceletAddress;
-  double? distanceToBracelet; // Distance in kilometers
+  double? distanceToBracelet;
   bool isLoadingBracelets = true;
   bool isLoadingLocation = false;
   bool isLoadingUserLocation = false;
@@ -63,13 +63,11 @@ class _LocationScreenState extends State<LocationScreen> {
   Future<void> _getUserLocation() async {
     setState(() => isLoadingUserLocation = true);
     try {
-      // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         throw Exception('Location services are disabled.');
       }
 
-      // Check location permissions
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
@@ -82,7 +80,6 @@ class _LocationScreenState extends State<LocationScreen> {
         throw Exception('Location permissions are permanently denied.');
       }
 
-      // Get the current position
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
@@ -137,7 +134,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       : braceletLocation!.longitude,
                 ),
               ),
-              50, // Padding
+              50,
             ),
           );
         }
@@ -180,7 +177,7 @@ class _LocationScreenState extends State<LocationScreen> {
     );
 
     setState(() {
-      distanceToBracelet = distanceInMeters / 1000; // Convert to kilometers
+      distanceToBracelet = distanceInMeters / 1000;
     });
   }
 
@@ -227,7 +224,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   : braceletLocation!.longitude,
             ),
           ),
-          50, // Padding
+          50,
         ),
       );
     } else if (userLocation != null) {
@@ -240,14 +237,14 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0E21),
+      backgroundColor: Colors.white, // Set background to white
       body: Stack(
         children: [
           Column(
             children: [
               Expanded(
                 child: Container(
-                  color: const Color(0xFF0A0E21),
+                  color: Colors.white, // Set container background to white
                   child: SafeArea(
                     child: Column(
                       children: [
@@ -259,13 +256,13 @@ class _LocationScreenState extends State<LocationScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Locate Your Bracelet',
                                 style: TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 28,
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.white,
+                                  color: const Color(0xFF000080), // Main title color
                                 ),
                               ),
                             ],
@@ -282,7 +279,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                     'Select a Bracelet',
                                     style: TextStyle(
                                       fontFamily: 'Montserrat',
-                                      color: Colors.white70,
+                                      color: Colors.black, // Hint text in black
                                     ),
                                   ),
                                   items: bracelets.map<DropdownMenuItem<String>>((bracelet) {
@@ -292,7 +289,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                         bracelet['name'],
                                         style: const TextStyle(
                                           fontFamily: 'Montserrat',
-                                          color: Colors.white,
+                                          color: Colors.black, // Dropdown items in black
                                         ),
                                       ),
                                     );
@@ -303,15 +300,15 @@ class _LocationScreenState extends State<LocationScreen> {
                                       _fetchBraceletLocation();
                                     });
                                   },
-                                  dropdownColor: const Color(0xFF1E2A44),
-                                  style: const TextStyle(color: Colors.white),
-                                  iconEnabledColor: Colors.white,
+                                  dropdownColor: Colors.white, // Dropdown background to white
+                                  style: const TextStyle(color: Colors.black),
+                                  iconEnabledColor: Colors.black, // Icon in black
                                   isExpanded: true,
                                 ),
                               ),
                               const SizedBox(width: 10),
                               IconButton(
-                                icon: const Icon(Icons.refresh, color: Colors.white),
+                                icon: const Icon(Icons.refresh, color: Colors.black), // Icon in black
                                 onPressed: _fetchBraceletLocation,
                               ),
                             ],
@@ -330,7 +327,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                   'Bracelet Location: $braceletAddress',
                                   style: const TextStyle(
                                     fontFamily: 'Montserrat',
-                                    color: Colors.white70,
+                                    color: Colors.black, // Location text in black
                                     fontSize: 14,
                                   ),
                                 ),
@@ -339,7 +336,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                     'Distance: ${distanceToBracelet!.toStringAsFixed(2)} km',
                                     style: const TextStyle(
                                       fontFamily: 'Montserrat',
-                                      color: Colors.white70,
+                                      color: Colors.black, // Distance text in black
                                       fontSize: 14,
                                     ),
                                   ),
@@ -349,7 +346,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         ],
                         Expanded(
                           child: isLoadingBracelets || isLoadingUserLocation
-                              ? const Center(child: CircularProgressIndicator(color: Colors.white))
+                              ? const Center(child: CircularProgressIndicator(color: Colors.black)) // Spinner in black
                               : bracelets.isEmpty
                                   ? const Center(
                                       child: Text(
@@ -357,20 +354,20 @@ class _LocationScreenState extends State<LocationScreen> {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: 'Montserrat',
-                                          color: Colors.white70,
+                                          color: Colors.black, // Error message in black
                                           fontSize: 16,
                                         ),
                                       ),
                                     )
                                   : isLoadingLocation
-                                      ? const Center(child: CircularProgressIndicator(color: Colors.white))
+                                      ? const Center(child: CircularProgressIndicator(color: Colors.black)) // Spinner in black
                                       : userLocation == null
                                           ? const Center(
                                               child: Text(
                                                 'Unable to fetch your location.',
                                                 style: TextStyle(
                                                   fontFamily: 'Montserrat',
-                                                  color: Colors.white70,
+                                                  color: Colors.black, // Error message in black
                                                   fontSize: 16,
                                                 ),
                                               ),

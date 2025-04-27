@@ -64,7 +64,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
         'Error',
         'Bluetooth permissions are required to connect to your bracelet.',
         backgroundColor: Styles.defaultRedColor,
-        colorText: Styles.defaultYellowColor,
+        colorText: Colors.black,
       );
     }
   }
@@ -117,11 +117,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color.fromARGB(255, 255, 255, 255), Color.fromARGB(255, 255, 255, 255)],
-          ),
+          color: Colors.white, // Set background to white
         ),
         child: SafeArea(
           child: Padding(
@@ -138,7 +134,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                         fontFamily: 'Rubik',
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        color: Styles.defaultYellowColor,
+                        color: const Color(0xFF000080), // Major title color
                         shadows: [
                           const Shadow(
                             color: Colors.black45,
@@ -181,7 +177,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                 Icon(
                                   Icons.watch,
                                   size: 90,
-                                  color: Styles.defaultYellowColor.withOpacity(0.9),
+                                  color: Colors.white, // Changed icon color to white for better contrast
                                 ),
                                 Positioned(
                                   top: 20,
@@ -232,7 +228,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                               fontFamily: 'Rubik',
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Styles.defaultYellowColor,
+                              color: const Color(0xFF000080), // Major title color
                             ),
                           ),
                           SizedBox(height: Styles.defaultPadding / 2),
@@ -242,7 +238,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             style: TextStyle(
                               fontFamily: 'Rubik',
                               fontSize: 16,
-                              color: Styles.defaultLightWhiteColor,
+                              color: Colors.black, // Other text in black
                               height: 1.5,
                             ),
                           ),
@@ -256,7 +252,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                     child: _isScanning
                         ? Shimmer.fromColors(
                             baseColor: Styles.defaultBlueColor,
-                            highlightColor: Styles.defaultYellowColor,
+                            highlightColor: Colors.white,
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                               decoration: BoxDecoration(
@@ -267,7 +263,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   CircularProgressIndicator(
-                                    color: Styles.defaultYellowColor,
+                                    color: Colors.white, // Changed to white for contrast
                                     strokeWidth: 2,
                                   ),
                                   const SizedBox(width: 10),
@@ -276,7 +272,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                     style: TextStyle(
                                       fontFamily: 'Rubik',
                                       fontSize: 16,
-                                      color: Styles.defaultYellowColor,
+                                      color: Colors.white, // Button text in white
                                     ),
                                   ),
                                 ],
@@ -292,8 +288,8 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             ),
                             child: Container(
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [Styles.defaultBlueColor, Styles.defaultRedColor],
+                                gradient: const LinearGradient(
+                                  colors: [Color(0xFF0066FF), Color(0xFF0066FF)], // Using defaultBlueColor
                                 ),
                                 borderRadius: Styles.defaultBorderRadius,
                                 boxShadow: [
@@ -310,7 +306,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                 style: TextStyle(
                                   fontFamily: 'Rubik',
                                   fontSize: 16,
-                                  color: Styles.defaultYellowColor,
+                                  color: Colors.white, // Button text in white
                                 ),
                               ),
                             ),
@@ -321,14 +317,14 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Styles.defaultGreyColor.withOpacity(0.3),
+                        color: Colors.grey.withOpacity(0.1), // Adjusted for better visibility on white background
                         borderRadius: Styles.defaultBorderRadius,
-                        border: Border.all(color: Styles.defaultYellowColor.withOpacity(0.3)),
+                        border: Border.all(color: Colors.grey.withOpacity(0.3)),
                       ),
                       child: DropdownButton<DiscoveredDevice>(
                         hint: Text(
                           'Select a Bracelet',
-                          style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultLightWhiteColor),
+                          style: TextStyle(fontFamily: 'Rubik', color: Colors.black), // Dropdown hint in black
                         ),
                         value: _selectedDevice,
                         items: _devices.map((device) {
@@ -336,7 +332,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             value: device,
                             child: Text(
                               device.name?.isNotEmpty == true ? device.name! : 'Unknown Device (${device.id})',
-                              style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
+                              style: TextStyle(fontFamily: 'Rubik', color: Colors.black), // Dropdown items in black
                             ),
                           );
                         }).toList(),
@@ -345,10 +341,10 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             _selectedDevice = device;
                           });
                         },
-                        dropdownColor: Styles.defaultGreyColor,
+                        dropdownColor: Colors.white, // Adjusted for white background
                         isExpanded: true,
                         underline: const SizedBox(),
-                        icon: Icon(Icons.arrow_drop_down, color: Styles.defaultYellowColor),
+                        icon: Icon(Icons.arrow_drop_down, color: Colors.black), // Icon in black
                       ),
                     ),
                   ),
@@ -363,8 +359,8 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                       ),
                       child: Container(
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Styles.defaultBlueColor, Styles.defaultRedColor],
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF0066FF), Color(0xFF0066FF)], // Using defaultBlueColor
                           ),
                           borderRadius: Styles.defaultBorderRadius,
                           boxShadow: [
@@ -381,19 +377,19 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   CircularProgressIndicator(
-                                    color: Styles.defaultYellowColor,
+                                    color: Colors.white, // Changed to white for contrast
                                     strokeWidth: 2,
                                   ),
                                   const SizedBox(width: 10),
                                   Text(
                                     'Connecting...',
-                                    style: TextStyle(fontFamily: 'Rubik', fontSize: 16, color: Styles.defaultYellowColor),
+                                    style: TextStyle(fontFamily: 'Rubik', fontSize: 16, color: Colors.white), // Button text in white
                                   ),
                                 ],
                               )
                             : Text(
                                 'Connect',
-                                style: TextStyle(fontFamily: 'Rubik', fontSize: 16, color: Styles.defaultYellowColor),
+                                style: TextStyle(fontFamily: 'Rubik', fontSize: 16, color: Colors.white), // Button text in white
                               ),
                       ),
                     ),
@@ -407,7 +403,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                         style: TextStyle(
                           fontFamily: 'Rubik',
                           fontSize: 14,
-                          color: Styles.defaultLightWhiteColor,
+                          color: Colors.black, // Other text in black
                           decoration: TextDecoration.underline,
                         ),
                       ),

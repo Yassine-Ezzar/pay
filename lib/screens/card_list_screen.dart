@@ -82,7 +82,7 @@ class _CardListScreenState extends State<CardListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Fond sombre comme Revolut
+      backgroundColor: Colors.black, 
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -207,9 +207,9 @@ class _CardListScreenState extends State<CardListScreen> {
 
   Widget _buildCardItem(dynamic card, int index) {
     final List<Color> cardColors = [
-      const Color(0xFF1E3A8A), // Bleu foncé
-      const Color(0xFF6B21A8), // Violet
-      const Color(0xFF047857), // Vert
+      const Color(0xFF1E3A8A), 
+      const Color(0xFF6B21A8), 
+      const Color(0xFF047857), 
     ];
     final cardColor = cardColors[index % cardColors.length];
 
