@@ -10,7 +10,7 @@ class ContactUsScreen extends StatelessWidget {
         title: const Text(
           'Contact Us',
           style: TextStyle(
-            fontFamily: 'Montserrat',
+            fontFamily: 'Poppins',
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Color(0xFF000080),
@@ -34,7 +34,7 @@ class ContactUsScreen extends StatelessWidget {
               const Text(
                 'Our Team Is Here for You',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF000080),
@@ -44,7 +44,7 @@ class ContactUsScreen extends StatelessWidget {
               const Text(
                 'to address your inquiries, suggestions, or bug reports.',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 14,
                   color: Colors.black54,
                 ),
@@ -97,7 +97,7 @@ class ContactUsScreen extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontFamily: 'Montserrat',
+                    fontFamily: 'Poppins',
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -107,7 +107,7 @@ class ContactUsScreen extends StatelessWidget {
                 Text(
                   subtitle,
                   style: const TextStyle(
-                    fontFamily: 'Montserrat',
+                    fontFamily: 'Poppins',
                     fontSize: 14,
                     color: Colors.black54,
                   ),

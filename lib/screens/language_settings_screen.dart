@@ -46,7 +46,7 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
         title: const Text(
           'Language Settings',
           style: TextStyle(
-            fontFamily: 'Montserrat',
+            fontFamily: 'Poppins',
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -67,7 +67,7 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
               title: const Text(
                 'English',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 18,
                   color: Colors.white,
                 ),
@@ -83,7 +83,7 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
               title: Text(
                 'French',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 18,
                   color: Colors.white,
                 ),

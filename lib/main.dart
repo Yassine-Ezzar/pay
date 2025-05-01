@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
           initialRoute: initialRoute,
           getPages: AppPages.pages,
           theme: ThemeData(
-            fontFamily: 'Rubik',
+            fontFamily: 'Poppins',
             scaffoldBackgroundColor: Colors.white,
             primaryColor: Styles.defaultBlueColor,
             colorScheme: ColorScheme.light(
@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
             iconTheme: const IconThemeData(color: Colors.black),
           ),
           darkTheme: ThemeData(
-            fontFamily: 'Rubik',
+            fontFamily: 'Poppins',
             scaffoldBackgroundColor: Styles.scaffoldBackgroundColor,
             primaryColor: Styles.defaultBlueColor,
             colorScheme: ColorScheme.dark(

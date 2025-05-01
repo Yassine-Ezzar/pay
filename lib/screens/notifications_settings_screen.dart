@@ -39,7 +39,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
         title: const Text(
           'Notifications Settings',
           style: TextStyle(
-            fontFamily: 'Montserrat',
+            fontFamily: 'Poppins',
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -60,7 +60,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
               title: const Text(
                 'Enable Notifications',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 18,
                   color: Colors.white,
                 ),

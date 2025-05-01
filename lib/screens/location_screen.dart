@@ -259,7 +259,7 @@ class _LocationScreenState extends State<LocationScreen> {
                               Text(
                                 'Locate Your Bracelet',
                                 style: TextStyle(
-                                  fontFamily: 'Montserrat',
+                                  fontFamily: 'Poppins',
                                   fontSize: 28,
                                   fontWeight: FontWeight.w700,
                                   color: const Color(0xFF000080), // Main title color
@@ -278,7 +278,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                   hint: const Text(
                                     'Select a Bracelet',
                                     style: TextStyle(
-                                      fontFamily: 'Montserrat',
+                                      fontFamily: 'Poppins',
                                       color: Colors.black, // Hint text in black
                                     ),
                                   ),
@@ -288,7 +288,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                       child: Text(
                                         bracelet['name'],
                                         style: const TextStyle(
-                                          fontFamily: 'Montserrat',
+                                          fontFamily: 'Poppins',
                                           color: Colors.black, // Dropdown items in black
                                         ),
                                       ),
@@ -326,7 +326,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                 Text(
                                   'Bracelet Location: $braceletAddress',
                                   style: const TextStyle(
-                                    fontFamily: 'Montserrat',
+                                    fontFamily: 'Poppins',
                                     color: Colors.black, // Location text in black
                                     fontSize: 14,
                                   ),
@@ -335,7 +335,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                   Text(
                                     'Distance: ${distanceToBracelet!.toStringAsFixed(2)} km',
                                     style: const TextStyle(
-                                      fontFamily: 'Montserrat',
+                                      fontFamily: 'Poppins',
                                       color: Colors.black, // Distance text in black
                                       fontSize: 14,
                                     ),
@@ -353,20 +353,20 @@ class _LocationScreenState extends State<LocationScreen> {
                                         'No bracelets found.\nPlease connect a bracelet first.',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          fontFamily: 'Montserrat',
+                                          fontFamily: 'Poppins',
                                           color: Colors.black, // Error message in black
                                           fontSize: 16,
                                         ),
                                       ),
                                     )
                                   : isLoadingLocation
-                                      ? const Center(child: CircularProgressIndicator(color: Colors.black)) // Spinner in black
+                                      ? const Center(child: CircularProgressIndicator(color: Colors.black)) 
                                       : userLocation == null
                                           ? const Center(
                                               child: Text(
                                                 'Unable to fetch your location.',
                                                 style: TextStyle(
-                                                  fontFamily: 'Montserrat',
+                                                  fontFamily: 'Poppins',
                                                   color: Colors.black, // Error message in black
                                                   fontSize: 16,
                                                 ),

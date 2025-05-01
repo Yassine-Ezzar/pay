@@ -50,13 +50,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             horizontal: Styles.defaultPadding,
                             vertical: Styles.defaultPadding / 2,
                           ),
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Notifications',
                                 style: TextStyle(
-                                  fontFamily: 'Montserrat',
+                                  fontFamily: 'Poppins',
                                   fontSize: 28,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white,
@@ -71,7 +71,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                               'Notifications Page\n(To be implemented)',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontFamily: 'Montserrat',
+                                fontFamily: 'Poppins',
                                 color: Colors.white70,
                                 fontSize: 16,
                               ),

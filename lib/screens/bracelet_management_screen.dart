@@ -113,15 +113,15 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70), 
+        preferredSize: const Size.fromHeight(70), 
         child: AppBar(
-          title: Padding(
+          title: const Padding(
             padding: EdgeInsets.only(top: 33), 
             child: Text(
               'Manage Bracelets',
               style: TextStyle(
-                fontFamily: 'Rubik',
-                color: const Color(0xFF000080),
+                fontFamily: 'Poppins',
+                color: Color(0xFF000080),
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -130,9 +130,9 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           leading: Padding(
-            padding: EdgeInsets.only(top: 33), 
+            padding: const EdgeInsets.only(top: 33), 
             child: IconButton(
-              icon: Icon(Icons.arrow_back, color: const Color(0xFF000080), size: 20),
+              icon: const Icon(Icons.arrow_back, color: Color(0xFF000080), size: 20),
               onPressed: () => Get.back(),
             ),
           ),
@@ -145,7 +145,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: Styles.defaultPadding / 2, vertical: Styles.defaultPadding / 4), 
             child: isLoading
-                ? Center(child: CircularProgressIndicator(color: Colors.blue))
+                ? const Center(child: CircularProgressIndicator(color: Colors.blue))
                 : bracelets.isEmpty
                     ? Center(
                         child: Column(
@@ -161,7 +161,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                               'No bracelets found.\nTap the + button to connect a new bracelet.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontFamily: 'Rubik',
+                                fontFamily: 'Poppins',
                                 color: Colors.grey.shade800,
                                 fontSize: 14,
                                 fontStyle: FontStyle.italic,
@@ -188,8 +188,8 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                               ),
                               title: Text(
                                 bracelet['name'],
-                                style: TextStyle(
-                                  fontFamily: 'Rubik',
+                                style: const TextStyle(
+                                  fontFamily: 'Poppins',
                                   color: Colors.black87,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -198,7 +198,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                               subtitle: Text(
                                 'ID: ${bracelet['braceletId']}\nStatus: ${bracelet['connected'] ? 'Connected' : 'Disconnected'}',
                                 style: TextStyle(
-                                  fontFamily: 'Rubik',
+                                  fontFamily: 'Poppins',
                                   color: Colors.grey.shade700,
                                   fontSize: 12,
                                 ),
@@ -224,7 +224,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                                     tooltip: bracelet['connected'] ? 'Disconnect' : 'Connect',
                                   ),
                                   IconButton(
-                                    icon: Icon(Icons.delete, color: Colors.red, size: 20),
+                                    icon: const Icon(Icons.delete, color: Colors.red, size: 20),
                                     onPressed: () => _deleteBracelet(bracelet['braceletId']),
                                     tooltip: 'Delete',
                                   ),
@@ -238,11 +238,11 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
         ),
       ),
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 30), 
+        padding: const EdgeInsets.only(bottom: 30), 
         child: FloatingActionButton(
           onPressed: _navigateToAddBracelet,
           backgroundColor: Colors.blue,
-          child: Icon(Icons.add, color: Colors.white, size: 24),
+          child: const Icon(Icons.add, color: Colors.white, size: 24),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat, 

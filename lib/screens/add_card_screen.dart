@@ -152,7 +152,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                           child: Text(
                             _isFrontScanned ? 'Scan Back Side' : 'Scan Front Side',
                             style: const TextStyle(
-                              fontFamily: 'Montserrat',
+                              fontFamily: 'Poppins',
                               fontSize: 20,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -168,7 +168,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                             : 'Hold the phone near the front of the card to scan the details.',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontFamily: 'Montserrat',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           color: Colors.white,
                         ),
@@ -202,7 +202,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                 child: const Text(
                   'Cancel',
                   style: TextStyle(
-                    fontFamily: 'Montserrat',
+                    fontFamily: 'Poppins',
                     fontSize: 16,
                     color: Colors.white,
                   ),
@@ -222,7 +222,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                   child: const Text(
                     'Enter Card Details Manually',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       color: Colors.white,
                       decoration: TextDecoration.underline,

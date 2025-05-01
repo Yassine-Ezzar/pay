@@ -30,7 +30,7 @@ class Menu extends StatelessWidget {
                   leading: Icon(Icons.credit_card, color: Styles.defaultYellowColor), 
                   title: Text(
                     'Cards',
-                    style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
+                    style: TextStyle(fontFamily: 'Poppins', color: Styles.defaultYellowColor),
                   ),
                   onTap: () {
                     Get.back(); 
@@ -41,7 +41,7 @@ class Menu extends StatelessWidget {
                   leading: Icon(Icons.watch, color: Styles.defaultYellowColor),
                   title: Text(
                     'Bracelet',
-                    style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
+                    style: TextStyle(fontFamily: 'Poppins', color: Styles.defaultYellowColor),
                   ),
                   onTap: () {
                     Get.back();
@@ -52,7 +52,7 @@ class Menu extends StatelessWidget {
                   leading: Icon(Icons.logout, color: Styles.defaultRedColor),
                   title: Text(
                     'Logout',
-                    style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultRedColor),
+                    style: TextStyle(fontFamily: 'Poppins', color: Styles.defaultRedColor),
                   ),
                   onTap: () async {
                     await ApiService.storage.deleteAll();

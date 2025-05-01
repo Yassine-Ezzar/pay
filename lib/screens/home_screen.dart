@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 800),
     )..repeat(reverse: true);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
     _loadUserId();
@@ -134,20 +134,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             horizontal: Styles.defaultPadding,
                             vertical: Styles.defaultPadding / 2,
                           ),
-                          child: Row(
+                          child: const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Your Cards',
                                 style: TextStyle(
-                                  fontFamily: 'Montserrat',
+                                  fontFamily: 'Poppins',
                                   fontSize: 28,
                                   fontWeight: FontWeight.w700,
                                   color: Color(0xFF000080),
                                   letterSpacing: 1.2,
                                 ),
                               ),
-                              const Menu(),
+                              Menu(),
                             ],
                           ),
                         ),
@@ -166,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         'No cards added yet.\nTap the + button to add a card.',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          fontFamily: 'Montserrat',
+                                          fontFamily: 'Poppins',
                                           color: Colors.white70,
                                           fontSize: 16,
                                           fontStyle: FontStyle.italic,
@@ -225,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                               cardBgColor: const Color(0xFF1E3A8A),
                                                               glassmorphismConfig: Glassmorphism.defaultConfig(),
                                                               textStyle: const TextStyle(
-                                                                fontFamily: 'Montserrat',
+                                                                fontFamily: 'Poppins',
                                                                 color: Colors.white,
                                                                 fontSize: 16,
                                                                 fontWeight: FontWeight.w600,
@@ -287,7 +287,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             const Text(
                               'Transactions',
                               style: TextStyle(
-                                fontFamily: 'Montserrat',
+                                fontFamily: 'Poppins',
                                 fontSize: 22,
                                 fontWeight: FontWeight.w700,
                                 color: Color(0xFF000080),
@@ -300,13 +300,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   if (isRefreshing)
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 8.0),
+                                    const Padding(
+                                      padding: EdgeInsets.only(right: 8.0),
                                       child: SizedBox(
                                         width: 16,
                                         height: 16,
                                         child: CircularProgressIndicator(
-                                          color: const Color(0xFF000080),
+                                          color: Color(0xFF000080),
                                           strokeWidth: 2,
                                         ),
                                       ),
@@ -314,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   const Text(
                                     'REFRESH',
                                     style: TextStyle(
-                                      fontFamily: 'Montserrat',
+                                      fontFamily: 'Poppins',
                                       color: Color(0xFF000080),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
@@ -342,7 +342,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         'No transactions yet.\nMake a payment with your bracelet to see it here.',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          fontFamily: 'Montserrat',
+                                          fontFamily: 'Poppins',
                                           color: Color(0xFF000080),
                                           fontSize: 16,
                                           fontStyle: FontStyle.italic,
@@ -377,7 +377,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           title: Text(
                                             payment['merchant'],
                                             style: const TextStyle(
-                                              fontFamily: 'Montserrat',
+                                              fontFamily: 'Poppins',
                                               color: Color(0xFF000080),
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600,
@@ -386,7 +386,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           subtitle: Text(
                                             'Date: ${DateTime.parse(payment['date']).toLocal().toString().split('.')[0]}',
                                             style: const TextStyle(
-                                              fontFamily: 'Montserrat',
+                                              fontFamily: 'Poppins',
                                               color: Color(0xFF000080),
                                               fontSize: 12,
                                             ),
@@ -394,7 +394,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           trailing: Text(
                                             '-\$${payment['amount'].toStringAsFixed(2)}',
                                             style: const TextStyle(
-                                              fontFamily: 'Montserrat',
+                                              fontFamily: 'Poppins',
                                               color: Colors.redAccent,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600,

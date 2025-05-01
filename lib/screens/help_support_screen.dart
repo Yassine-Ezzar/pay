@@ -10,7 +10,7 @@ class HelpSupportScreen extends StatelessWidget {
         title: const Text(
           'Help & Support',
           style: TextStyle(
-            fontFamily: 'Montserrat',
+            fontFamily: 'Poppins',
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Color(0xFF000080),
@@ -39,7 +39,7 @@ class HelpSupportScreen extends StatelessWidget {
               Text(
                 'We’re Here to Help',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -49,7 +49,7 @@ class HelpSupportScreen extends StatelessWidget {
               Text(
                 'Have a question or facing an issue with your bracelet or app? We’re here to assist you every step of the way.',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 14,
                   color: Colors.black54,
                 ),
@@ -62,7 +62,7 @@ class HelpSupportScreen extends StatelessWidget {
                   Text(
                     'Technical Issues',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
+                      fontFamily: 'Poppins',
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -74,7 +74,7 @@ class HelpSupportScreen extends StatelessWidget {
               Text(
                 'Experiencing a bug? Is your bracelet not connecting properly, or are you having trouble with a payment? Check our FAQ for quick solutions or contact our technical support.',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 14,
                   color: Colors.black54,
                 ),
@@ -87,7 +87,7 @@ class HelpSupportScreen extends StatelessWidget {
                   Text(
                     'Usage Guide',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
+                      fontFamily: 'Poppins',
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -99,7 +99,7 @@ class HelpSupportScreen extends StatelessWidget {
               Text(
                 'Access our detailed tutorials to learn how to activate your bracelet, add a payment method, or use geolocation to find your lost bracelet.',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 14,
                   color: Colors.black54,
                 ),
@@ -113,7 +113,7 @@ class HelpSupportScreen extends StatelessWidget {
                   Text(
                     'Personalized Assistance',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
+                      fontFamily: 'Poppins',
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -125,7 +125,7 @@ class HelpSupportScreen extends StatelessWidget {
               Text(
                 'If your issue persists or you have a specific question, our team will respond as soon as possible via email or through the in-app chat. Our support is available 24/7 to provide fast and effective assistance.',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 14,
                   color: Colors.black54,
                 ),
@@ -144,7 +144,7 @@ class HelpSupportScreen extends StatelessWidget {
       title: Text(
         question,
         style: const TextStyle(
-          fontFamily: 'Montserrat',
+          fontFamily: 'Poppins',
           fontSize: 16,
           color: Color(0xFF000080),
         ),
@@ -157,7 +157,7 @@ class HelpSupportScreen extends StatelessWidget {
           child: Text(
             answer,
             style: const TextStyle(
-              fontFamily: 'Montserrat',
+              fontFamily: 'Poppins',
               fontSize: 14,
               color: Colors.black54,
             ),

@@ -82,7 +82,7 @@ class AddCardGuideScreen extends StatelessWidget {
                         const Text(
                           '**** **** **** 8712',
                           style: TextStyle(
-                            fontFamily: 'Montserrat',
+                            fontFamily: 'Poppins',
                             fontSize: 20,
                             color: Colors.black54,
                             letterSpacing: 2,
@@ -95,7 +95,7 @@ class AddCardGuideScreen extends StatelessWidget {
                             Text(
                               'CARDHOLDER NAME',
                               style: TextStyle(
-                                fontFamily: 'Montserrat',
+                                fontFamily: 'Poppins',
                                 fontSize: 14,
                                 color: Colors.black54,
                               ),
@@ -103,7 +103,7 @@ class AddCardGuideScreen extends StatelessWidget {
                             Text(
                               '12/25',
                               style: TextStyle(
-                                fontFamily: 'Montserrat',
+                                fontFamily: 'Poppins',
                                 fontSize: 14,
                                 color: Colors.black54,
                               ),
@@ -131,7 +131,7 @@ class AddCardGuideScreen extends StatelessWidget {
             const Text(
               'Add Card to Your Bracelet',
               style: TextStyle(
-                fontFamily: 'Montserrat',
+                fontFamily: 'Poppins',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
@@ -142,7 +142,7 @@ class AddCardGuideScreen extends StatelessWidget {
             const Text(
               'Add credit, debit, or store cards to your bracelet to make secure payments.',
               style: TextStyle(
-                fontFamily: 'Montserrat',
+                fontFamily: 'Poppins',
                 fontSize: 16,
                 color: Colors.black54,
                 height: 1.5,
@@ -163,7 +163,7 @@ class AddCardGuideScreen extends StatelessWidget {
                   child: Text(
                     'Card-related information, location, and device settings may be sent to the card issuer to provide assessments to your card issuer or payment network to set up Apple Pay and prevent fraud.',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
+                      fontFamily: 'Poppins',
                       fontSize: 12,
                       color: Colors.grey,
                       height: 1.5,
@@ -189,7 +189,7 @@ class AddCardGuideScreen extends StatelessWidget {
                 child: const Text(
                   'Continue',
                   style: TextStyle(
-                    fontFamily: 'Montserrat',
+                    fontFamily: 'Poppins',
                     fontSize: 19,
                     fontWeight: FontWeight.w600,
                   ),

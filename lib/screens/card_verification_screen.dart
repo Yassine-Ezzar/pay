@@ -64,7 +64,7 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
               const Text(
                 'Verifying Your Card',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -76,10 +76,10 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
               else if (_errorMessage != null)
                 Column(
                   children: [
-                    Text(
+                    const Text(
                       'Verification Failed',
-                      style: const TextStyle(
-                        fontFamily: 'Montserrat',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
                         fontSize: 18,
                         color: Colors.redAccent,
                       ),
@@ -88,7 +88,7 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
                     Text(
                       _errorMessage!,
                       style: const TextStyle(
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'Poppins',
                         fontSize: 16,
                         color: Colors.white70,
                       ),
@@ -108,7 +108,7 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
                       child: const Text(
                         'Try Again',
                         style: TextStyle(
-                          fontFamily: 'Montserrat',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),

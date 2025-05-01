@@ -143,7 +143,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                     const Text(
                       'Edit Profile',
                       style: TextStyle(
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'Poppins',
                         fontSize: 24,
                         color: Color(0xFF000080),
                         fontWeight: FontWeight.bold,
@@ -353,7 +353,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                     : const Text(
                                         'SUBMIT',
                                         style: TextStyle(
-                                          fontFamily: 'Montserrat',
+                                          fontFamily: 'Poppins',
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                           color: Color.fromARGB(255, 255, 255, 255),

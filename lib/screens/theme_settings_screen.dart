@@ -40,7 +40,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
         title: Text(
           'theme'.tr,
           style: const TextStyle(
-            fontFamily: 'Montserrat',
+            fontFamily: 'Poppins',
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
@@ -58,7 +58,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
               title: Text(
                 'dark_mode'.tr,
                 style: const TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 18,
                 ),
               ),

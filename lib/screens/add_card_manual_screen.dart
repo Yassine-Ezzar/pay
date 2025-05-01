@@ -69,7 +69,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
         title: const Text(
           'Add Card Manually',
           style: TextStyle(
-            fontFamily: 'Montserrat',
+            fontFamily: 'Poppins',
             fontSize: 20,
             color: Colors.white,
           ),
@@ -93,7 +93,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                 cardBgColor: Colors.blueAccent,
                 glassmorphismConfig: Glassmorphism.defaultConfig(),
                 textStyle: const TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -112,7 +112,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                     const Text(
                       'Card Details',
                       style: TextStyle(
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'Poppins',
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -316,7 +316,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                               : const Text(
                                   'Continue',
                                   style: TextStyle(
-                                    fontFamily: 'Montserrat',
+                                    fontFamily: 'Poppins',
                                     fontSize: 19,
                                     fontWeight: FontWeight.w600,
                                   ),

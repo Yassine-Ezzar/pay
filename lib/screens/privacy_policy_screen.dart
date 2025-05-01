@@ -10,7 +10,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         title: const Text(
           'Privacy Policy',
           style: TextStyle(
-            fontFamily: 'Montserrat',
+            fontFamily: 'Poppins',
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: Color(0xFF000080),
@@ -52,7 +52,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 '🗑️ Data Deletion\n'
                 'You can request the deletion of your personal data at any time through your account settings.',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Poppins',
                   fontSize: 16,
                   color: Colors.black87,
                 ),

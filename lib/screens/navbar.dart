@@ -38,7 +38,7 @@ class CustomNavBar extends StatelessWidget {
           children: [
             _buildNavItem(Icons.home, 'Home', 0),
             _buildNavItem(Icons.location_on, 'Location', 1), 
-            _buildNavItem(Icons.notifications, 'Notifications', 2),
+            _buildNavItem(Icons.wallet, 'Wallet', 2),
             _buildNavItem(Icons.person, 'Profile', 3),
           ],
         ),
@@ -69,7 +69,7 @@ class CustomNavBar extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                fontFamily: 'Montserrat',
+                fontFamily: 'Poppins',
                 fontSize: 12,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 color: isSelected ? const Color(0xFF000080) : const Color(0xFF000080).withOpacity(0.9),

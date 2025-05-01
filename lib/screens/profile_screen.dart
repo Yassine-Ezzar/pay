@@ -124,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 const Text(
                   'Choose Your Avatar',
                   style: TextStyle(
-                    fontFamily: 'Montserrat',
+                    fontFamily: 'Poppins',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -179,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       child: const Text(
                         'Cancel',
                         style: TextStyle(
-                          fontFamily: 'Montserrat',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           color: Colors.white70,
                         ),
@@ -202,7 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       child: const Text(
                         'Select',
                         style: TextStyle(
-                          fontFamily: 'Montserrat',
+                          fontFamily: 'Poppins',
                           fontSize: 16,
                           color: Color(0xFF477bd0),
                         ),
@@ -290,7 +290,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                     Text(
                                       profile?['fullName'] ?? 'New User',
                                       style: const TextStyle(
-                                        fontFamily: 'Montserrat',
+                                        fontFamily: 'Poppins',
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold,
                                         color: Color.fromARGB(255, 0, 0, 0),
@@ -307,7 +307,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                     Text(
                                       '${profile?['email'] ?? 'N/A'} | ${profile?['phoneNumber'] ?? 'N/A'}',
                                       style: const TextStyle(
-                                        fontFamily: 'Montserrat',
+                                        fontFamily: 'Poppins',
                                         fontSize: 16,
                                         color: Color.fromARGB(179, 0, 0, 0),
                                       ),
@@ -342,7 +342,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                                   ? 'Create Profile Information'
                                                   : 'Edit Profile Information',
                                               style: const TextStyle(
-                                                fontFamily: 'Montserrat',
+                                                fontFamily: 'Poppins',
                                                 fontSize: 14,
                                                 color: Color.fromARGB(255, 0, 0, 0),
                                                 decoration: TextDecoration.underline,
@@ -465,7 +465,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
           title: Text(
             title,
             style: TextStyle(
-              fontFamily: 'Montserrat',
+              fontFamily: 'Poppins',
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: color ?? const Color(0xFF000080),
@@ -475,7 +475,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
               ? Text(
                   subtitle,
                   style: const TextStyle(
-                    fontFamily: 'Montserrat',
+                    fontFamily: 'Poppins',
                     fontSize: 14,
                     color: Color(0xFF000080),
                   ),

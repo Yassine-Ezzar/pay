@@ -89,7 +89,7 @@ class _CardListScreenState extends State<CardListScreen> {
         title: const Text(
           'Your Cards',
           style: TextStyle(
-            fontFamily: 'Rubik',
+            fontFamily: 'Poppins',
             color: Colors.white,
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -133,7 +133,7 @@ class _CardListScreenState extends State<CardListScreen> {
                               const Text(
                                 'No Cards Added',
                                 style: TextStyle(
-                                  fontFamily: 'Rubik',
+                                  fontFamily: 'Poppins',
                                   fontSize: 20,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500,
@@ -143,7 +143,7 @@ class _CardListScreenState extends State<CardListScreen> {
                               Text(
                                 'Add a card to get started',
                                 style: TextStyle(
-                                  fontFamily: 'Rubik',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
                                   color: Colors.grey[400],
                                 ),
@@ -237,7 +237,7 @@ class _CardListScreenState extends State<CardListScreen> {
             onCreditCardWidgetChange: (creditCardBrand) {},
             cardBgColor: cardColor,
             textStyle: const TextStyle(
-              fontFamily: 'Rubik',
+              fontFamily: 'Poppins',
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w500,
