@@ -34,7 +34,12 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
 
   void _resetPin() async {
     if (_enteredPin.length != 4 || _nameController.text.isEmpty || _answerController.text.isEmpty) {
-      Get.snackbar('Erreur', 'Veuillez remplir tous les champs correctement', backgroundColor: Styles.defaultRedColor);
+      Get.snackbar(
+        'Error',
+        'Please fill all fields correctly',
+        backgroundColor: Styles.defaultRedColor,
+        colorText: Colors.white,
+      );
       return;
     }
     try {
@@ -43,26 +48,31 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
         _answerController.text,
         _newPinController.text,
       );
-      Get.back();
+      Get.offNamed('/password-changed'); // Navigate to the new success screen
     } catch (e) {
-      Get.snackbar('Erreur', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor, colorText: Colors.white);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Styles.scaffoldBackgroundColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Styles.scaffoldBackgroundColor,
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.close, color: Styles.defaultYellowColor),
+          icon: const Icon(Icons.close, color: Color(0xFF063B87)),
           onPressed: () => Get.back(),
         ),
-        title: Text(
+        title: const Text(
           'Reset PIN',
-          style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor, fontSize: 24),
+          style: TextStyle(
+            fontFamily: 'Poppins',
+            color: Color(0xFF063B87),
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
@@ -76,14 +86,13 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(4, (index) {
                   return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Container(
-                      width: 20,
-                      height: 20,
+                      width: 16,
+                      height: 16,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: index < _enteredPin.length ? Styles.defaultYellowColor : Styles.defaultGreyColor,
-                        border: Border.all(color: Styles.defaultLightWhiteColor),
+                        color: index < _enteredPin.length ? const Color(0xFF063B87) : Colors.grey,
                       ),
                     ),
                   );
@@ -92,50 +101,66 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
               SizedBox(height: Styles.defaultPadding * 2),
               Text(
                 _enteredPin.isEmpty ? '****' : _enteredPin,
-                style: TextStyle(
-                  fontFamily: 'Rubik',
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Styles.defaultYellowColor,
+                  color: Colors.black,
                 ),
               ),
               SizedBox(height: Styles.defaultPadding * 2),
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Nom',
-                  labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
+                  labelText: 'Name',
+                  labelStyle: const TextStyle(color: Colors.black),
                   filled: true,
-                  fillColor: Styles.defaultLightGreyColor.withOpacity(0.2),
+                  fillColor: Colors.grey[200],
+                  border: OutlineInputBorder(
+                    borderRadius: Styles.defaultBorderRadius,
+                    borderSide: const BorderSide(color: Colors.grey),
+                  ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Styles.defaultGreyColor),
+                    borderSide: const BorderSide(color: Colors.grey),
                     borderRadius: Styles.defaultBorderRadius,
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Styles.defaultYellowColor, width: 2),
+                    borderSide: const BorderSide(color: Color(0xFF063B87)),
                     borderRadius: Styles.defaultBorderRadius,
                   ),
                 ),
-                style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik', fontSize: 18),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontSize: 18,
+                ),
               ),
               SizedBox(height: Styles.defaultPadding),
               TextField(
                 controller: _answerController,
                 decoration: InputDecoration(
-                  labelText: 'Nom de votre animal',
-                  labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
+                  labelText: 'Pet’s Name',
+                  labelStyle: const TextStyle(color: Colors.black),
                   filled: true,
-                  fillColor: Styles.defaultLightGreyColor.withOpacity(0.2),
+                  fillColor: Colors.grey[200],
+                  border: OutlineInputBorder(
+                    borderRadius: Styles.defaultBorderRadius,
+                    borderSide: const BorderSide(color: Colors.grey),
+                  ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Styles.defaultGreyColor),
+                    borderSide: const BorderSide(color: Colors.grey),
                     borderRadius: Styles.defaultBorderRadius,
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Styles.defaultYellowColor, width: 2),
+                    borderSide: const BorderSide(color: Color(0xFF063B87)),
                     borderRadius: Styles.defaultBorderRadius,
                   ),
                 ),
-                style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik', fontSize: 18),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontSize: 18,
+                ),
               ),
               SizedBox(height: Styles.defaultPadding * 2),
               GridView.count(
@@ -148,60 +173,78 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
                   return ElevatedButton(
                     onPressed: () => _addNumber('${index + 1}'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Styles.defaultLightGreyColor,
+                      backgroundColor: Colors.grey[200],
                       foregroundColor: Colors.black,
-                      elevation: 5,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                     ),
                     child: Text(
                       '${index + 1}',
-                      style: TextStyle(fontSize: 24, fontFamily: 'Rubik', fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   );
-                })..addAll([
-                  ElevatedButton(
-                    onPressed: _deleteNumber,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Styles.defaultLightGreyColor,
-                      foregroundColor: Colors.black,
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                })
+                  ..addAll([
+                    ElevatedButton(
+                      onPressed: _deleteNumber,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[200],
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                      ),
+                      child: const Icon(
+                        Icons.backspace,
+                        size: 24,
+                        color: Color(0xFF063B87),
+                      ),
                     ),
-                    child: Icon(Icons.backspace, size: 24, color: Styles.defaultYellowColor),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _addNumber('0'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Styles.defaultLightGreyColor,
-                      foregroundColor: Colors.black,
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                    ElevatedButton(
+                      onPressed: () => _addNumber('0'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[200],
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                      ),
+                      child: const Text(
+                        '0',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                    child: Text(
-                      '0',
-                      style: TextStyle(fontSize: 24, fontFamily: 'Rubik', fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox.shrink(),
-                ]),
+                    const SizedBox.shrink(),
+                  ]),
               ),
               SizedBox(height: Styles.defaultPadding * 2),
-              ElevatedButton(
-                onPressed: _enteredPin.length == 4 &&
-                        _nameController.text.isNotEmpty &&
-                        _answerController.text.isNotEmpty
-                    ? _resetPin
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Styles.defaultBlueColor,
-                  foregroundColor: Styles.defaultYellowColor,
-                  padding: EdgeInsets.symmetric(vertical: 18, horizontal: 80),
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-                ),
-                child: Text(
-                  'SUBMIT',
-                  style: TextStyle(fontSize: 20, fontFamily: 'Rubik', fontWeight: FontWeight.bold),
+              SizedBox(
+                width: 363,
+                height: 68,
+                child: ElevatedButton(
+                  onPressed: _enteredPin.length == 4 &&
+                          _nameController.text.isNotEmpty &&
+                          _answerController.text.isNotEmpty
+                      ? _resetPin
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF0066FF),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  child: const Text(
+                    'SUBMIT',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -211,3 +254,4 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
     );
   }
 }
+

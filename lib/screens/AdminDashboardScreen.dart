@@ -145,7 +145,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       Text(
                         'Failed to load data: $errorMessage',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultRedColor,
                           fontSize: 16,
                         ),
@@ -165,7 +165,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         child: const Text(
                           'Retry',
                           style: TextStyle(
-                            fontFamily: 'Rubik',
+                            fontFamily: 'Poppins',
                             color: Colors.white,
                           ),
                         ),
@@ -180,7 +180,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         child: Container(
                           padding: EdgeInsets.fromLTRB(
                               Styles.defaultPadding / 2,
-                              Styles.defaultPadding*2,
+                              Styles.defaultPadding * 2,
                               Styles.defaultPadding / 2,
                               Styles.defaultPadding / 2),
                           color: Styles.cardBackgroundColor,
@@ -190,7 +190,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                               Text(
                                 'Welcome, $adminName',
                                 style: TextStyle(
-                                  fontFamily: 'Rubik',
+                                  fontFamily: 'Poppins',
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: Styles.defaultBlueColor,
@@ -219,10 +219,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         child: Text(
                           'Overview',
                           style: TextStyle(
-                            fontFamily: 'Rubik',
+                            fontFamily: 'Poppins',
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Styles.defaultBlueColor,
+                            color: Color(0xFF063B87), 
                           ),
                         ),
                       ),
@@ -231,8 +231,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                     SliverToBoxAdapter(
                       child: FadeInUp(
                         child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Styles.defaultPadding),
                           child: isLoadingStats
                               ? Center(
                                   child: CircularProgressIndicator(
@@ -259,7 +259,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         ),
                       ),
                     ),
-                    // Analytics Section
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(
@@ -270,10 +269,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         child: Text(
                           'Analytics',
                           style: TextStyle(
-                            fontFamily: 'Rubik',
+                            fontFamily: 'Poppins',
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Styles.defaultBlueColor,
+                            color: Color(0xFF063B87), 
                           ),
                         ),
                       ),
@@ -283,11 +282,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       child: FadeInUp(
                         delay: const Duration(milliseconds: 200),
                         child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Styles.defaultPadding),
                           child: LayoutBuilder(
                             builder: (context, constraints) {
-                              final chartHeight = constraints.maxWidth < 600 ? 160.0 : 200.0;
+                              final chartHeight =
+                                  constraints.maxWidth < 600 ? 160.0 : 200.0;
                               return Column(
                                 children: [
                                   Container(
@@ -306,7 +306,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         ),
                       ),
                     ),
-                    // Details Section
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.fromLTRB(
@@ -317,10 +316,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         child: Text(
                           'Details',
                           style: TextStyle(
-                            fontFamily: 'Rubik',
+                            fontFamily: 'Poppins',
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Styles.defaultBlueColor,
+                            color: Color(0xFF063B87), 
                           ),
                         ),
                       ),
@@ -336,7 +335,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           unselectedLabelColor: Colors.grey,
                           indicatorColor: Styles.defaultBlueColor,
                           labelStyle: const TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.bold,
                               fontSize: 12),
                           tabs: const [
@@ -393,7 +392,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
             Text(
               value,
               style: TextStyle(
-                fontFamily: 'Rubik',
+                fontFamily: 'Poppins',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Styles.defaultBlueColor,
@@ -402,7 +401,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
             Text(
               title,
               style: TextStyle(
-                fontFamily: 'Rubik',
+                fontFamily: 'Poppins',
                 fontSize: 14,
                 color: Styles.defaultLightWhiteColor,
               ),
@@ -431,10 +430,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
             Text(
               'Gender Distribution',
               style: TextStyle(
-                fontFamily: 'Rubik',
+                fontFamily: 'Poppins',
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: Styles.defaultBlueColor,
+                color: Color(0xFF063B87), // Explicitly set to #063b87
               ),
             ),
             SizedBox(height: Styles.defaultPadding / 2),
@@ -444,7 +443,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       child: Text(
                         'No data available',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultLightWhiteColor,
                           fontSize: 12,
                         ),
@@ -460,7 +459,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                                 'Male\n${((genderStats['Male'] ?? 0) / total * 100).toStringAsFixed(1)}%',
                             radius: 40,
                             titleStyle: const TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               fontSize: 9,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -473,7 +472,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                                 'Female\n${((genderStats['Female'] ?? 0) / total * 100).toStringAsFixed(1)}%',
                             radius: 40,
                             titleStyle: const TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               fontSize: 9,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -486,7 +485,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                                 'N/A\n${((genderStats['NotSpecified'] ?? 0) / total * 100).toStringAsFixed(1)}%',
                             radius: 40,
                             titleStyle: const TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               fontSize: 9,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -531,10 +530,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
             Text(
               'User Registration Trend',
               style: TextStyle(
-                fontFamily: 'Rubik',
+                fontFamily: 'Poppins',
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: Styles.defaultBlueColor,
+                color: Color(0xFF063B87), // Explicitly set to #063b87
               ),
             ),
             SizedBox(height: Styles.defaultPadding / 4),
@@ -558,7 +557,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         getTitlesWidget: (value, meta) => Text(
                           value.toInt().toString(),
                           style: TextStyle(
-                            fontFamily: 'Rubik',
+                            fontFamily: 'Poppins',
                             color: Styles.defaultLightWhiteColor,
                             fontSize: 10,
                           ),
@@ -571,15 +570,17 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         getTitlesWidget: (value, meta) => Text(
                           months[value.toInt()],
                           style: TextStyle(
-                            fontFamily: 'Rubik',
+                            fontFamily: 'Poppins',
                             color: Styles.defaultLightWhiteColor,
                             fontSize: 10,
                           ),
                         ),
                       ),
                     ),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles:
+                        const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles:
+                        const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   ),
                   borderData: FlBorderData(show: false),
                   lineBarsData: [
@@ -620,7 +621,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 child: Text(
                   'No users found.',
                   style: TextStyle(
-                    fontFamily: 'Rubik',
+                    fontFamily: 'Poppins',
                     color: Styles.defaultLightWhiteColor,
                     fontSize: 14,
                   ),
@@ -633,14 +634,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   final user = users[index];
                   return Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: Styles.defaultBorderRadius),
                     child: ListTile(
                       leading: CircleAvatar(
                         backgroundColor: Styles.defaultBlueColor,
                         child: Text(
                           user['name']?.toString()[0].toUpperCase() ?? 'U',
                           style: const TextStyle(
-                            fontFamily: 'Rubik',
+                            fontFamily: 'Poppins',
                             color: Colors.white,
                           ),
                         ),
@@ -648,7 +650,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       title: Text(
                         user['name']?.toString() ?? 'Unknown',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -657,14 +659,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       subtitle: Text(
                         'Joined: ${DateTime.tryParse(user['createdAt'] ?? '')?.toLocal().toString().split('.')[0] ?? 'N/A'}',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultLightWhiteColor,
                           fontSize: 12,
                         ),
                       ),
                       trailing: IconButton(
-                        icon: Icon(Icons.delete, color: Styles.defaultRedColor, size: 20),
-                        onPressed: () => _deleteUser(user['_id']?.toString() ?? ''),
+                        icon: Icon(Icons.delete,
+                            color: Styles.defaultRedColor, size: 20),
+                        onPressed: () =>
+                            _deleteUser(user['_id']?.toString() ?? ''),
                       ),
                     ),
                   );
@@ -680,7 +684,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 child: Text(
                   'No cards found.',
                   style: TextStyle(
-                    fontFamily: 'Rubik',
+                    fontFamily: 'Poppins',
                     color: Styles.defaultLightWhiteColor,
                     fontSize: 14,
                   ),
@@ -693,14 +697,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   final card = cards[index];
                   return Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: Styles.defaultBorderRadius),
                     child: ListTile(
                       leading: Icon(Icons.credit_card,
                           color: Styles.defaultBlueColor, size: 20),
                       title: Text(
                         'Card: ${card['cardNumber']?.toString() ?? 'Unknown'}',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -709,14 +714,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       subtitle: Text(
                         'User: ${card['userId']?['name']?.toString() ?? 'Unknown'}',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultLightWhiteColor,
                           fontSize: 12,
                         ),
                       ),
                       trailing: IconButton(
-                        icon: Icon(Icons.delete, color: Styles.defaultRedColor, size: 20),
-                        onPressed: () => _deleteCard(card['_id']?.toString() ?? ''),
+                        icon: Icon(Icons.delete,
+                            color: Styles.defaultRedColor, size: 20),
+                        onPressed: () =>
+                            _deleteCard(card['_id']?.toString() ?? ''),
                       ),
                     ),
                   );
@@ -732,7 +739,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 child: Text(
                   'No bracelets found.',
                   style: TextStyle(
-                    fontFamily: 'Rubik',
+                    fontFamily: 'Poppins',
                     color: Styles.defaultLightWhiteColor,
                     fontSize: 14,
                   ),
@@ -745,13 +752,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   final bracelet = bracelets[index];
                   return Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: Styles.defaultBorderRadius),
                     child: ListTile(
-                      leading: Icon(Icons.watch, color: Styles.defaultBlueColor, size: 20),
+                      leading: Icon(Icons.watch,
+                          color: Styles.defaultBlueColor, size: 20),
                       title: Text(
                         bracelet['name']?.toString() ?? 'Unknown',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -760,15 +769,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       subtitle: Text(
                         'User: ${bracelet['userId']?['name']?.toString() ?? 'Unknown'}',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultLightWhiteColor,
                           fontSize: 12,
                         ),
                       ),
                       trailing: IconButton(
-                        icon: Icon(Icons.delete, color: Styles.defaultRedColor, size: 20),
-                        onPressed: () =>
-                            _deleteBracelet(bracelet['braceletId']?.toString() ?? ''),
+                        icon: Icon(Icons.delete,
+                            color: Styles.defaultRedColor, size: 20),
+                        onPressed: () => _deleteBracelet(
+                            bracelet['braceletId']?.toString() ?? ''),
                       ),
                     ),
                   );
@@ -784,7 +794,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 child: Text(
                   'No payments found.',
                   style: TextStyle(
-                    fontFamily: 'Rubik',
+                    fontFamily: 'Poppins',
                     color: Styles.defaultLightWhiteColor,
                     fontSize: 14,
                   ),
@@ -797,13 +807,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   final payment = payments[index];
                   return Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: Styles.defaultBorderRadius),
                     child: ListTile(
-                      leading: Icon(Icons.payment, color: Styles.defaultBlueColor, size: 20),
+                      leading: Icon(Icons.payment,
+                          color: Styles.defaultBlueColor, size: 20),
                       title: Text(
                         payment['merchant']?.toString() ?? 'Unknown',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -812,7 +824,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       subtitle: Text(
                         'Amount: \$${payment['amount']?.toStringAsFixed(2) ?? '0.00'}\nUser: ${payment['userId']?['name']?.toString() ?? 'Unknown'}',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultLightWhiteColor,
                           fontSize: 12,
                         ),
@@ -831,7 +843,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 child: Text(
                   'No locations found.',
                   style: TextStyle(
-                    fontFamily: 'Rubik',
+                    fontFamily: 'Poppins',
                     color: Styles.defaultLightWhiteColor,
                     fontSize: 14,
                   ),
@@ -844,14 +856,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   final location = locations[index];
                   return Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: Styles.defaultBorderRadius),
                     child: ListTile(
                       leading: Icon(Icons.location_on,
                           color: Styles.defaultBlueColor, size: 20),
                       title: Text(
                         'Bracelet ID: ${location['braceletId']?.toString() ?? 'Unknown'}',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -860,7 +873,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       subtitle: Text(
                         'Lat: ${location['latitude']?.toString() ?? 'N/A'}, Lon: ${location['longitude']?.toString() ?? 'N/A'}\nUser: ${location['userId']?['name']?.toString() ?? 'Unknown'}',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultLightWhiteColor,
                           fontSize: 12,
                         ),
@@ -886,22 +899,24 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   Text(
                     'System Statistics',
                     style: TextStyle(
-                      fontFamily: 'Rubik',
+                      fontFamily: 'Poppins',
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Styles.defaultBlueColor,
+                      color: Color(0xFF063B87), 
                     ),
                   ),
                   SizedBox(height: Styles.defaultPadding / 2),
                   Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: Styles.defaultBorderRadius),
                     child: ListTile(
-                      leading: Icon(Icons.people, color: Styles.defaultBlueColor, size: 20),
+                      leading: Icon(Icons.people,
+                          color: Styles.defaultBlueColor, size: 20),
                       title: Text(
                         'Total Users',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -910,7 +925,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       subtitle: Text(
                         stats['totalUsers']?.toString() ?? '0',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultLightWhiteColor,
                           fontSize: 12,
                         ),
@@ -919,14 +934,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   ),
                   Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: Styles.defaultBorderRadius),
                     child: ListTile(
                       leading: Icon(Icons.credit_card,
                           color: Styles.defaultBlueColor, size: 20),
                       title: Text(
                         'Total Cards',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -935,7 +951,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       subtitle: Text(
                         stats['totalCards']?.toString() ?? '0',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultLightWhiteColor,
                           fontSize: 12,
                         ),
@@ -944,13 +960,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   ),
                   Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: Styles.defaultBorderRadius),
                     child: ListTile(
-                      leading: Icon(Icons.watch, color: Styles.defaultBlueColor, size: 20),
+                      leading: Icon(Icons.watch,
+                          color: Styles.defaultBlueColor, size: 20),
                       title: Text(
                         'Total Bracelets',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -959,7 +977,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       subtitle: Text(
                         stats['totalBracelets']?.toString() ?? '0',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultLightWhiteColor,
                           fontSize: 12,
                         ),
@@ -968,13 +986,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   ),
                   Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: Styles.defaultBorderRadius),
                     child: ListTile(
-                      leading: Icon(Icons.payment, color: Styles.defaultBlueColor, size: 20),
+                      leading: Icon(Icons.payment,
+                          color: Styles.defaultBlueColor, size: 20),
                       title: Text(
                         'Total Payments',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -983,7 +1003,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       subtitle: Text(
                         stats['totalPayments']?.toString() ?? '0',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultLightWhiteColor,
                           fontSize: 12,
                         ),
@@ -992,14 +1012,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   ),
                   Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: Styles.defaultBorderRadius),
                     child: ListTile(
                       leading: Icon(Icons.location_on,
                           color: Styles.defaultBlueColor, size: 20),
                       title: Text(
                         'Total Locations',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultBlueColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -1008,7 +1029,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                       subtitle: Text(
                         stats['totalLocations']?.toString() ?? '0',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           color: Styles.defaultLightWhiteColor,
                           fontSize: 12,
                         ),
@@ -1019,24 +1040,26 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   Text(
                     'Gender Distribution',
                     style: TextStyle(
-                      fontFamily: 'Rubik',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Styles.defaultBlueColor,
+                      color: Color(0xFF063B87), // Explicitly set to #063b87
                     ),
                   ),
                   SizedBox(height: Styles.defaultPadding / 4),
                   Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: Styles.defaultBorderRadius),
                     child: Column(
                       children: [
                         ListTile(
-                          leading: Icon(Icons.male, color: Styles.defaultBlueColor, size: 20),
+                          leading: Icon(Icons.male,
+                              color: Styles.defaultBlueColor, size: 20),
                           title: Text(
                             'Male',
                             style: TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               color: Styles.defaultBlueColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
@@ -1045,18 +1068,19 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           subtitle: Text(
                             genderStats['Male']?.toString() ?? '0',
                             style: TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               color: Styles.defaultLightWhiteColor,
                               fontSize: 12,
                             ),
                           ),
                         ),
                         ListTile(
-                          leading: Icon(Icons.female, color: Styles.defaultBlueColor, size: 20),
+                          leading: Icon(Icons.female,
+                              color: Styles.defaultBlueColor, size: 20),
                           title: Text(
                             'Female',
                             style: TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               color: Styles.defaultBlueColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
@@ -1065,7 +1089,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           subtitle: Text(
                             genderStats['Female']?.toString() ?? '0',
                             style: TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               color: Styles.defaultLightWhiteColor,
                               fontSize: 12,
                             ),
@@ -1077,7 +1101,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           title: Text(
                             'Not Specified',
                             style: TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               color: Styles.defaultBlueColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
@@ -1086,7 +1110,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           subtitle: Text(
                             genderStats['NotSpecified']?.toString() ?? '0',
                             style: TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               color: Styles.defaultLightWhiteColor,
                               fontSize: 12,
                             ),
@@ -1099,24 +1123,26 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   Text(
                     'Country Distribution',
                     style: TextStyle(
-                      fontFamily: 'Rubik',
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Styles.defaultBlueColor,
+                      color: Color(0xFF063B87), // Explicitly set to #063b87
                     ),
                   ),
                   SizedBox(height: Styles.defaultPadding / 4),
                   Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: Styles.defaultBorderRadius),
                     child: Column(
                       children: countryStats.entries.map((entry) {
                         return ListTile(
-                          leading: Icon(Icons.public, color: Styles.defaultBlueColor, size: 20),
+                          leading: Icon(Icons.public,
+                              color: Styles.defaultBlueColor, size: 20),
                           title: Text(
                             entry.key,
                             style: TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               color: Styles.defaultBlueColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
@@ -1125,7 +1151,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           subtitle: Text(
                             entry.value.toString(),
                             style: TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               color: Styles.defaultLightWhiteColor,
                               fontSize: 12,
                             ),

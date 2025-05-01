@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     if (userId != null && role == 'admin') {
       initialRoute = '/admin-dashboard';
     } else if (userId != null && role == 'user') {
-      initialRoute = '/home';
+      initialRoute = '/splash';
     } else {
       initialRoute = '/splash';
     }

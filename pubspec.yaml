@@ -67,15 +67,16 @@ flutter:
     - assets/images/power.png
     - assets/images/station.png
     - assets/images/monoprix.png
-    - assets/images/unnamed.png
+    - assets/images/face-id.png
     - lib/l10n/app_en.arb
     - lib/l10n/app_fr.arb
 
   fonts:
-    - family: Rubik
+    - family: Poppins
       fonts:
-        - asset: assets/fonts/Rubik-Regular.ttf
-        - asset: assets/fonts/Rubik-Bold.ttf
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins-Bold.ttf
           weight: 700
 
 

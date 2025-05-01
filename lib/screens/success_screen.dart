@@ -1,4 +1,3 @@
-import 'package:app/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,14 +26,14 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
     );
 
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Interval(0.4, 0.8, curve: Curves.easeInOut)),
+      CurvedAnimation(parent: _controller, curve: const Interval(0.4, 0.8, curve: Curves.easeInOut)),
     );
 
     _buttonSlideAnimation = Tween<Offset>(
-      begin: Offset(0, 1), 
-      end: Offset.zero, 
+      begin: const Offset(0, 1),
+      end: Offset.zero,
     ).animate(
-      CurvedAnimation(parent: _controller, curve: Interval(0.6, 1.0, curve: Curves.bounceOut)),
+      CurvedAnimation(parent: _controller, curve: const Interval(0.6, 1.0, curve: Curves.bounceOut)),
     );
 
     _controller.forward();
@@ -49,7 +48,7 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Styles.scaffoldBackgroundColor,
+      backgroundColor: Colors.white, 
       body: SafeArea(
         child: Center(
           child: Column(
@@ -60,88 +59,76 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
                 animation: _controller,
                 builder: (context, child) {
                   return Container(
-                    padding: EdgeInsets.all(Styles.defaultPadding * 1.5),
+                    padding: const EdgeInsets.all(24), 
                     decoration: BoxDecoration(
-                      color: Styles.defaultYellowColor,
+                      color: const Color(0xFF063B87), 
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Styles.defaultGreyColor.withOpacity(0.3),
+                          color: Colors.grey.withOpacity(0.3),
                           blurRadius: 10,
-                          offset: Offset(0, 5),
+                          offset: const Offset(0, 5),
                         ),
                       ],
                     ),
                     child: CustomPaint(
-                      size: Size.square(50), 
+                      size: const Size.square(50),
                       painter: CheckMarkPainter(_checkMarkProgress.value),
                     ),
                   );
                 },
               ),
-              SizedBox(height: Styles.defaultPadding * 2),
+              const SizedBox(height: 32), 
 
               FadeTransition(
                 opacity: _fadeAnimation,
-                child: Text(
-                  'WELL DONE!',
+                child: const Text(
+                  'Congratulations !',
                   style: TextStyle(
-                    fontFamily: 'Rubik',
+                    fontFamily: 'Poppins',
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Styles.defaultYellowColor,
+                    color: Color(0xFF063B87), 
                     letterSpacing: 1.2,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: Styles.defaultPadding),
+              const SizedBox(height: 16), 
 
               FadeTransition(
                 opacity: _fadeAnimation,
-                child: Text(
-                  'Welcome to SmartPay!',
+                child: const Text(
+                  'Your account is ready to use!',
                   style: TextStyle(
-                    fontFamily: 'Rubik',
+                    fontFamily: 'Poppins',
                     fontSize: 18,
-                    color: Styles.defaultLightWhiteColor,
+                    color: Colors.black, 
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: Styles.defaultPadding * 3),
-
+              const SizedBox(height: 48), 
               SlideTransition(
                 position: _buttonSlideAnimation,
-                child: GestureDetector(
-                  onTap: () => Get.offNamed('/bracelet-connect'),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: Styles.defaultPadding,
-                      horizontal: Styles.defaultPadding * 2.5,
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Styles.defaultGreyColor, Styles.defaultBlueColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                child: SizedBox(
+                  width: 363, 
+                  height: 68, 
+                  child: ElevatedButton(
+                    onPressed: () => Get.offNamed('/bracelet-connect'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF0066FF), 
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15), 
                       ),
-                      borderRadius: Styles.defaultBorderRadius,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Styles.defaultGreyColor.withOpacity(0.4),
-                          blurRadius: 8,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
                     ),
-                    child: Text(
+                    child: const Text(
                       'GET STARTED',
                       style: TextStyle(
-                        fontFamily: 'Rubik',
+                        fontFamily: 'Poppins',
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Styles.defaultYellowColor,
+                        color: Colors.white, 
                       ),
                     ),
                   ),
@@ -163,7 +150,7 @@ class CheckMarkPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Styles.defaultBlueColor
+      ..color = Colors.white 
       ..strokeWidth = 4
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
@@ -178,11 +165,10 @@ class CheckMarkPainter extends CustomPainter {
     final subPath = metrics.extractPath(0, metrics.length * progress);
     canvas.drawPath(subPath, paint);
 
-    
     if (progress >= 1.0) {
       final glowPaint = Paint()
-        ..color = Styles.defaultYellowColor.withOpacity(0.6)
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, 10);
+        ..color = const Color(0xFF063B87).withOpacity(0.6)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10);
       canvas.drawCircle(Offset(size.width / 2, size.height / 2), size.width * 0.4, glowPaint);
     }
   }

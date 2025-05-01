@@ -18,6 +18,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final _storage = const FlutterSecureStorage();
   String _enteredPin = '';
   bool isLoading = false;
+  bool _isFaceIdSelected = true; // Default to Face ID method
+  bool _isTouchIdSelected = false;
+  bool _isPinSelected = false;
 
   void _addNumber(String number) {
     if (_enteredPin.length < 4) {
@@ -39,8 +42,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _loginWithPin() async {
     if (_enteredPin.length != 4 || _nameController.text.isEmpty) {
-      Get.snackbar('Error', 'Please enter your name and a 4-digit PIN',
-          backgroundColor: Styles.defaultRedColor);
+      Get.snackbar(
+        'Error',
+        'Please enter your name and a 4-digit PIN',
+        backgroundColor: Styles.defaultRedColor,
+        colorText: Colors.white,
+      );
       return;
     }
     setState(() => isLoading = true);
@@ -52,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Get.offAllNamed('/home');
       }
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor, colorText: Colors.white);
     } finally {
       setState(() => isLoading = false);
     }
@@ -65,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
         'Info',
         'Face ID is not available on this device.',
         backgroundColor: Styles.defaultGreyColor,
+        colorText: Colors.black,
       );
       return;
     }
@@ -87,16 +95,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 Get.offAllNamed('/home');
               }
             } catch (e) {
-              Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+              Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor, colorText: Colors.white);
             }
           } else {
-            Get.snackbar('Error', 'Name not found. Please log in with PIN first.',
-                backgroundColor: Styles.defaultRedColor);
+            Get.snackbar(
+              'Error',
+              'Name not found. Please log in with PIN first.',
+              backgroundColor: Styles.defaultRedColor,
+              colorText: Colors.white,
+            );
           }
         },
       );
     } else {
-      Get.snackbar('Error', 'Face recognition failed.', backgroundColor: Styles.defaultRedColor);
+      Get.snackbar(
+        'Error',
+        'Face recognition failed.',
+        backgroundColor: Styles.defaultRedColor,
+        colorText: Colors.white,
+      );
     }
   }
 
@@ -107,6 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
         'Info',
         'Touch ID is not available on this device.',
         backgroundColor: Styles.defaultGreyColor,
+        colorText: Colors.black,
       );
       return;
     }
@@ -129,17 +147,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 Get.offAllNamed('/home');
               }
             } catch (e) {
-              Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+              Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor, colorText: Colors.white);
             }
           } else {
-            Get.snackbar('Error', 'Name not found. Please log in with PIN first.',
-                backgroundColor: Styles.defaultRedColor);
+            Get.snackbar(
+              'Error',
+              'Name not found. Please log in with PIN first.',
+              backgroundColor: Styles.defaultRedColor,
+              colorText: Colors.white,
+            );
           }
         },
       );
     } else {
-      Get.snackbar('Error', 'Fingerprint recognition failed.',
-          backgroundColor: Styles.defaultRedColor);
+      Get.snackbar(
+        'Error',
+        'Fingerprint recognition failed.',
+        backgroundColor: Styles.defaultRedColor,
+        colorText: Colors.white,
+      );
     }
   }
 
@@ -150,43 +176,96 @@ class _LoginScreenState extends State<LoginScreen> {
     required VoidCallback onConfirm,
   }) {
     Get.defaultDialog(
-      backgroundColor: Styles.scaffoldBackgroundColor,
+      backgroundColor: Colors.white,
       title: title,
       titleStyle: TextStyle(
-        fontFamily: 'Rubik',
-        color: Styles.defaultYellowColor,
+        fontFamily: 'Poppins',
+        color: Color(0xFF063B87),
         fontSize: 24,
+        fontWeight: FontWeight.bold,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 80, color: Styles.defaultYellowColor),
+          Icon(icon, size: 80, color: Color(0xFF063B87)),
           SizedBox(height: Styles.defaultPadding),
           CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Styles.defaultYellowColor),
+            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0066FF)),
           ),
           SizedBox(height: Styles.defaultPadding),
           Text(
             message,
             style: TextStyle(
-              fontFamily: 'Rubik',
-              color: Styles.defaultLightWhiteColor,
+              fontFamily: 'Poppins',
+              color: Colors.black,
               fontSize: 16,
             ),
             textAlign: TextAlign.center,
           ),
         ],
       ),
-      confirm: ElevatedButton(
-        onPressed: onConfirm,
-        child: Text('Continue', style: TextStyle(fontFamily: 'Rubik')),
+      confirm: SizedBox(
+        width: 200,
+        height: 50,
+        child: ElevatedButton(
+          onPressed: onConfirm,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF0066FF),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
+          child: const Text(
+            'Continue',
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
       cancel: TextButton(
         onPressed: () => Get.back(),
-        child: Text('Cancel',
-            style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik')),
+        child: Text(
+          'Cancel',
+          style: TextStyle(
+            color: Color(0xFF063B87),
+            fontFamily: 'Poppins',
+            fontSize: 16,
+          ),
+        ),
       ),
     );
+  }
+
+  void _switchToFaceId() {
+    setState(() {
+      _isFaceIdSelected = true;
+      _isTouchIdSelected = false;
+      _isPinSelected = false;
+      _enteredPin = ''; // Reset PIN entry
+      _pinController.text = '';
+    });
+  }
+
+  void _switchToTouchId() {
+    setState(() {
+      _isFaceIdSelected = false;
+      _isTouchIdSelected = true;
+      _isPinSelected = false;
+      _enteredPin = ''; // Reset PIN entry
+      _pinController.text = '';
+    });
+  }
+
+  void _switchToPin() {
+    setState(() {
+      _isFaceIdSelected = false;
+      _isTouchIdSelected = false;
+      _isPinSelected = true;
+    });
   }
 
   @override
@@ -194,230 +273,380 @@ class _LoginScreenState extends State<LoginScreen> {
     bool isIOS = Platform.isIOS;
 
     return Scaffold(
+      backgroundColor: Colors.white, // Background set to white
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Styles.defaultYellowColor),
+          icon: Icon(Icons.arrow_back, color: Color(0xFF063B87)),
           onPressed: () => Get.offNamed('/register'),
         ),
-        backgroundColor: Styles.scaffoldBackgroundColor,
-        elevation: 0,
       ),
-      backgroundColor: Styles.scaffoldBackgroundColor,
-      body: ListView(
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(Styles.defaultPadding),
-        children: [
-          Center(
-            child: Text(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
               'Welcome Back!',
               style: TextStyle(
-                fontFamily: 'Rubik',
+                fontFamily: 'Poppins',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Styles.defaultYellowColor,
+                color: Color(0xFF063B87), // Large title color
               ),
             ),
-          ),
-          SizedBox(height: Styles.defaultPadding * 2),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 150,
-                child: ElevatedButton(
-                  onPressed: isLoading ? null : (isIOS ? _loginWithFaceId : _loginWithTouchId),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Styles.defaultRedColor, Styles.defaultBlueColor],
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          isIOS ? Icons.face : Icons.fingerprint,
-                          color: Styles.defaultYellowColor,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          isIOS ? 'Face ID' : 'Touch ID',
-                          style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
-                        ),
-                      ],
-                    ),
-                  ),
+            SizedBox(height: Styles.defaultPadding * 2),
+            // Method selection buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildMethodButton('Face ID', _isFaceIdSelected, _switchToFaceId),
+                SizedBox(width: Styles.defaultPadding / 2),
+                _buildMethodButton('Touch ID', _isTouchIdSelected, _switchToTouchId),
+                SizedBox(width: Styles.defaultPadding / 2),
+                _buildMethodButton('PIN', _isPinSelected, _switchToPin),
+              ],
+            ),
+            SizedBox(height: Styles.defaultPadding * 2),
+            // Face ID login UI
+            if (_isFaceIdSelected) ...[
+              Text(
+                'Face ID',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF063B87), // Large title color
                 ),
               ),
-              SizedBox(width: Styles.defaultPadding),
-              SizedBox(
-                width: 150,
-                child: ElevatedButton(
-                  onPressed: isLoading ? null : (isIOS ? _loginWithTouchId : _loginWithFaceId),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    padding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Styles.defaultRedColor, Styles.defaultBlueColor],
+              SizedBox(height: Styles.defaultPadding),
+              Text(
+                'Position the face in the correct angle to show the face places.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
+                  color: Colors.black, // Subtitle color
+                ),
+              ),
+              SizedBox(height: Styles.defaultPadding * 2),
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey[200],
+                ),
+                child: Icon(
+                  Icons.face,
+                  size: 80,
+                  color: Colors.grey[400],
+                ),
+              ),
+              SizedBox(height: Styles.defaultPadding * 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(3, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: index == 1 ? Color(0xFF0066FF) : Colors.grey[300],
                       ),
-                      borderRadius: BorderRadius.circular(10),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          isIOS ? Icons.fingerprint : Icons.face,
-                          color: Styles.defaultYellowColor,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          isIOS ? 'Touch ID' : 'Face ID',
-                          style: TextStyle(fontFamily: 'Rubik', color: Styles.defaultYellowColor),
-                        ),
-                      ],
+                  );
+                }),
+              ),
+              SizedBox(height: Styles.defaultPadding * 2),
+              SizedBox(
+                width: 363,
+                height: 68,
+                child: ElevatedButton(
+                  onPressed: isLoading ? null : _loginWithFaceId,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF0066FF), // Button color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15), // Radius 15
                     ),
                   ),
+                  child: isLoading
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Login with Face ID',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
             ],
-          ),
-          SizedBox(height: Styles.defaultPadding / 2),
-          Text(
-            'Or',
-            style: TextStyle(
-              fontFamily: 'Rubik',
-              fontSize: 14,
-              color: Styles.defaultYellowColor,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: Styles.defaultPadding),
-          TextField(
-            controller: _nameController,
-            decoration: InputDecoration(
-              labelText: 'Name',
-              labelStyle: TextStyle(color: Styles.defaultLightWhiteColor),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Styles.defaultGreyColor),
-                borderRadius: Styles.defaultBorderRadius,
+            // Touch ID login UI
+            if (_isTouchIdSelected) ...[
+              Text(
+                'Touch ID',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF063B87), // Large title color
+                ),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Styles.defaultYellowColor),
-                borderRadius: Styles.defaultBorderRadius,
+              SizedBox(height: Styles.defaultPadding),
+              Text(
+                'Place your finger on the sensor to login.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
+                  color: Colors.black, // Subtitle color
+                ),
               ),
-            ),
-            style: TextStyle(color: Styles.defaultYellowColor, fontFamily: 'Rubik'),
-          ),
-          SizedBox(height: Styles.defaultPadding),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(4, (index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Container(
-                  width: 16,
-                  height: 16,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: index < _enteredPin.length
-                        ? Styles.defaultYellowColor
-                        : Styles.defaultGreyColor,
-                  ),
+              SizedBox(height: Styles.defaultPadding * 2),
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey[200],
                 ),
-              );
-            }),
-          ),
-          SizedBox(height: Styles.defaultPadding),
-          GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 3,
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            childAspectRatio: 1.5,
-            children: List.generate(9, (index) {
-              return ElevatedButton(
-                onPressed: isLoading ? null : () => _addNumber('${index + 1}'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Styles.defaultLightGreyColor,
-                  foregroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                child: Icon(
+                  Icons.fingerprint,
+                  size: 80,
+                  color: Colors.grey[400],
                 ),
-                child: Text(
-                  '${index + 1}',
-                  style: TextStyle(fontSize: 20, fontFamily: 'Rubik'),
-                ),
-              );
-            })
-              ..addAll([
-                ElevatedButton(
-                  onPressed: isLoading ? null : _deleteNumber,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Styles.defaultLightGreyColor,
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                  child: Icon(Icons.backspace, size: 20),
-                ),
-                ElevatedButton(
-                  onPressed: isLoading ? null : () => _addNumber('0'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Styles.defaultLightGreyColor,
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  ),
-                  child: Text(
-                    '0',
-                    style: TextStyle(fontSize: 20, fontFamily: 'Rubik'),
-                  ),
-                ),
-                SizedBox.shrink(),
-              ]),
-          ),
-          SizedBox(height: Styles.defaultPadding),
-          SizedBox(
-            width: 200,
-            child: ElevatedButton(
-              onPressed: isLoading || _enteredPin.length != 4 || _nameController.text.isEmpty
-                  ? null
-                  : _loginWithPin,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Styles.defaultBlueColor,
-                foregroundColor: Styles.defaultYellowColor,
-                padding: EdgeInsets.symmetric(vertical: 15),
-                shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
               ),
-              child: isLoading
-                  ? CircularProgressIndicator(color: Styles.defaultYellowColor)
-                  : Text(
-                      'Login with PIN',
-                      style: TextStyle(fontSize: 18, fontFamily: 'Rubik'),
+              SizedBox(height: Styles.defaultPadding * 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(3, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: index == 1 ? Color(0xFF0066FF) : Colors.grey[300],
+                      ),
                     ),
-            ),
-          ),
-          SizedBox(height: Styles.defaultPadding),
-          TextButton(
-            onPressed: isLoading ? null : () => Get.toNamed('/reset-pin'),
-            child: Text(
-              'Forgot PIN? Reset it',
-              style: TextStyle(
-                fontFamily: 'Rubik',
-                color: Styles.defaultYellowColor,
-                fontSize: 16,
+                  );
+                }),
+              ),
+              SizedBox(height: Styles.defaultPadding * 2),
+              SizedBox(
+                width: 363,
+                height: 68,
+                child: ElevatedButton(
+                  onPressed: isLoading ? null : _loginWithTouchId,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF0066FF), // Button color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15), // Radius 15
+                    ),
+                  ),
+                  child: isLoading
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Login with Touch ID',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                ),
+              ),
+            ],
+            // PIN login UI
+            if (_isPinSelected) ...[
+              Text(
+                'Login with PIN',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF063B87), // Large title color
+                ),
+              ),
+              SizedBox(height: Styles.defaultPadding),
+              TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  labelStyle: TextStyle(color: Colors.black),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  border: OutlineInputBorder(
+                    borderRadius: Styles.defaultBorderRadius,
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: Styles.defaultBorderRadius,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF063B87)),
+                    borderRadius: Styles.defaultBorderRadius,
+                  ),
+                ),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                ),
+              ),
+              SizedBox(height: Styles.defaultPadding),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(4, (index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: index < _enteredPin.length
+                            ? Color(0xFF063B87)
+                            : Colors.grey,
+                      ),
+                    ),
+                  );
+                }),
+              ),
+              SizedBox(height: Styles.defaultPadding),
+              GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: 3,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 1.5,
+                children: List.generate(9, (index) {
+                  return ElevatedButton(
+                    onPressed: isLoading ? null : () => _addNumber('${index + 1}'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[200],
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      '${index + 1}',
+                      style: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 20,
+                      ),
+                    ),
+                  );
+                })
+                  ..addAll([
+                    ElevatedButton(
+                      onPressed: isLoading ? null : _deleteNumber,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[200],
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Icon(Icons.backspace),
+                    ),
+                    ElevatedButton(
+                      onPressed: isLoading ? null : () => _addNumber('0'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[200],
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        '0',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    const SizedBox.shrink(),
+                  ]),
+              ),
+              SizedBox(height: Styles.defaultPadding),
+              SizedBox(
+                width: 363,
+                height: 68,
+                child: ElevatedButton(
+                  onPressed: isLoading ||
+                          _enteredPin.length != 4 ||
+                          _nameController.text.isEmpty
+                      ? null
+                      : _loginWithPin,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF0066FF), // Button color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15), // Radius 15
+                    ),
+                  ),
+                  child: isLoading
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Login with PIN',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                ),
+              ),
+            ],
+            SizedBox(height: Styles.defaultPadding),
+            TextButton(
+              onPressed: isLoading ? null : () => Get.toNamed('/reset-pin'),
+              child: Text(
+                'Forgot PIN? Reset it',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMethodButton(String title, bool isSelected, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: Styles.defaultPadding,
+          vertical: Styles.defaultPadding / 2,
+        ),
+        decoration: BoxDecoration(
+          color: isSelected ? Color(0xFF0066FF) : Colors.grey[200],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontFamily: 'Poppins',
+            color: isSelected ? Colors.white : Colors.black,
+            fontWeight: FontWeight.bold,
           ),
-        ],
+        ),
       ),
     );
   }

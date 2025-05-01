@@ -13,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 2), () {
-      Get.offNamed('/register');
+      Get.offNamed('/welcome');
     });
   }
 
@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Text(
           '',
           style: TextStyle(
-            fontFamily: 'Rubik',
+            fontFamily: 'Poppins',
             fontSize: 40,
             fontWeight: FontWeight.bold,
             color: Styles.defaultYellowColor,

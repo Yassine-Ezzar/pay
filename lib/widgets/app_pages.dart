@@ -6,6 +6,7 @@ import 'package:app/screens/bracelet_connect_screen.dart';
 import 'package:app/screens/bracelet_management_screen.dart';
 import 'package:app/screens/card_list_screen.dart';
 import 'package:app/screens/card_verification_screen.dart';
+import 'package:app/screens/checking_screen.dart';
 import 'package:app/screens/contact_us_screen.dart';
 import 'package:app/screens/edit_profile_screen.dart';
 import 'package:app/screens/help_support_screen.dart';
@@ -14,11 +15,13 @@ import 'package:app/screens/language_settings_screen.dart';
 import 'package:app/screens/location_screen.dart';
 import 'package:app/screens/notifications_screen.dart';
 import 'package:app/screens/notifications_settings_screen.dart';
+import 'package:app/screens/passwordsuccessfully.dart';
 import 'package:app/screens/privacy_policy_screen.dart';
 import 'package:app/screens/profile_screen.dart';
 import 'package:app/screens/splash_screen.dart';
 import 'package:app/screens/success_screen.dart';
 import 'package:app/screens/theme_settings_screen.dart';
+import 'package:app/screens/welcome_page.dart';
 import 'package:get/get.dart';
 
 import '../screens/login_screen.dart';
@@ -51,7 +54,11 @@ GetPage(name: '/add-card-manual', page: () => AddCardManualScreen()),
     GetPage(name: '/contact-us', page: () => ContactUsScreen()), 
     GetPage(name: '/privacy-policy', page: () => PrivacyPolicyScreen()),
     GetPage(name: '/notifications-settings', page: () => NotificationsSettingsScreen()),
-    GetPage(name: '/admin-dashboard', page: () => AdminDashboardScreen()), // New
+    GetPage(name: '/admin-dashboard', page: () => AdminDashboardScreen()), 
+    GetPage(name: '/welcome', page: () => WelcomePage()),
+    GetPage(name: '/checking', page: () => CheckingScreen()),
+    GetPage(name: '/password-changed', page: () => PasswordChangedSuccessfullyScreen()),
+    
 
   ];
 }

@@ -80,7 +80,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
         });
       }
     }, onError: (e) {
-      Get.snackbar('Error', 'Failed to scan for devices: $e', backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', 'Failed to scan for devices: $e', backgroundColor: Color.fromRGBO(0, 102, 255, 0.362));
       setState(() => _isScanning = false);
     });
 
@@ -91,7 +91,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
 
   Future<void> _connectToBracelet() async {
     if (_selectedDevice == null) {
-      Get.snackbar('Error', 'Please select a bracelet', backgroundColor: Styles.defaultRedColor);
+      Get.snackbar('Error', 'Please select a bracelet', backgroundColor:Color.fromRGBO(0, 102, 255, 0.362));
       return;
     }
 
@@ -117,7 +117,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          color: Colors.white, // Set background to white
+          color: Colors.white, // Background already set to white
         ),
         child: SafeArea(
           child: Padding(
@@ -128,15 +128,15 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                 children: [
                   SizedBox(height: Styles.defaultPadding),
                   FadeInDown(
-                    child: Text(
+                    child: const Text(
                       'Connect Your Bracelet',
                       style: TextStyle(
-                        fontFamily: 'Rubik',
+                        fontFamily: 'Poppins',
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        color: const Color(0xFF000080), // Major title color
+                        color: Color(0xFF063B87), // Major title color updated to #063b87
                         shadows: [
-                          const Shadow(
+                          Shadow(
                             color: Colors.black45,
                             offset: Offset(2, 2),
                             blurRadius: 5,
@@ -174,10 +174,10 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.watch,
                                   size: 90,
-                                  color: Colors.white, // Changed icon color to white for better contrast
+                                  color: Colors.white,
                                 ),
                                 Positioned(
                                   top: 20,
@@ -205,15 +205,15 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                     ),
                   ),
                   SizedBox(height: Styles.defaultPadding * 2),
-                  // Steps card
+                 
                   FadeInUp(
                     child: Container(
                       padding: EdgeInsets.all(Styles.defaultPadding),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          const BoxShadow(
+                        boxShadow: const [
+                          BoxShadow(
                             color: Colors.black26,
                             offset: Offset(0, 4),
                             blurRadius: 8,
@@ -222,23 +222,23 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                       ),
                       child: Column(
                         children: [
-                          Text(
+                          const Text(
                             'How to Connect',
                             style: TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: const Color(0xFF000080), // Major title color
+                              color: Color(0xFF063B87), 
                             ),
                           ),
                           SizedBox(height: Styles.defaultPadding / 2),
-                          Text(
+                          const Text(
                             'Step 1: Ensure Bluetooth is enabled\nStep 2: Scan for your bracelet\nStep 3: Select and connect',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontFamily: 'Rubik',
+                              fontFamily: 'Poppins',
                               fontSize: 16,
-                              color: Colors.black, // Other text in black
+                              color: Colors.black, 
                               height: 1.5,
                             ),
                           ),
@@ -247,66 +247,56 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                     ),
                   ),
                   SizedBox(height: Styles.defaultPadding * 2),
-                  // Scan button with shimmer effect
                   FadeInUp(
                     child: _isScanning
                         ? Shimmer.fromColors(
-                            baseColor: Styles.defaultBlueColor,
+                            baseColor: const Color(0xFF0066FF), 
                             highlightColor: Colors.white,
                             child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                              width: 363,
+                              height: 68,
                               decoration: BoxDecoration(
-                                borderRadius: Styles.defaultBorderRadius,
-                                color: Styles.defaultBlueColor,
+                                borderRadius: BorderRadius.circular(15),
+                                color: const Color(0xFF0066FF), 
                               ),
-                              child: Row(
+                              child: const Row(
                                 mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CircularProgressIndicator(
-                                    color: Colors.white, // Changed to white for contrast
+                                    color: Colors.white,
                                     strokeWidth: 2,
                                   ),
-                                  const SizedBox(width: 10),
+                                  SizedBox(width: 10),
                                   Text(
                                     'Scanning...',
                                     style: TextStyle(
-                                      fontFamily: 'Rubik',
+                                      fontFamily: 'Poppins',
                                       fontSize: 16,
-                                      color: Colors.white, // Button text in white
+                                      color: Colors.white, 
                                     ),
                                   ),
                                 ],
                               ),
                             ),
                           )
-                        : ElevatedButton(
-                            onPressed: _startScan,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              padding: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [Color(0xFF0066FF), Color(0xFF0066FF)], // Using defaultBlueColor
+                        : SizedBox(
+                            width: 363,
+                            height: 68,
+                            child: ElevatedButton(
+                              onPressed: _startScan,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF0066FF), 
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15), 
                                 ),
-                                borderRadius: Styles.defaultBorderRadius,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.blueAccent.withOpacity(0.3),
-                                    offset: const Offset(0, 4),
-                                    blurRadius: 8,
-                                  ),
-                                ],
                               ),
-                              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-                              child: Text(
-                                'Scan for Bracelets',
+                              child: const Text(
+                                'Search for Bracelets',
                                 style: TextStyle(
-                                  fontFamily: 'Rubik',
+                                  fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  color: Colors.white, // Button text in white
+                                  color: Colors.white, 
                                 ),
                               ),
                             ),
@@ -317,14 +307,14 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.1), // Adjusted for better visibility on white background
-                        borderRadius: Styles.defaultBorderRadius,
+                        color: Colors.grey.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(15),
                         border: Border.all(color: Colors.grey.withOpacity(0.3)),
                       ),
                       child: DropdownButton<DiscoveredDevice>(
-                        hint: Text(
+                        hint: const Text(
                           'Select a Bracelet',
-                          style: TextStyle(fontFamily: 'Rubik', color: Colors.black), // Dropdown hint in black
+                          style: TextStyle(fontFamily: 'Poppins', color: Colors.black), // Dropdown hint in black
                         ),
                         value: _selectedDevice,
                         items: _devices.map((device) {
@@ -332,7 +322,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             value: device,
                             child: Text(
                               device.name?.isNotEmpty == true ? device.name! : 'Unknown Device (${device.id})',
-                              style: TextStyle(fontFamily: 'Rubik', color: Colors.black), // Dropdown items in black
+                              style: const TextStyle(fontFamily: 'Poppins', color: Colors.black), // Dropdown items in black
                             ),
                           );
                         }).toList(),
@@ -341,55 +331,52 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             _selectedDevice = device;
                           });
                         },
-                        dropdownColor: Colors.white, // Adjusted for white background
+                        dropdownColor: Colors.white,
                         isExpanded: true,
                         underline: const SizedBox(),
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.black), // Icon in black
+                        icon: const Icon(Icons.arrow_drop_down, color: Colors.black), // Icon in black
                       ),
                     ),
                   ),
                   SizedBox(height: Styles.defaultPadding * 2),
                   FadeInUp(
-                    child: ElevatedButton(
-                      onPressed: _isConnecting ? null : _connectToBracelet,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFF0066FF), Color(0xFF0066FF)], // Using defaultBlueColor
+                    child: SizedBox(
+                      width: 363,
+                      height: 68,
+                      child: ElevatedButton(
+                        onPressed: _isConnecting ? null : _connectToBracelet,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF0066FF), // Updated to #0066FF
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15), // Radius 15
                           ),
-                          borderRadius: Styles.defaultBorderRadius,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.blueAccent.withOpacity(0.3),
-                              offset: const Offset(0, 4),
-                              blurRadius: 8,
-                            ),
-                          ],
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                         child: _isConnecting
-                            ? Row(
+                            ? const Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   CircularProgressIndicator(
-                                    color: Colors.white, // Changed to white for contrast
+                                    color: Colors.white,
                                     strokeWidth: 2,
                                   ),
-                                  const SizedBox(width: 10),
+                                  SizedBox(width: 10),
                                   Text(
                                     'Connecting...',
-                                    style: TextStyle(fontFamily: 'Rubik', fontSize: 16, color: Colors.white), // Button text in white
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 16,
+                                      color: Colors.white, // Button text in white
+                                    ),
                                   ),
                                 ],
                               )
-                            : Text(
+                            : const Text(
                                 'Connect',
-                                style: TextStyle(fontFamily: 'Rubik', fontSize: 16, color: Colors.white), // Button text in white
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 16,
+                                  color: Colors.white, // Button text in white
+                                ),
                               ),
                       ),
                     ),
@@ -398,10 +385,10 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                   FadeInUp(
                     child: TextButton(
                       onPressed: () => Get.offNamed('/home'),
-                      child: Text(
+                      child: const Text(
                         'Skip for now',
                         style: TextStyle(
-                          fontFamily: 'Rubik',
+                          fontFamily: 'Poppins',
                           fontSize: 14,
                           color: Colors.black, // Other text in black
                           decoration: TextDecoration.underline,
