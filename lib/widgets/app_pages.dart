@@ -13,7 +13,6 @@ import 'package:app/screens/help_support_screen.dart';
 import 'package:app/screens/home_screen.dart';
 import 'package:app/screens/language_settings_screen.dart';
 import 'package:app/screens/location_screen.dart';
-import 'package:app/screens/notifications_screen.dart';
 import 'package:app/screens/notifications_settings_screen.dart';
 import 'package:app/screens/passwordsuccessfully.dart';
 import 'package:app/screens/privacy_policy_screen.dart';
@@ -45,7 +44,6 @@ class AppPages {
 GetPage(name: '/add-card-manual', page: () => AddCardManualScreen()),
     GetPage(name: '/card-verification', page: () => CardVerificationScreen()),   
      GetPage(name: '/location', page: () => LocationScreen()), 
-    GetPage(name: '/notifications', page: () => NotificationsScreen()), 
     GetPage(name: '/profile', page: () => ProfileScreen()), 
     GetPage(name: '/edit-profile', page: () => EditProfileScreen()),
     GetPage(name: '/language-settings', page: () => LanguageSettingsScreen()), 

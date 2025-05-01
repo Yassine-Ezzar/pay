@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         Get.offNamed('/location');
         break;
       case 2:
-        Get.offNamed('/notifications');
+        Get.offNamed('/card-list');
         break;
       case 3:
         Get.offNamed('/profile');
@@ -114,7 +114,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         children: [
           Column(
             children: [
-              // Upper half: Cards Section
               Expanded(
                 flex: 1,
                 child: Container(
@@ -421,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 90.0), 
         child: FloatingActionButton(
-          onPressed: () => Get.toNamed('/add-card-guide'),
+          onPressed: () => Get.toNamed('/bracelet-connect'),
           backgroundColor: const Color(0xFF000080),
           elevation: 8,
           child: const Icon(Icons.add, color: Color(0xFF98b5e4), size: 28),

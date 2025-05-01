@@ -99,7 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
         Get.offNamed('/location');
         break;
       case 2:
-        Get.offNamed('/notifications');
+        Get.offNamed('/card-list');
         break;
       case 3:
         Get.offNamed('/profile');

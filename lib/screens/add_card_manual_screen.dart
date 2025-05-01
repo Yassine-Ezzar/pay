@@ -58,12 +58,12 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF000080),
+      backgroundColor: Colors.white, 
       appBar: AppBar(
-        backgroundColor: const Color(0xFF000080),
+        backgroundColor: Colors.white, 
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF063B87)), 
           onPressed: () => Get.back(),
         ),
         title: const Text(
@@ -71,7 +71,8 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
           style: TextStyle(
             fontFamily: 'Poppins',
             fontSize: 20,
-            color: Colors.white,
+            color: Color(0xFF063B87), 
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -90,18 +91,17 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                 cvvCode: _cvv,
                 showBackView: _showBackView,
                 onCreditCardWidgetChange: (creditCardBrand) {},
-                cardBgColor: Colors.blueAccent,
+                cardBgColor: Color(0xFF0066FF), 
                 glassmorphismConfig: Glassmorphism.defaultConfig(),
                 textStyle: const TextStyle(
                   fontFamily: 'Poppins',
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 0, 0, 0),
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
                 animationDuration: const Duration(milliseconds: 300),
               ),
             ),
-            // Form
             Padding(
               padding: EdgeInsets.all(Styles.defaultPadding),
               child: Form(
@@ -115,23 +115,23 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                         fontFamily: 'Poppins',
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Color(0xFF063B87), 
                       ),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Card Number',
-                        labelStyle: const TextStyle(color: Colors.white70),
+                        labelStyle: const TextStyle(color: Colors.black), 
                         filled: true,
-                        fillColor: Colors.white.withOpacity(0.1),
+                        fillColor: Colors.grey[200], 
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none,
                         ),
-                        prefixIcon: const Icon(Icons.credit_card, color: Colors.white70),
+                        prefixIcon: const Icon(Icons.credit_card, color: Colors.black), 
                       ),
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.black), 
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -158,16 +158,16 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Cardholder Name',
-                        labelStyle: const TextStyle(color: Colors.white70),
+                        labelStyle: const TextStyle(color: Colors.black), // Changed to black
                         filled: true,
-                        fillColor: Colors.white.withOpacity(0.1),
+                        fillColor: Colors.grey[200], // Changed to light grey
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none,
                         ),
-                        prefixIcon: const Icon(Icons.person, color: Colors.white70),
+                        prefixIcon: const Icon(Icons.person, color: Colors.black), // Changed to black
                       ),
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.black), // Changed to black
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter cardholder name';
@@ -188,16 +188,16 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: 'Expiry Date (MM/YY)',
-                              labelStyle: const TextStyle(color: Colors.white70),
+                              labelStyle: const TextStyle(color: Colors.black), // Changed to black
                               filled: true,
-                              fillColor: Colors.white.withOpacity(0.1),
+                              fillColor: Colors.grey[200], // Changed to light grey
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide.none,
                               ),
-                              prefixIcon: const Icon(Icons.calendar_today, color: Colors.white70),
+                              prefixIcon: const Icon(Icons.calendar_today, color: Colors.black), // Changed to black
                             ),
-                            style: const TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.black), // Changed to black
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
@@ -222,21 +222,20 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                           ),
                         ),
                         const SizedBox(width: 20),
-                        // CVV
                         Expanded(
                           child: TextFormField(
                             decoration: InputDecoration(
                               labelText: 'CVV',
-                              labelStyle: const TextStyle(color: Colors.white70),
+                              labelStyle: const TextStyle(color: Colors.black), // Changed to black
                               filled: true,
-                              fillColor: Colors.white.withOpacity(0.1),
+                              fillColor: Colors.grey[200], // Changed to light grey
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide.none,
                               ),
-                              prefixIcon: const Icon(Icons.lock, color: Colors.white70),
+                              prefixIcon: const Icon(Icons.lock, color: Colors.black), // Changed to black
                             ),
-                            style: const TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.black), // Changed to black
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
@@ -268,20 +267,19 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    // Card Security Code
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Card Security Code',
-                        labelStyle: const TextStyle(color: Colors.white70),
+                        labelStyle: const TextStyle(color: Colors.black), // Changed to black
                         filled: true,
-                        fillColor: Colors.white.withOpacity(0.1),
+                        fillColor: Colors.grey[200], // Changed to light grey
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none,
                         ),
-                        prefixIcon: const Icon(Icons.security, color: Colors.white70),
+                        prefixIcon: const Icon(Icons.security, color: Colors.black), // Changed to black
                       ),
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.black), // Changed to black
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -299,26 +297,29 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                     const SizedBox(height: 30),
                     Center(
                       child: SizedBox(
-                        width: 363, // Set width to 363 pixels
-                        height: 68, // Set height to 68 pixels
+                        width: 363, 
+                        height: 68, 
                         child: ElevatedButton(
                           onPressed: _isLoading ? null : _submitCard,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                            foregroundColor: const Color(0xFF000080),
+                            backgroundColor: Color(0xFF0066FF), 
+                            foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15), // Set border radius to 15
+                              borderRadius: BorderRadius.circular(15), 
                             ),
                             elevation: 5,
                           ),
                           child: _isLoading
-                              ? const CircularProgressIndicator(color: Color(0xFFFFFFFF))
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white, 
+                                )
                               : const Text(
                                   'Continue',
                                   style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 19,
                                     fontWeight: FontWeight.w600,
+                                    color: Colors.white, 
                                   ),
                                 ),
                         ),
@@ -337,7 +338,8 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
 
 class CardNumberInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     String text = newValue.text.replaceAll(' ', '');
     if (text.length > 16) {
       text = text.substring(0, 16);
@@ -358,7 +360,8 @@ class CardNumberInputFormatter extends TextInputFormatter {
 
 class ExpiryDateInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     String text = newValue.text.replaceAll('/', '');
     if (text.length > 4) {
       text = text.substring(0, 4);

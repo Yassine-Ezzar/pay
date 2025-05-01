@@ -29,10 +29,8 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
 
     setState(() => _isVerifying = true);
     try {
-      // Simulate verification (in a real app, this would involve a call to a payment gateway)
-      await Future.delayed(const Duration(seconds: 2)); // Simulate network delay
+      await Future.delayed(const Duration(seconds: 2)); 
 
-      // Add the card to the backend
       await ApiService.addCard(
         userId,
         cardNumber,

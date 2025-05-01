@@ -97,7 +97,7 @@ class _CardListScreenState extends State<CardListScreen> {
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Get.back(),
+          onPressed: () => Get.toNamed('/home'),
         ),
         actions: [
           IconButton(
@@ -210,6 +210,8 @@ class _CardListScreenState extends State<CardListScreen> {
       const Color(0xFF1E3A8A), 
       const Color(0xFF6B21A8), 
       const Color(0xFF047857), 
+      const Color.fromARGB(157, 220, 38, 38),
+      const Color.fromARGB(255, 229, 228, 228),
     ];
     final cardColor = cardColors[index % cardColors.length];
 
@@ -237,7 +239,7 @@ class _CardListScreenState extends State<CardListScreen> {
             onCreditCardWidgetChange: (creditCardBrand) {},
             cardBgColor: cardColor,
             textStyle: const TextStyle(
-              fontFamily: 'Poppins',
+              fontFamily: 'Rubik',
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w500,
