@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:app/screens/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:app/services/api_service.dart';
 import 'package:app/styles/styles.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -19,12 +22,16 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   late Animation<double> _fadeAnimation;
   final storage = const FlutterSecureStorage();
   String? selectedAvatar;
+  String? selectedImagePath; // Store the path of the picked image
+  String? registeredName; // To store the name from registration
 
   final List<Map<String, dynamic>> avatars = [
     {'id': 'avatar1', 'icon': Icons.person},
     {'id': 'avatar2', 'icon': Icons.face},
     {'id': 'avatar3', 'icon': Icons.account_circle},
   ];
+
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -39,6 +46,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     );
     _loadUserId();
     _loadAvatar();
+    _loadRegisteredName();
+    _loadSelectedImage(); // Load the saved image path
   }
 
   @override
@@ -63,12 +72,43 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     });
   }
 
+  Future<void> _loadRegisteredName() async {
+    String? name = await ApiService.storage.read(key: 'name');
+    setState(() {
+      registeredName = name;
+    });
+  }
+
+  Future<void> _loadSelectedImage() async {
+    String? savedImagePath = await storage.read(key: 'selectedImagePath');
+    if (savedImagePath != null) {
+      setState(() {
+        selectedImagePath = savedImagePath;
+      });
+    }
+  }
+
   Future<void> _saveAvatar(String avatarId) async {
     await storage.write(key: 'selectedAvatar', value: avatarId);
+    await storage.delete(key: 'selectedImagePath'); // Clear image if avatar is selected
     setState(() {
       selectedAvatar = avatarId;
+      selectedImagePath = null;
     });
     Get.snackbar('Success', 'Avatar updated successfully', backgroundColor: const Color.fromARGB(68, 76, 175, 79));
+  }
+
+  Future<void> _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      await storage.write(key: 'selectedImagePath', value: image.path);
+      await storage.delete(key: 'selectedAvatar'); // Clear avatar if image is selected
+      setState(() {
+        selectedImagePath = image.path;
+        selectedAvatar = null;
+      });
+      Get.snackbar('Success', 'Image updated successfully', backgroundColor: const Color.fromARGB(68, 76, 175, 79));
+    }
   }
 
   Future<void> _fetchProfile() async {
@@ -171,6 +211,25 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   },
                 ),
                 const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _pickImage,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: const Color(0xFF477bd0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    'Pick from Gallery',
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
+                      color: Color(0xFF477bd0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -221,7 +280,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF), 
+      backgroundColor: const Color(0xFFFFFFFF),
       body: Stack(
         children: [
           Column(
@@ -253,17 +312,26 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                         CircleAvatar(
                                           radius: 50,
                                           backgroundColor: const Color(0xFF000080).withOpacity(0.2),
-                                          child: selectedAvatar == null
-                                              ? const Icon(
-                                                  Icons.person,
-                                                  size: 60,
-                                                  color: Color(0xFFFFFFFF),
+                                          child: selectedImagePath != null
+                                              ? ClipOval(
+                                                  child: Image.file(
+                                                    File(selectedImagePath!),
+                                                    fit: BoxFit.cover,
+                                                    width: 100,
+                                                    height: 100,
+                                                  ),
                                                 )
-                                              : Icon(
-                                                  avatars.firstWhere((avatar) => avatar['id'] == selectedAvatar)['icon'],
-                                                  size: 60,
-                                                  color: Colors.white,
-                                                ),
+                                              : (selectedAvatar == null
+                                                  ? const Icon(
+                                                      Icons.person,
+                                                      size: 60,
+                                                      color: Color(0xFFFFFFFF),
+                                                    )
+                                                  : Icon(
+                                                      avatars.firstWhere((avatar) => avatar['id'] == selectedAvatar)['icon'],
+                                                      size: 60,
+                                                      color: Colors.white,
+                                                    )),
                                         ),
                                         Positioned(
                                           bottom: 0,
@@ -288,7 +356,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                     ),
                                     const SizedBox(height: 10),
                                     Text(
-                                      profile?['fullName'] ?? 'New User',
+                                      profile?['fullName'] ?? registeredName ?? 'New User',
                                       style: const TextStyle(
                                         fontFamily: 'Poppins',
                                         fontSize: 24,
@@ -460,7 +528,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
         child: ListTile(
           leading: Icon(
             icon,
-            color: color ?? const Color(0xFF000080), // Apply 0xFF000080 to all icons except where color is specified
+            color: color ?? const Color(0xFF000080),
           ),
           title: Text(
             title,
