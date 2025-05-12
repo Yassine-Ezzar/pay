@@ -57,6 +57,8 @@ GetPage(name: '/add-card-manual', page: () => AddCardManualScreen()),
     GetPage(name: '/checking', page: () => CheckingScreen()),
     GetPage(name: '/password-changed', page: () => PasswordChangedSuccessfullyScreen()),
     
+    
+    
 
   ];
 }

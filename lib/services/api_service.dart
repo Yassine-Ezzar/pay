@@ -15,13 +15,11 @@ class ApiService {
 
   static const storage = FlutterSecureStorage();
 
-  // Save profile to SharedPreferences
   static Future<void> saveProfileToLocal(Map<String, dynamic> profile) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userProfile', jsonEncode(profile));
   }
 
-  // Retrieve profile from SharedPreferences
   static Future<Map<String, dynamic>?> getProfileFromLocal() async {
     final prefs = await SharedPreferences.getInstance();
     final profileString = prefs.getString('userProfile');
@@ -31,7 +29,6 @@ class ApiService {
     return null;
   }
 
-  // Clear profile from SharedPreferences (for new user registration)
   static Future<void> clearProfileFromLocal() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('userProfile');
