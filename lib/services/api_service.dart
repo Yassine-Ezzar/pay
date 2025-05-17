@@ -98,7 +98,54 @@ class ApiService {
       throw Exception(data['message']);
     }
   }
+// Check if OTP is required for the user
+  static Future<bool> checkOTPRequirement(String userId) async {
+    final response = await http.post(
+      Uri.parse('$cardBaseUrl/check-otp-requirement'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'userId': userId}),
+    );
 
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return data['needsOTP'] ?? true;
+    }
+    throw Exception(data['message']);
+  }
+
+  // Send OTP to phone number or email
+  static Future<void> sendOTP(String identifier, String type) async {
+    final response = await http.post(
+      Uri.parse('$cardBaseUrl/send-otp'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'identifier': identifier,
+        'type': type,
+      }),
+    );
+
+    final data = jsonDecode(response.body);
+    if (response.statusCode != 200) {
+      throw Exception(data['message']);
+    }
+  }
+
+  // Verify OTP
+  static Future<void> verifyOTP(String identifier, String otp) async {
+    final response = await http.post(
+      Uri.parse('$cardBaseUrl/verify-otp'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'identifier': identifier,
+        'otp': otp,
+      }),
+    );
+
+    final data = jsonDecode(response.body);
+    if (response.statusCode != 200) {
+      throw Exception(data['message']);
+    }
+  }
   static Future<Map<String, dynamic>> addCard(
     String userId,
     String cardNumber,

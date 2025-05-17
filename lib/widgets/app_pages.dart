@@ -9,6 +9,8 @@ import 'package:app/screens/card_verification_screen.dart';
 import 'package:app/screens/checking_screen.dart';
 import 'package:app/screens/contact_us_screen.dart';
 import 'package:app/screens/edit_profile_screen.dart';
+import 'package:app/screens/enter_contact_screen.dart';
+import 'package:app/screens/enter_otp_screen.dart';
 import 'package:app/screens/help_support_screen.dart';
 import 'package:app/screens/home_screen.dart';
 import 'package:app/screens/language_settings_screen.dart';
@@ -56,6 +58,8 @@ GetPage(name: '/add-card-manual', page: () => AddCardManualScreen()),
     GetPage(name: '/welcome', page: () => WelcomePage()),
     GetPage(name: '/checking', page: () => CheckingScreen()),
     GetPage(name: '/password-changed', page: () => PasswordChangedSuccessfullyScreen()),
+    GetPage(name: '/enter-contact', page: () => EnterContactScreen()),
+        GetPage(name: '/enter-otp', page: () => EnterOTPScreen()),
     
     
     
