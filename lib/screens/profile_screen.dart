@@ -441,7 +441,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                       _buildProfileOption(
                                         icon: Icons.language,
                                         title: 'Language',
-                                        onTap: () => Get.toNamed('/language-settings'),
+                                        onTap: () => Get.toNamed('/language-selection'),
                                       ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(

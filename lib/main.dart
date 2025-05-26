@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
     String? userId = await _storage.read(key: 'userId');
     String? role = await _storage.read(key: 'role');
     String? isDarkMode = await _storage.read(key: 'isDarkMode');
+    String? locale = await _storage.read(key: 'locale');
     String initialRoute;
 
     if (userId != null && role == 'admin') {
@@ -26,8 +27,9 @@ class MyApp extends StatelessWidget {
     }
 
     bool darkMode = isDarkMode == null || isDarkMode == 'true';
+    Locale appLocale = locale == 'fr_FR' ? const Locale('fr', 'FR') : const Locale('en', 'US');
 
-    return [initialRoute, darkMode];
+    return [initialRoute, darkMode, appLocale];
   }
 
   @override
@@ -47,6 +49,7 @@ class MyApp extends StatelessWidget {
 
         final String initialRoute = snapshot.data![0] as String;
         final bool isDarkMode = snapshot.data![1] as bool;
+        final Locale appLocale = snapshot.data![2] as Locale;
 
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
@@ -112,8 +115,8 @@ class MyApp extends StatelessWidget {
           ),
           themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
           translations: AppTranslations(),
-          locale: const Locale('en', 'US'),
-          fallbackLocale: const Locale('en', 'US'),
+          locale: appLocale,
+          fallbackLocale: const Locale('fr', 'FR'),
         );
       },
     );
@@ -173,10 +176,10 @@ class AppTranslations extends Translations {
               '5. Contact Us\n'
               'If you have any questions about this Privacy Policy, please contact us at support@example.com.',
         },
-        'fr_FR': {
+'fr_FR': {
+          'language': 'Langue',
           'title': 'Profil',
           'notifications': 'Notifications',
-          'language': 'Langue',
           'theme': 'Thème',
           'help_support': 'Aide et Support',
           'contact_us': 'Nous Contacter',
