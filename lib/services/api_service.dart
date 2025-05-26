@@ -5,13 +5,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  static const String authBaseUrl = 'http://192.168.1.14:6000/api/auth';
-  static const String cardBaseUrl = 'http://192.168.1.14:6000/api/cards';
-  static const String braceletBaseUrl = 'http://192.168.1.14:6000/api/bracelets';
-  static const String paymentBaseUrl = 'http://192.168.1.14:6000/api/payments';
-  static const String locationBaseUrl = 'http://192.168.1.14:6000/api/locations';
-  static const String profileBaseUrl = 'http://192.168.1.14:6000/api/profiles';
-  static const String adminBaseUrl = 'http://192.168.1.14:6000/api/admin'; 
+  static const String authBaseUrl = 'http://192.168.1.19:6000/api/auth';
+  static const String cardBaseUrl = 'http://192.168.1.19:6000/api/cards';
+  static const String braceletBaseUrl = 'http://192.168.1.19:6000/api/bracelets';
+  static const String paymentBaseUrl = 'http://192.168.1.19:6000/api/payments';
+  static const String locationBaseUrl = 'http://192.168.1.19:6000/api/locations';
+  static const String profileBaseUrl = 'http://192.168.1.19:6000/api/profiles';
+  static const String adminBaseUrl = 'http://192.168.1.19:6000/api/admin'; 
 
   static const storage = FlutterSecureStorage();
 

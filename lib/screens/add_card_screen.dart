@@ -57,30 +57,29 @@ class _AddCardScreenState extends State<AddCardScreen> {
       final textRecognizer = TextRecognizer();
       final recognizedText = await textRecognizer.processImage(inputImage);
 
-      // Extract card details from recognized text
       _extractCardDetails(recognizedText);
 
       setState(() {
         _isScanning = false;
-        if (_isFrontScanned) {
-          // If front is already scanned, this is the back (CVV)
-          if (_cvv.isNotEmpty) {
-            // Proceed to verification
-            Get.toNamed('/card-verification', arguments: {
-              'cardNumber': _cardNumber,
-              'cardHolderName': _cardHolderName,
-              'expiryDate': _expiryDate,
-              'cvv': _cvv,
-              'userId': userId,
-            });
-          }
-        } else {
-          // Front side scanned, now scan the back
-          _isFrontScanned = true;
-        }
       });
 
       await textRecognizer.close();
+
+      if (_cardNumber.isNotEmpty && _cardHolderName.isNotEmpty && _expiryDate.isNotEmpty && _cvv.isNotEmpty) {
+        final arguments = {
+          'cardNumber': _cardNumber,
+          'cardHolderName': _cardHolderName,
+          'expiryDate': _expiryDate,
+          'cvv': _cvv,
+          'userId': userId,
+        };
+        Get.toNamed('/enter-contact', arguments: arguments);
+      } else if (_isFrontScanned && _cvv.isEmpty) {
+        Get.snackbar('Error', 'CVV not detected. Please scan the back side again.', backgroundColor: Colors.redAccent);
+      } else if (!_isFrontScanned && (_cardNumber.isEmpty || _cardHolderName.isEmpty || _expiryDate.isEmpty)) {
+        _isFrontScanned = true;
+        Get.snackbar('Info', 'Front side scanned. Please scan the back side for CVV.', backgroundColor: Colors.blueAccent);
+      }
     } catch (e) {
       setState(() => _isScanning = false);
       Get.snackbar('Error', 'Failed to scan card: $e', backgroundColor: Colors.redAccent);
@@ -92,22 +91,17 @@ class _AddCardScreenState extends State<AddCardScreen> {
       for (TextLine line in block.lines) {
         final text = line.text.trim();
 
-        // Extract card number (front side)
         if (!_isFrontScanned && RegExp(r'^\d{4}\s?\d{4}\s?\d{4}\s?\d{4}$').hasMatch(text)) {
           _cardNumber = text.replaceAll(' ', '');
         }
 
-        // Extract cardholder name (front side)
         if (!_isFrontScanned && RegExp(r'^[A-Z\s]+$').hasMatch(text) && text.length > 5) {
           _cardHolderName = text;
         }
-
-        // Extract expiry date (front side)
         if (!_isFrontScanned && RegExp(r'^(0[1-9]|1[0-2])\/\d{2}$').hasMatch(text)) {
           _expiryDate = text;
         }
 
-        // Extract CVV (back side)
         if (_isFrontScanned && RegExp(r'^\d{3,4}$').hasMatch(text)) {
           _cvv = text;
         }
@@ -132,7 +126,6 @@ class _AddCardScreenState extends State<AddCardScreen> {
               Positioned.fill(
                 child: CameraPreview(_cameraController!),
               ),
-            // Overlay for scanning
             Positioned.fill(
               child: Container(
                 color: Colors.black.withOpacity(0.5),
@@ -140,7 +133,6 @@ class _AddCardScreenState extends State<AddCardScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Card frame
                       Container(
                         width: 300,
                         height: 180,
@@ -161,7 +153,6 @@ class _AddCardScreenState extends State<AddCardScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Instruction text
                       Text(
                         _isFrontScanned
                             ? 'Hold the phone near the back of the card to scan the CVV.'
@@ -174,7 +165,6 @@ class _AddCardScreenState extends State<AddCardScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Scan button
                       if (!_isScanning)
                         ElevatedButton(
                           onPressed: _scanCard,
@@ -193,7 +183,6 @@ class _AddCardScreenState extends State<AddCardScreen> {
                 ),
               ),
             ),
-            // Cancel button
             Positioned(
               top: 20,
               left: 20,
@@ -209,7 +198,6 @@ class _AddCardScreenState extends State<AddCardScreen> {
                 ),
               ),
             ),
-            // Manual entry button
             Positioned(
               bottom: 20,
               left: 0,
