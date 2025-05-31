@@ -289,7 +289,7 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> {
                           child: ElevatedButton(
                             onPressed: _isLoading ? null : _verifyOTP,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                               foregroundColor: Colors.white,
                               shadowColor: Colors.transparent,
                               shape: RoundedRectangleBorder(

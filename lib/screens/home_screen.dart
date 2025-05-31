@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF), 
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
           Column(
@@ -117,11 +117,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               Expanded(
                 flex: 1,
                 child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [Color(0xFFFFFFFF), Color(0xFFFFFFFF)],
+                      colors: [
+                        Theme.of(context).scaffoldBackgroundColor,
+                        Theme.of(context).scaffoldBackgroundColor,
+                      ],
                     ),
                   ),
                   child: SafeArea(
@@ -133,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             horizontal: Styles.defaultPadding,
                             vertical: Styles.defaultPadding / 2,
                           ),
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
@@ -142,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   fontFamily: 'Poppins',
                                   fontSize: 28,
                                   fontWeight: FontWeight.w700,
-                                  color: Color(0xFF000080),
+                                  color: Theme.of(context).textTheme.bodyLarge?.color,
                                   letterSpacing: 1.2,
                                 ),
                               ),
@@ -204,10 +207,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                         child: Container(
                                                           decoration: BoxDecoration(
                                                             borderRadius: BorderRadius.circular(20),
-                                                            boxShadow: const [
+                                                            boxShadow: [
                                                               BoxShadow(
-                                                                color: Colors.black54,
-                                                                offset: Offset(0, 4),
+                                                                color: Theme.of(context).brightness == Brightness.dark
+                                                                    ? Colors.black12
+                                                                    : Colors.black54,
+                                                                offset: const Offset(0, 4),
                                                                 blurRadius: 10,
                                                               ),
                                                             ],
@@ -221,11 +226,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                               cvvCode: card['cvv'],
                                                               showBackView: false,
                                                               onCreditCardWidgetChange: (creditCardBrand) {},
-                                                              cardBgColor: const Color(0xFF1E3A8A),
+                                                              cardBgColor: Theme.of(context).brightness == Brightness.dark
+                                                                  ? Styles.darkDefaultBlueColor
+                                                                  : const Color(0xFF1E3A8A),
                                                               glassmorphismConfig: Glassmorphism.defaultConfig(),
-                                                              textStyle: const TextStyle(
+                                                              textStyle: TextStyle(
                                                                 fontFamily: 'Poppins',
-                                                                color: Colors.white,
+                                                                color: Theme.of(context).brightness == Brightness.dark
+                                                                    ? Styles.darkDefaultLightWhiteColor
+                                                                    : Colors.white,
                                                                 fontSize: 16,
                                                                 fontWeight: FontWeight.w600,
                                                               ),
@@ -253,8 +262,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                 decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: _currentCarouselIndex == entry.key
-                                                      ? Colors.white
-                                                      : Colors.white.withOpacity(0.4),
+                                                      ? Theme.of(context).cardColor
+                                                      : Theme.of(context).cardColor.withOpacity(0.4),
                                                 ),
                                               ),
                                             );
@@ -271,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               Expanded(
                 flex: 1,
                 child: Container(
-                  color: const Color(0xFFFFFFFF), 
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -283,13 +292,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               'Transactions',
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 22,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF000080),
+                                color: Theme.of(context).textTheme.bodyLarge?.color,
                                 letterSpacing: 1.2,
                               ),
                             ),
@@ -305,16 +314,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         width: 16,
                                         height: 16,
                                         child: CircularProgressIndicator(
-                                          color: Color(0xFF000080),
                                           strokeWidth: 2,
                                         ),
                                       ),
                                     ),
-                                  const Text(
+                                  Text(
                                     'REFRESH',
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
-                                      color: Color(0xFF000080),
+                                      color: Theme.of(context).textTheme.bodyLarge?.color,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -327,22 +335,28 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                       Expanded(
                         child: isLoadingPayments
-                            ? const Center(child: CircularProgressIndicator(color: Color(0xFF000080)))
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                                ),
+                              )
                             : payments.isEmpty
                                 ? Container(
                                     margin: EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
                                     padding: EdgeInsets.all(Styles.defaultPadding),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF000080).withOpacity(0.05),
+                                      color: Theme.of(context).brightness == Brightness.dark
+                                          ? Styles.darkDefaultBlueColor.withOpacity(0.05)
+                                          : const Color(0xFF000080).withOpacity(0.05),
                                       borderRadius: BorderRadius.circular(15),
                                     ),
-                                    child: const Center(
+                                    child: Center(
                                       child: Text(
                                         'No transactions yet.\nMake a payment with your bracelet to see it here.',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: 'Poppins',
-                                          color: Color(0xFF000080),
+                                          color: Theme.of(context).textTheme.bodyLarge?.color,
                                           fontSize: 16,
                                           fontStyle: FontStyle.italic,
                                         ),
@@ -356,7 +370,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                       final payment = payments[index];
                                       return Card(
                                         elevation: 0,
-                                        color: const Color(0xFF000080).withOpacity(0.05),
+                                        color: Theme.of(context).brightness == Brightness.dark
+                                            ? Styles.darkDefaultBlueColor.withOpacity(0.05)
+                                            : const Color(0xFF000080).withOpacity(0.05),
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(12),
                                         ),
@@ -364,35 +380,37 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           leading: Container(
                                             padding: const EdgeInsets.all(8),
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFF000080).withOpacity(0.1),
+                                              color: Theme.of(context).brightness == Brightness.dark
+                                                  ? Styles.darkDefaultBlueColor.withOpacity(0.1)
+                                                  : const Color(0xFF000080).withOpacity(0.1),
                                               shape: BoxShape.circle,
                                             ),
-                                            child: const Icon(
+                                            child: Icon(
                                               Icons.store,
-                                              color: Colors.white,
+                                              color: Theme.of(context).cardColor,
                                               size: 20,
                                             ),
                                           ),
                                           title: Text(
                                             payment['merchant'],
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontFamily: 'Poppins',
-                                              color: Color(0xFF000080),
+                                              color: Theme.of(context).textTheme.bodyLarge?.color,
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
                                           subtitle: Text(
                                             'Date: ${DateTime.parse(payment['date']).toLocal().toString().split('.')[0]}',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontFamily: 'Poppins',
-                                              color: Color(0xFF000080),
+                                              color: Theme.of(context).textTheme.bodyMedium?.color,
                                               fontSize: 12,
                                             ),
                                           ),
                                           trailing: Text(
                                             '-\$${payment['amount'].toStringAsFixed(2)}',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontFamily: 'Poppins',
                                               color: Colors.redAccent,
                                               fontSize: 16,
@@ -408,7 +426,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   ),
                 ),
               ),
-              const SizedBox(height: 90), 
+              const SizedBox(height: 90),
             ],
           ),
           CustomNavBar(
@@ -418,12 +436,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         ],
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 90.0), 
+        padding: const EdgeInsets.only(bottom: 90.0),
         child: FloatingActionButton(
           onPressed: () => Get.toNamed('/bracelet-connect'),
-          backgroundColor: const Color(0xFF000080),
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Styles.darkDefaultBlueColor
+              : const Color(0xFF000080),
           elevation: 8,
-          child: const Icon(Icons.add, color: Color(0xFF98b5e4), size: 28),
+          child: Icon(
+            Icons.add,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Styles.darkDefaultLightWhiteColor
+                : const Color(0xFF98b5e4),
+            size: 28,
+          ),
         ),
       ),
     );

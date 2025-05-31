@@ -63,8 +63,12 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
       Get.snackbar(
         'Error',
         'Bluetooth permissions are required to connect to your bracelet.',
-        backgroundColor: Styles.defaultRedColor,
-        colorText: Colors.black,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Styles.darkDefaultRedColor
+            : Styles.defaultRedColor,
+        colorText: Theme.of(context).brightness == Brightness.dark
+            ? Styles.darkDefaultLightWhiteColor
+            : Colors.black,
       );
     }
   }
@@ -80,7 +84,16 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
         });
       }
     }, onError: (e) {
-      Get.snackbar('Error', 'Failed to scan for devices: $e', backgroundColor: Color.fromRGBO(0, 102, 255, 0.362));
+      Get.snackbar(
+        'Error',
+        'Failed to scan for devices: $e',
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Styles.darkDefaultRedColor
+            : Styles.defaultRedColor,
+        colorText: Theme.of(context).brightness == Brightness.dark
+            ? Styles.darkDefaultLightWhiteColor
+            : Colors.black,
+      );
       setState(() => _isScanning = false);
     });
 
@@ -91,7 +104,16 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
 
   Future<void> _connectToBracelet() async {
     if (_selectedDevice == null) {
-      Get.snackbar('Error', 'Please select a bracelet', backgroundColor:Color.fromRGBO(0, 102, 255, 0.362));
+      Get.snackbar(
+        'Error',
+        'Please select a bracelet',
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Styles.darkDefaultRedColor
+            : Styles.defaultRedColor,
+        colorText: Theme.of(context).brightness == Brightness.dark
+            ? Styles.darkDefaultLightWhiteColor
+            : Colors.black,
+      );
       return;
     }
 
@@ -103,10 +125,28 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
 
       await ApiService.addBracelet(userId!, _selectedDevice!.id, _selectedDevice!.name ?? 'My Bracelet');
       await ApiService.connectBracelet(_selectedDevice!.id);
-      Get.snackbar('Success', 'Bracelet connected successfully', backgroundColor: Styles.defaultBlueColor);
+      Get.snackbar(
+        'Success',
+        'Bracelet connected successfully',
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Styles.darkDefaultBlueColor
+            : Styles.defaultBlueColor,
+        colorText: Theme.of(context).brightness == Brightness.dark
+            ? Styles.darkDefaultLightWhiteColor
+            : Colors.white,
+      );
       Get.offNamed('/home');
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor);
+      Get.snackbar(
+        'Error',
+        e.toString(),
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Styles.darkDefaultRedColor
+            : Styles.defaultRedColor,
+        colorText: Theme.of(context).brightness == Brightness.dark
+            ? Styles.darkDefaultLightWhiteColor
+            : Colors.black,
+      );
     } finally {
       setState(() => _isConnecting = false);
     }
@@ -116,8 +156,8 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white, // Background already set to white
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
         ),
         child: SafeArea(
           child: Padding(
@@ -128,17 +168,19 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                 children: [
                   SizedBox(height: Styles.defaultPadding),
                   FadeInDown(
-                    child: const Text(
+                    child: Text(
                       'Connect Your Bracelet',
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF063B87), // Major title color updated to #063b87
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                         shadows: [
                           Shadow(
-                            color: Colors.black45,
-                            offset: Offset(2, 2),
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white.withOpacity(0.2)
+                                : Colors.black45,
+                            offset: const Offset(2, 2),
                             blurRadius: 5,
                           ),
                         ],
@@ -158,13 +200,22 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               gradient: LinearGradient(
-                                colors: [Colors.blue[400]!, Colors.blue[800]!],
+                                colors: [
+                                  Theme.of(context).brightness == Brightness.dark
+                                      ? Colors.blue[300]!
+                                      : Colors.blue[400]!,
+                                  Theme.of(context).brightness == Brightness.dark
+                                      ? Colors.blue[700]!
+                                      : Colors.blue[800]!,
+                                ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.blueAccent.withOpacity(0.5),
+                                  color: Theme.of(context).brightness == Brightness.dark
+                                      ? Colors.blue[300]!.withOpacity(0.3)
+                                      : Colors.blueAccent.withOpacity(0.5),
                                   offset: const Offset(0, 6),
                                   blurRadius: 12,
                                   spreadRadius: 2,
@@ -174,10 +225,12 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.watch,
                                   size: 90,
-                                  color: Colors.white,
+                                  color: Theme.of(context).brightness == Brightness.dark
+                                      ? Styles.darkDefaultLightWhiteColor
+                                      : Colors.white,
                                 ),
                                 Positioned(
                                   top: 20,
@@ -188,11 +241,13 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                       shape: BoxShape.circle,
                                       color: _isConnecting ? Colors.green : Colors.grey,
                                     ),
-                                    child: const Center(
+                                    child: Center(
                                       child: Icon(
                                         Icons.bluetooth,
                                         size: 12,
-                                        color: Colors.white,
+                                        color: Theme.of(context).brightness == Brightness.dark
+                                            ? Styles.darkDefaultLightWhiteColor
+                                            : Colors.white,
                                       ),
                                     ),
                                   ),
@@ -205,40 +260,43 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                     ),
                   ),
                   SizedBox(height: Styles.defaultPadding * 2),
-                 
                   FadeInUp(
                     child: Container(
                       padding: EdgeInsets.all(Styles.defaultPadding),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Styles.darkDefaultLightGreyColor.withOpacity(0.1)
+                            : Colors.white.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(15),
-                        boxShadow: const [
+                        boxShadow: [
                           BoxShadow(
-                            color: Colors.black26,
-                            offset: Offset(0, 4),
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.black54
+                                : Colors.black26,
+                            offset: const Offset(0, 4),
                             blurRadius: 8,
                           ),
                         ],
                       ),
                       child: Column(
                         children: [
-                          const Text(
+                          Text(
                             'How to Connect',
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF063B87), 
+                              color: Theme.of(context).textTheme.bodyLarge?.color,
                             ),
                           ),
                           SizedBox(height: Styles.defaultPadding / 2),
-                          const Text(
+                          Text(
                             'Step 1: Ensure Bluetooth is enabled\nStep 2: Scan for your bracelet\nStep 3: Select and connect',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 16,
-                              color: Colors.black, 
+                              color: Theme.of(context).textTheme.bodyMedium?.color,
                               height: 1.5,
                             ),
                           ),
@@ -250,30 +308,40 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                   FadeInUp(
                     child: _isScanning
                         ? Shimmer.fromColors(
-                            baseColor: const Color(0xFF0066FF), 
-                            highlightColor: Colors.white,
+                            baseColor: Theme.of(context).brightness == Brightness.dark
+                                ? Styles.darkDefaultBlueColor
+                                : Styles.defaultBlueColor,
+                            highlightColor: Theme.of(context).brightness == Brightness.dark
+                                ? Styles.darkDefaultLightWhiteColor
+                                : Colors.white,
                             child: Container(
                               width: 363,
                               height: 68,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
-                                color: const Color(0xFF0066FF), 
+                                color: Theme.of(context).brightness == Brightness.dark
+                                    ? Styles.darkDefaultBlueColor
+                                    : Styles.defaultBlueColor,
                               ),
-                              child: const Row(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CircularProgressIndicator(
-                                    color: Colors.white,
+                                    color: Theme.of(context).brightness == Brightness.dark
+                                        ? Styles.darkDefaultLightWhiteColor
+                                        : Colors.white,
                                     strokeWidth: 2,
                                   ),
-                                  SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                                   Text(
                                     'Scanning...',
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       fontSize: 16,
-                                      color: Colors.white, 
+                                      color: Theme.of(context).brightness == Brightness.dark
+                                          ? Styles.darkDefaultLightWhiteColor
+                                          : Colors.white,
                                     ),
                                   ),
                                 ],
@@ -286,17 +354,21 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             child: ElevatedButton(
                               onPressed: _startScan,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF0066FF), 
+                                backgroundColor: Theme.of(context).brightness == Brightness.dark
+                                    ? Styles.darkDefaultBlueColor
+                                    : Styles.defaultBlueColor,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15), 
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
                               ),
-                              child: const Text(
+                              child: Text(
                                 'Search for Bracelets',
                                 style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  color: Colors.white, 
+                                  color: Theme.of(context).brightness == Brightness.dark
+                                      ? Styles.darkDefaultLightWhiteColor
+                                      : Colors.white,
                                 ),
                               ),
                             ),
@@ -307,22 +379,36 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.1),
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Styles.darkDefaultLightGreyColor.withOpacity(0.1)
+                            : Colors.grey.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                        border: Border.all(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Styles.darkDefaultGreyColor.withOpacity(0.3)
+                              : Colors.grey.withOpacity(0.3),
+                        ),
                       ),
                       child: DropdownButton<DiscoveredDevice>(
-                        hint: const Text(
+                        hint: Text(
                           'Select a Bracelet',
-                          style: TextStyle(fontFamily: 'Poppins', color: Colors.black), // Dropdown hint in black
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Theme.of(context).textTheme.bodyMedium?.color,
+                          ),
                         ),
                         value: _selectedDevice,
                         items: _devices.map((device) {
                           return DropdownMenuItem<DiscoveredDevice>(
                             value: device,
                             child: Text(
-                              device.name?.isNotEmpty == true ? device.name! : 'Unknown Device (${device.id})',
-                              style: const TextStyle(fontFamily: 'Poppins', color: Colors.black), // Dropdown items in black
+                              device.name?.isNotEmpty == true
+                                  ? device.name!
+                                  : 'Unknown Device (${device.id})',
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                color: Theme.of(context).textTheme.bodyMedium?.color,
+                              ),
                             ),
                           );
                         }).toList(),
@@ -331,10 +417,15 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             _selectedDevice = device;
                           });
                         },
-                        dropdownColor: Colors.white,
+                        dropdownColor: Theme.of(context).brightness == Brightness.dark
+                            ? Styles.darkScaffoldBackgroundColor
+                            : Colors.white,
                         isExpanded: true,
                         underline: const SizedBox(),
-                        icon: const Icon(Icons.arrow_drop_down, color: Colors.black), // Icon in black
+                        icon: Icon(
+                          Icons.arrow_drop_down,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
+                        ),
                       ),
                     ),
                   ),
@@ -346,36 +437,44 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                       child: ElevatedButton(
                         onPressed: _isConnecting ? null : _connectToBracelet,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0066FF), // Updated to #0066FF
+                          backgroundColor: Theme.of(context).brightness == Brightness.dark
+                              ? Styles.darkDefaultBlueColor
+                              : Styles.defaultBlueColor,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15), // Radius 15
+                            borderRadius: BorderRadius.circular(15),
                           ),
                         ),
                         child: _isConnecting
-                            ? const Row(
+                            ? Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   CircularProgressIndicator(
-                                    color: Colors.white,
+                                    color: Theme.of(context).brightness == Brightness.dark
+                                        ? Styles.darkDefaultLightWhiteColor
+                                        : Colors.white,
                                     strokeWidth: 2,
                                   ),
-                                  SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                                   Text(
                                     'Connecting...',
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       fontSize: 16,
-                                      color: Colors.white, // Button text in white
+                                      color: Theme.of(context).brightness == Brightness.dark
+                                          ? Styles.darkDefaultLightWhiteColor
+                                          : Colors.white,
                                     ),
                                   ),
                                 ],
                               )
-                            : const Text(
+                            : Text(
                                 'Connect',
                                 style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  color: Colors.white, // Button text in white
+                                  color: Theme.of(context).brightness == Brightness.dark
+                                      ? Styles.darkDefaultLightWhiteColor
+                                      : Colors.white,
                                 ),
                               ),
                       ),
@@ -385,12 +484,12 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                   FadeInUp(
                     child: TextButton(
                       onPressed: () => Get.offNamed('/home'),
-                      child: const Text(
+                      child: Text(
                         'Skip for now',
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 14,
-                          color: Colors.black, // Other text in black
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                           decoration: TextDecoration.underline,
                         ),
                       ),

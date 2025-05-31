@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app/styles/styles.dart';
 
 class CustomNavBar extends StatelessWidget {
   final int selectedIndex;
@@ -19,16 +20,25 @@ class CustomNavBar extends StatelessWidget {
       child: Container(
         height: 70,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color.fromARGB(255, 255, 255, 255), Color.fromARGB(255, 255, 255, 255)],
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).brightness == Brightness.dark
+                  ? Styles.darkScaffoldBackgroundColor
+                  : Styles.scaffoldBackgroundColor,
+              Theme.of(context).brightness == Brightness.dark
+                  ? Styles.darkScaffoldBackgroundColor
+                  : Styles.scaffoldBackgroundColor,
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(30),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Colors.black54,
-              offset: Offset(0, 4),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black12
+                  : Colors.black54,
+              offset: const Offset(0, 4),
               blurRadius: 10,
             ),
           ],
@@ -36,17 +46,17 @@ class CustomNavBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildNavItem(Icons.home, 'Home', 0),
-            _buildNavItem(Icons.location_on, 'Location', 1), 
-            _buildNavItem(Icons.wallet, 'Wallet', 2),
-            _buildNavItem(Icons.person, 'Profile', 3),
+            _buildNavItem(Icons.home, 'Home', 0, context),
+            _buildNavItem(Icons.location_on, 'Location', 1, context),
+            _buildNavItem(Icons.wallet, 'Wallet', 2, context),
+            _buildNavItem(Icons.person, 'Profile', 3, context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, int index) {
+  Widget _buildNavItem(IconData icon, String label, int index, BuildContext context) {
     bool isSelected = selectedIndex == index;
     return GestureDetector(
       onTap: () => onItemTapped(index),
@@ -54,7 +64,11 @@ class CustomNavBar extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF000080).withOpacity(0.2) : const Color(0x00000000),
+          color: isSelected
+              ? (Theme.of(context).brightness == Brightness.dark
+                  ? Styles.darkDefaultBlueColor.withOpacity(0.2)
+                  : Styles.defaultBlueColor.withOpacity(0.2))
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -63,7 +77,13 @@ class CustomNavBar extends StatelessWidget {
             Icon(
               icon,
               size: 28,
-              color: isSelected ? const Color(0xFF000080) : const Color(0xFF000080).withOpacity(0.9),
+              color: isSelected
+                  ? (Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultBlueColor
+                      : Styles.defaultBlueColor)
+                  : (Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultBlueColor.withOpacity(0.9)
+                      : Styles.defaultBlueColor.withOpacity(0.9)),
             ),
             const SizedBox(height: 4),
             Text(
@@ -72,7 +92,13 @@ class CustomNavBar extends StatelessWidget {
                 fontFamily: 'Poppins',
                 fontSize: 12,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                color: isSelected ? const Color(0xFF000080) : const Color(0xFF000080).withOpacity(0.9),
+                color: isSelected
+                    ? (Theme.of(context).brightness == Brightness.dark
+                        ? Styles.darkDefaultBlueColor
+                        : Styles.defaultBlueColor)
+                    : (Theme.of(context).brightness == Brightness.dark
+                        ? Styles.darkDefaultBlueColor.withOpacity(0.9)
+                        : Styles.defaultBlueColor.withOpacity(0.9)),
               ),
             ),
           ],

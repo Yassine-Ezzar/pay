@@ -6,12 +6,15 @@ class AddCardGuideScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color.fromARGB(255, 0, 0, 0)),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7) ?? Colors.black,
+          ),
           onPressed: () => Get.back(),
         ),
       ),
@@ -24,17 +27,21 @@ class AddCardGuideScreen extends StatelessWidget {
               width: 300,
               height: 180,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
+                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.black12
+                        : Colors.black.withOpacity(0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 5),
                   ),
                 ],
                 border: Border.all(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultLightGreyColor.withOpacity(0.2)
+                      : Colors.grey.withOpacity(0.2),
                   width: 1,
                 ),
               ),
@@ -47,8 +54,10 @@ class AddCardGuideScreen extends StatelessWidget {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          Colors.white.withOpacity(0.8),
-                          Colors.grey.withOpacity(0.2),
+                          Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
+                          Theme.of(context).brightness == Brightness.dark
+                              ? Styles.darkDefaultLightGreyColor.withOpacity(0.2)
+                              : Colors.grey.withOpacity(0.2),
                         ],
                       ),
                     ),
@@ -63,33 +72,44 @@ class AddCardGuideScreen extends StatelessWidget {
                           width: 50,
                           height: 35,
                           decoration: BoxDecoration(
-                            color: Colors.grey[300],
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Styles.darkDefaultLightGreyColor
+                                : Colors.grey[300],
                             borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.grey, width: 1),
+                            border: Border.all(
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Styles.darkDefaultGreyColor
+                                  : Colors.grey,
+                              width: 1,
+                            ),
                           ),
                           child: Center(
                             child: Container(
                               width: 20,
                               height: 20,
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.yellow,
+                                color: Theme.of(context).brightness == Brightness.dark
+                                    ? Styles.darkDefaultYellowColor
+                                    : Colors.yellow,
                               ),
                             ),
                           ),
                         ),
                         const Spacer(),
-                        const Text(
+                        Text(
                           '**** **** **** 8712',
                           style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 20,
-                            color: Colors.black54,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Styles.darkDefaultLightWhiteColor
+                                : Colors.black54,
                             letterSpacing: 2,
                           ),
                         ),
                         const SizedBox(height: 10),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
@@ -97,7 +117,9 @@ class AddCardGuideScreen extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 14,
-                                color: Colors.black54,
+                                color: Theme.of(context).brightness == Brightness.dark
+                                    ? Styles.darkDefaultLightWhiteColor
+                                    : Colors.black54,
                               ),
                             ),
                             Text(
@@ -105,7 +127,9 @@ class AddCardGuideScreen extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 14,
-                                color: Colors.black54,
+                                color: Theme.of(context).brightness == Brightness.dark
+                                    ? Styles.darkDefaultLightWhiteColor
+                                    : Colors.black54,
                               ),
                             ),
                           ],
@@ -120,7 +144,9 @@ class AddCardGuideScreen extends StatelessWidget {
                     child: Icon(
                       Icons.nfc,
                       size: 30,
-                      color: Colors.black54.withOpacity(0.7),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Styles.darkDefaultLightWhiteColor.withOpacity(0.7)
+                          : Colors.black54.withOpacity(0.7),
                     ),
                   ),
                 ],
@@ -128,44 +154,48 @@ class AddCardGuideScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             // Title
-            const Text(
+            Text(
               'Add Card to Your Bracelet',
               style: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            const Text(
+            Text(
               'Add credit, debit, or store cards to your bracelet to make secure payments.',
               style: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 16,
-                color: Colors.black54,
+                color: Theme.of(context).textTheme.bodyMedium?.color,
                 height: 1.5,
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.info_outline,
-                  color: Colors.grey,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultGreyColor
+                      : Colors.grey,
                   size: 20,
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     'Card-related information, location, and device settings may be sent to the card issuer to provide assessments to your card issuer or payment network to set up Apple Pay and prevent fraud.',
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 12,
-                      color: Colors.grey,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Styles.darkDefaultGreyColor
+                          : Colors.grey,
                       height: 1.5,
                     ),
                     textAlign: TextAlign.center,
@@ -175,15 +205,19 @@ class AddCardGuideScreen extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             SizedBox(
-              width: 363, 
-              height: 68, 
+              width: 363,
+              height: 68,
               child: ElevatedButton(
                 onPressed: () => Get.toNamed('/add-card'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF000080),
-                  foregroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultBlueColor
+                      : Styles.defaultBlueColor,
+                  foregroundColor: Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultLightWhiteColor
+                      : Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15), 
+                    borderRadius: Styles.defaultBorderRadius,
                   ),
                 ),
                 child: const Text(

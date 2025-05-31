@@ -54,7 +54,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     bool authenticated = await _biometricService.authenticate();
     if (authenticated) {
       setState(() {
-        _faceIdCompleted = true; // Mark Face ID as completed
+        _faceIdCompleted = true; 
       });
     } else {
       Get.snackbar(
@@ -173,9 +173,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     bool isIOS = Platform.isIOS;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.close, color: Color(0xFF063B87)),

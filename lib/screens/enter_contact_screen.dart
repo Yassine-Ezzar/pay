@@ -186,7 +186,7 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
                             child: ElevatedButton(
                               onPressed: _isLoading ? null : _submitContact,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                                 foregroundColor: Colors.white,
                                 shadowColor: Colors.transparent,
                                 shape: RoundedRectangleBorder(

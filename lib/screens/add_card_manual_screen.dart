@@ -70,20 +70,20 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFF063B87)),
           onPressed: () => Get.back(),
         ),
-        title: const Text(
+        title: Text(
           'Add Card Manually',
           style: TextStyle(
             fontFamily: 'Poppins',
             fontSize: 20,
-            color: Color(0xFF063B87),
+            color: Theme.of(context).textTheme.bodyLarge?.color,
             fontWeight: FontWeight.bold,
           ),
         ),

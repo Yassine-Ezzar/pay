@@ -1,38 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:app/styles/styles.dart';
+import 'package:get/get.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-   appBar: AppBar(
-        title: const Text(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: Text(
           'Privacy Policy',
           style: TextStyle(
             fontFamily: 'Poppins',
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF000080),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Styles.darkDefaultLightWhiteColor
+                : Styles.defaultBlueColor,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF000080)),
-          onPressed: () => Navigator.pop(context),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Styles.darkDefaultLightWhiteColor
+                : Styles.defaultBlueColor,
+          ),
+          onPressed: () => Get.back(),
         ),
-        toolbarHeight: kToolbarHeight + Styles.defaultPadding * 3.5, 
-        titleSpacing: Styles.defaultPadding, 
+        toolbarHeight: kToolbarHeight + Styles.defaultPadding * 3.5,
+        titleSpacing: Styles.defaultPadding,
       ),
       body: Padding(
         padding: EdgeInsets.all(Styles.defaultPadding),
-        child: const SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 'The security of your data is a priority. This privacy policy explains the information we collect, how we use it, and how we protect it.\n\n'
                 '📍 Data Collected\n'
@@ -54,10 +61,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 16,
-                  color: Colors.black87,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultLightWhiteColor
+                      : Colors.black87,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           ),
         ),

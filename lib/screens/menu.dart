@@ -17,7 +17,7 @@ class Menu extends StatelessWidget {
       onPressed: () {
         showModalBottomSheet(
           context: context,
-          backgroundColor: Styles.scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),

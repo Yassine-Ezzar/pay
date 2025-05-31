@@ -176,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
     required VoidCallback onConfirm,
   }) {
     Get.defaultDialog(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       title: title,
       titleStyle: TextStyle(
         fontFamily: 'Poppins',
@@ -273,9 +273,9 @@ class _LoginScreenState extends State<LoginScreen> {
     bool isIOS = Platform.isIOS;
 
     return Scaffold(
-      backgroundColor: Colors.white, // Background set to white
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Color(0xFF063B87)),
@@ -368,9 +368,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ElevatedButton(
                   onPressed: isLoading ? null : _loginWithFaceId,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF0066FF), // Button color
+                    backgroundColor: Color(0xFF0066FF), 
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15), // Radius 15
+                      borderRadius: BorderRadius.circular(15), 
                     ),
                   ),
                   child: isLoading
@@ -446,9 +446,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ElevatedButton(
                   onPressed: isLoading ? null : _loginWithTouchId,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF0066FF), // Button color
+                    backgroundColor: Color(0xFF0066FF), 
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15), // Radius 15
+                      borderRadius: BorderRadius.circular(15), 
                     ),
                   ),
                   child: isLoading
@@ -590,9 +590,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ? null
                       : _loginWithPin,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF0066FF), // Button color
+                    backgroundColor: Color(0xFF0066FF), 
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15), // Radius 15
+                      borderRadius: BorderRadius.circular(15), 
                     ),
                   ),
                   child: isLoading

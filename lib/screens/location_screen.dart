@@ -55,7 +55,7 @@ class _LocationScreenState extends State<LocationScreen> {
         isLoadingBracelets = false;
       });
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Colors.redAccent);
+      Get.snackbar('Error', e.toString(), backgroundColor: Colors.redAccent.withOpacity(0.8));
       setState(() => isLoadingBracelets = false);
     }
   }
@@ -95,7 +95,7 @@ class _LocationScreenState extends State<LocationScreen> {
         _calculateDistance();
       });
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Colors.redAccent);
+      Get.snackbar('Error', e.toString(), backgroundColor: Colors.redAccent.withOpacity(0.8));
       setState(() => isLoadingUserLocation = false);
     }
   }
@@ -141,7 +141,7 @@ class _LocationScreenState extends State<LocationScreen> {
         isLoadingLocation = false;
       });
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Colors.redAccent);
+      Get.snackbar('Error', e.toString(), backgroundColor: Colors.redAccent.withOpacity(0.8));
       setState(() => isLoadingLocation = false);
     }
   }
@@ -237,14 +237,14 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Set background to white
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
           Column(
             children: [
               Expanded(
                 child: Container(
-                  color: Colors.white, // Set container background to white
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   child: SafeArea(
                     child: Column(
                       children: [
@@ -262,7 +262,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                   fontFamily: 'Poppins',
                                   fontSize: 28,
                                   fontWeight: FontWeight.w700,
-                                  color: const Color(0xFF000080), // Main title color
+                                  color: Theme.of(context).textTheme.bodyLarge?.color,
                                 ),
                               ),
                             ],
@@ -275,11 +275,11 @@ class _LocationScreenState extends State<LocationScreen> {
                               Expanded(
                                 child: DropdownButton<String>(
                                   value: selectedBraceletId,
-                                  hint: const Text(
+                                  hint: Text(
                                     'Select a Bracelet',
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
-                                      color: Colors.black, // Hint text in black
+                                      color: Theme.of(context).textTheme.bodyMedium?.color,
                                     ),
                                   ),
                                   items: bracelets.map<DropdownMenuItem<String>>((bracelet) {
@@ -287,9 +287,9 @@ class _LocationScreenState extends State<LocationScreen> {
                                       value: bracelet['braceletId'],
                                       child: Text(
                                         bracelet['name'],
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontFamily: 'Poppins',
-                                          color: Colors.black, // Dropdown items in black
+                                          color: Theme.of(context).textTheme.bodyMedium?.color,
                                         ),
                                       ),
                                     );
@@ -300,15 +300,15 @@ class _LocationScreenState extends State<LocationScreen> {
                                       _fetchBraceletLocation();
                                     });
                                   },
-                                  dropdownColor: Colors.white, // Dropdown background to white
-                                  style: const TextStyle(color: Colors.black),
-                                  iconEnabledColor: Colors.black, // Icon in black
+                                  dropdownColor: Theme.of(context).scaffoldBackgroundColor,
+                                  style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+                                  iconEnabledColor: Theme.of(context).iconTheme.color,
                                   isExpanded: true,
                                 ),
                               ),
                               const SizedBox(width: 10),
                               IconButton(
-                                icon: const Icon(Icons.refresh, color: Colors.black), // Icon in black
+                                icon: Icon(Icons.refresh, color: Theme.of(context).iconTheme.color),
                                 onPressed: _fetchBraceletLocation,
                               ),
                             ],
@@ -325,18 +325,18 @@ class _LocationScreenState extends State<LocationScreen> {
                               children: [
                                 Text(
                                   'Bracelet Location: $braceletAddress',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'Poppins',
-                                    color: Colors.black, // Location text in black
+                                    color: Theme.of(context).textTheme.bodyMedium?.color,
                                     fontSize: 14,
                                   ),
                                 ),
                                 if (distanceToBracelet != null)
                                   Text(
                                     'Distance: ${distanceToBracelet!.toStringAsFixed(2)} km',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontFamily: 'Poppins',
-                                      color: Colors.black, // Distance text in black
+                                      color: Theme.of(context).textTheme.bodyMedium?.color,
                                       fontSize: 14,
                                     ),
                                   ),
@@ -346,28 +346,28 @@ class _LocationScreenState extends State<LocationScreen> {
                         ],
                         Expanded(
                           child: isLoadingBracelets || isLoadingUserLocation
-                              ? const Center(child: CircularProgressIndicator(color: Colors.black)) // Spinner in black
+                              ? Center(child: CircularProgressIndicator(color: Theme.of(context).iconTheme.color))
                               : bracelets.isEmpty
-                                  ? const Center(
+                                  ? Center(
                                       child: Text(
                                         'No bracelets found.\nPlease connect a bracelet first.',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: 'Poppins',
-                                          color: Colors.black, // Error message in black
+                                          color: Theme.of(context).textTheme.bodyMedium?.color,
                                           fontSize: 16,
                                         ),
                                       ),
                                     )
                                   : isLoadingLocation
-                                      ? const Center(child: CircularProgressIndicator(color: Colors.black)) 
+                                      ? Center(child: CircularProgressIndicator(color: Theme.of(context).iconTheme.color))
                                       : userLocation == null
-                                          ? const Center(
+                                          ? Center(
                                               child: Text(
                                                 'Unable to fetch your location.',
                                                 style: TextStyle(
                                                   fontFamily: 'Poppins',
-                                                  color: Colors.black, // Error message in black
+                                                  color: Theme.of(context).textTheme.bodyMedium?.color,
                                                   fontSize: 16,
                                                 ),
                                               ),

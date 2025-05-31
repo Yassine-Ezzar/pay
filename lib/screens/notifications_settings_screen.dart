@@ -42,23 +42,26 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
   void _showInfoDialog() {
     Get.dialog(
       Dialog(
-        backgroundColor: Colors.transparent, // Make the dialog background transparent
+        backgroundColor: Colors.transparent,
         insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.blue.withOpacity(0.2), Colors.purple.withOpacity(0.2)],
+              colors: [
+                Theme.of(context).primaryColor.withOpacity(0.2),
+                Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             border: Border.all(
-              color: Colors.blueAccent.withOpacity(0.5),
+              color: Theme.of(context).primaryColor.withOpacity(0.5),
               width: 2,
             ),
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
               BoxShadow(
-                color: Colors.blueAccent.withOpacity(0.3),
+                color: Theme.of(context).primaryColor.withOpacity(0.3),
                 blurRadius: 15,
                 spreadRadius: 5,
                 offset: const Offset(0, 5),
@@ -78,11 +81,11 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                     fontFamily: 'Poppins',
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white.withOpacity(0.9),
+                    color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.9) ?? Colors.white,
                     letterSpacing: 1.5,
                     shadows: [
                       Shadow(
-                        color: Colors.blueAccent.withOpacity(0.7),
+                        color: Theme.of(context).primaryColor.withOpacity(0.7),
                         offset: const Offset(0, 0),
                         blurRadius: 10,
                       ),
@@ -90,12 +93,12 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                   ),
                 ),
                 const SizedBox(height: 15),
-                const Text(
+                Text(
                   'This page allows you to enable or disable notifications. Turning off notifications will prevent you from receiving any alerts, updates, or reminders.',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 16,
-                    color: Colors.white70,
+                    color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white70,
                     height: 1.5,
                     letterSpacing: 0.5,
                   ),
@@ -104,26 +107,24 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-              
-                    const SizedBox(width: 10),
                     ElevatedButton(
                       onPressed: () {
                         Get.back();
                         setState(() {
-                          _hasShownInfo = true; 
+                          _hasShownInfo = true;
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
-                        foregroundColor: Colors.white,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         elevation: 5,
-                        shadowColor: Colors.blueAccent.withOpacity(0.5),
+                        shadowColor: Theme.of(context).primaryColor.withOpacity(0.5),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Proceed',
                         style: TextStyle(
                           fontFamily: 'Poppins',
@@ -145,9 +146,12 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF0066FF), Color(0xFF004ECC)],
+            colors: [
+              Theme.of(context).primaryColor,
+              Theme.of(context).colorScheme.secondary,
+            ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -167,9 +171,9 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_back,
-                        color: Colors.white,
+                        color: Theme.of(context).iconTheme.color,
                         size: 28,
                       ),
                       onPressed: () => Get.back(),
@@ -178,19 +182,19 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                 ),
                 const SizedBox(height: 40),
                 // Icon and Title
-                const Icon(
+                Icon(
                   Icons.notifications,
                   size: 80,
-                  color: Colors.white,
+                  color: Theme.of(context).iconTheme.color,
                 ),
                 const SizedBox(height: 20),
-                const Text(
+                Text(
                   'Notifications Settings',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -199,11 +203,13 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                   child: Container(
                     padding: EdgeInsets.all(Styles.defaultPadding),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.black12
+                              : Colors.black.withOpacity(0.1),
                           blurRadius: 10,
                           offset: const Offset(0, 5),
                         ),
@@ -212,38 +218,42 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           'Notification Preferences',
                           style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF063B87),
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
                           ),
                         ),
                         const SizedBox(height: 20),
                         SwitchListTile(
-                          title: const Text(
+                          title: Text(
                             'Enable Notifications',
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 18,
-                              color: Color(0xFF063B87),
+                              color: Theme.of(context).textTheme.bodyLarge?.color,
                             ),
                           ),
-                          subtitle: const Text(
+                          subtitle: Text(
                             'Receive alerts, updates, and reminders',
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 14,
-                              color: Colors.grey,
+                              color: Theme.of(context).textTheme.bodyMedium?.color,
                             ),
                           ),
                           value: notificationsEnabled,
                           onChanged: (value) => _saveNotificationsSetting(value),
-                          activeColor: Styles.defaultBlueColor,
-                          inactiveThumbColor: Colors.grey,
-                          inactiveTrackColor: Colors.grey[300],
+                          activeColor: Theme.of(context).primaryColor,
+                          inactiveThumbColor: Theme.of(context).brightness == Brightness.dark
+                              ? Styles.darkDefaultGreyColor
+                              : Colors.grey,
+                          inactiveTrackColor: Theme.of(context).brightness == Brightness.dark
+                              ? Styles.darkDefaultLightGreyColor
+                              : Colors.grey[300],
                         ),
                         const SizedBox(height: 20),
                       ],

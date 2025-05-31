@@ -4,8 +4,41 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final ThemeController themeController = Get.put(ThemeController());
+  themeController.onInit();
+
   runApp(MyApp());
+}
+
+class ThemeController extends GetxController {
+  var isDarkMode = false.obs;
+
+  void toggleTheme() {
+    isDarkMode.value = !isDarkMode.value;
+    Get.changeThemeMode(isDarkMode.value ? ThemeMode.dark : ThemeMode.light);
+    _saveThemePreference(isDarkMode.value);
+  }
+
+  Future<void> _saveThemePreference(bool isDark) async {
+    final _storage = const FlutterSecureStorage();
+    await _storage.write(key: 'isDarkMode', value: isDark.toString());
+  }
+
+  Future<bool> _loadThemePreference() async {
+    final _storage = const FlutterSecureStorage();
+    final String? isDark = await _storage.read(key: 'isDarkMode');
+    return isDark == 'true';
+  }
+
+  @override
+  void onInit() async {
+    super.onInit();
+    isDarkMode.value = await _loadThemePreference();
+    Get.changeThemeMode(isDarkMode.value ? ThemeMode.dark : ThemeMode.light);
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -14,7 +47,6 @@ class MyApp extends StatelessWidget {
   Future<List<dynamic>> _getInitialData() async {
     String? userId = await _storage.read(key: 'userId');
     String? role = await _storage.read(key: 'role');
-    String? isDarkMode = await _storage.read(key: 'isDarkMode');
     String? locale = await _storage.read(key: 'locale');
     String initialRoute;
 
@@ -26,10 +58,9 @@ class MyApp extends StatelessWidget {
       initialRoute = '/splash';
     }
 
-    bool darkMode = isDarkMode == null || isDarkMode == 'true';
     Locale appLocale = locale == 'fr_FR' ? const Locale('fr', 'FR') : const Locale('en', 'US');
 
-    return [initialRoute, darkMode, appLocale];
+    return [initialRoute, appLocale];
   }
 
   @override
@@ -48,8 +79,7 @@ class MyApp extends StatelessWidget {
         }
 
         final String initialRoute = snapshot.data![0] as String;
-        final bool isDarkMode = snapshot.data![1] as bool;
-        final Locale appLocale = snapshot.data![2] as Locale;
+        final Locale appLocale = snapshot.data![1] as Locale;
 
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
@@ -57,12 +87,12 @@ class MyApp extends StatelessWidget {
           getPages: AppPages.pages,
           theme: ThemeData(
             fontFamily: 'Poppins',
-            scaffoldBackgroundColor: Colors.white,
+            scaffoldBackgroundColor: Styles.scaffoldBackgroundColor,
             primaryColor: Styles.defaultBlueColor,
             colorScheme: ColorScheme.light(
               primary: Styles.defaultBlueColor,
-              secondary: Colors.white,
-              background: Colors.white,
+              secondary: Styles.defaultYellowColor,
+              background: Styles.scaffoldBackgroundColor,
             ),
             textTheme: const TextTheme(
               bodyLarge: TextStyle(color: Colors.black),
@@ -76,44 +106,45 @@ class MyApp extends StatelessWidget {
                 shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
               ),
             ),
-            appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
-              elevation: 0,
-            ),
-            cardColor: Colors.white,
-            iconTheme: const IconThemeData(color: Colors.black),
-          ),
-          darkTheme: ThemeData(
-            fontFamily: 'Poppins',
-            scaffoldBackgroundColor: Styles.scaffoldBackgroundColor,
-            primaryColor: Styles.defaultBlueColor,
-            colorScheme: ColorScheme.dark(
-              primary: Styles.defaultBlueColor,
-              secondary: Colors.white,
-              background: Styles.scaffoldBackgroundColor,
-            ),
-            textTheme: TextTheme(
-              bodyLarge: TextStyle(color: Styles.defaultYellowColor),
-              bodyMedium: TextStyle(color: Styles.defaultLightWhiteColor),
-            ),
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Styles.defaultBlueColor,
-                padding: EdgeInsets.all(Styles.defaultPadding),
-                shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
-              ),
-            ),
             appBarTheme: AppBarTheme(
               backgroundColor: Styles.scaffoldBackgroundColor,
               foregroundColor: Styles.defaultYellowColor,
               elevation: 0,
             ),
-            cardColor: Styles.defaultLightGreyColor.withOpacity(0.2),
-            iconTheme: IconThemeData(color: Styles.defaultYellowColor),
+            cardColor: Styles.scaffoldBackgroundColor,
+            iconTheme: const IconThemeData(color: Colors.black),
           ),
-          themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            fontFamily: 'Poppins',
+            scaffoldBackgroundColor: Styles.darkScaffoldBackgroundColor,
+            primaryColor: Styles.darkDefaultBlueColor,
+            colorScheme: ColorScheme.dark(
+              primary: Styles.darkDefaultBlueColor,
+              secondary: Styles.darkDefaultYellowColor,
+              background: Styles.darkScaffoldBackgroundColor,
+            ),
+            textTheme: TextTheme(
+              bodyLarge: TextStyle(color: Styles.darkDefaultLightWhiteColor),
+              bodyMedium: TextStyle(color: Styles.darkDefaultGreyColor),
+            ),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Styles.darkDefaultBlueColor,
+                foregroundColor: Styles.darkDefaultLightWhiteColor,
+                padding: EdgeInsets.all(Styles.defaultPadding),
+                shape: RoundedRectangleBorder(borderRadius: Styles.defaultBorderRadius),
+              ),
+            ),
+            appBarTheme: AppBarTheme(
+              backgroundColor: Styles.darkScaffoldBackgroundColor,
+              foregroundColor: Styles.darkDefaultYellowColor,
+              elevation: 0,
+            ),
+            cardColor: Styles.darkDefaultLightGreyColor.withOpacity(0.2),
+            iconTheme: IconThemeData(color: Styles.darkDefaultYellowColor),
+          ),
+          themeMode: Get.find<ThemeController>().isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
           translations: AppTranslations(),
           locale: appLocale,
           fallbackLocale: const Locale('fr', 'FR'),
@@ -176,7 +207,7 @@ class AppTranslations extends Translations {
               '5. Contact Us\n'
               'If you have any questions about this Privacy Policy, please contact us at support@example.com.',
         },
-'fr_FR': {
+        'fr_FR': {
           'language': 'Langue',
           'title': 'Profil',
           'notifications': 'Notifications',

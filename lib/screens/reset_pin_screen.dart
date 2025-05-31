@@ -48,7 +48,7 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
         _answerController.text,
         _newPinController.text,
       );
-      Get.offNamed('/password-changed'); // Navigate to the new success screen
+      Get.offNamed('/password-changed'); 
     } catch (e) {
       Get.snackbar('Error', e.toString(), backgroundColor: Styles.defaultRedColor, colorText: Colors.white);
     }
@@ -57,9 +57,9 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.close, color: Color(0xFF063B87)),

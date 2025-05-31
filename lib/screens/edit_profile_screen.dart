@@ -118,7 +118,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0E21),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Container(
           decoration: const BoxDecoration(

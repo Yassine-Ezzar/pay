@@ -90,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
 
   Future<void> _saveAvatar(String avatarId) async {
     await storage.write(key: 'selectedAvatar', value: avatarId);
-    await storage.delete(key: 'selectedImagePath'); // Clear image if avatar is selected
+    await storage.delete(key: 'selectedImagePath');
     setState(() {
       selectedAvatar = avatarId;
       selectedImagePath = null;
@@ -102,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       await storage.write(key: 'selectedImagePath', value: image.path);
-      await storage.delete(key: 'selectedAvatar'); // Clear avatar if image is selected
+      await storage.delete(key: 'selectedAvatar'); 
       setState(() {
         selectedImagePath = image.path;
         selectedAvatar = null;
@@ -280,7 +280,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFFFF),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
           Column(
