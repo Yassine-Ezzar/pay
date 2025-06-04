@@ -61,8 +61,8 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
       _startScan();
     } else {
       Get.snackbar(
-        'Error',
-        'Bluetooth permissions are required to connect to your bracelet.',
+        'error'.tr,
+        'bluetooth_permissions_required'.tr,
         backgroundColor: Theme.of(context).brightness == Brightness.dark
             ? Styles.darkDefaultRedColor
             : Styles.defaultRedColor,
@@ -85,8 +85,8 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
       }
     }, onError: (e) {
       Get.snackbar(
-        'Error',
-        'Failed to scan for devices: $e',
+       'error'.tr,
+        'failed_scan_devices'.tr + e.toString(),
         backgroundColor: Theme.of(context).brightness == Brightness.dark
             ? Styles.darkDefaultRedColor
             : Styles.defaultRedColor,
@@ -105,8 +105,8 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
   Future<void> _connectToBracelet() async {
     if (_selectedDevice == null) {
       Get.snackbar(
-        'Error',
-        'Please select a bracelet',
+        'error'.tr,
+        'select_bracelet'.tr,
         backgroundColor: Theme.of(context).brightness == Brightness.dark
             ? Styles.darkDefaultRedColor
             : Styles.defaultRedColor,
@@ -126,8 +126,8 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
       await ApiService.addBracelet(userId!, _selectedDevice!.id, _selectedDevice!.name ?? 'My Bracelet');
       await ApiService.connectBracelet(_selectedDevice!.id);
       Get.snackbar(
-        'Success',
-        'Bracelet connected successfully',
+        'success'.tr,
+        'bracelet_connected'.tr,
         backgroundColor: Theme.of(context).brightness == Brightness.dark
             ? Styles.darkDefaultBlueColor
             : Styles.defaultBlueColor,
@@ -169,7 +169,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                   SizedBox(height: Styles.defaultPadding),
                   FadeInDown(
                     child: Text(
-                      'Connect Your Bracelet',
+                      'connect_bracelet'.tr,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 30,
@@ -281,7 +281,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                       child: Column(
                         children: [
                           Text(
-                            'How to Connect',
+                           'how_to_connect'.tr,
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 18,
@@ -291,7 +291,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                           ),
                           SizedBox(height: Styles.defaultPadding / 2),
                           Text(
-                            'Step 1: Ensure Bluetooth is enabled\nStep 2: Scan for your bracelet\nStep 3: Select and connect',
+                            'step_1'.tr + '\n' + 'step_2'.tr + '\n' + 'step_3'.tr,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'Poppins',
@@ -335,7 +335,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                   ),
                                   const SizedBox(width: 10),
                                   Text(
-                                    'Scanning...',
+                                    'scanning'.tr,
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       fontSize: 16,
@@ -362,7 +362,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                 ),
                               ),
                               child: Text(
-                                'Search for Bracelets',
+                                'search_bracelets'.tr,
                                 style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
@@ -391,7 +391,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                       ),
                       child: DropdownButton<DiscoveredDevice>(
                         hint: Text(
-                          'Select a Bracelet',
+                         'select_bracelet'.tr,
                           style: TextStyle(
                             fontFamily: 'Poppins',
                             color: Theme.of(context).textTheme.bodyMedium?.color,
@@ -404,7 +404,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                             child: Text(
                               device.name?.isNotEmpty == true
                                   ? device.name!
-                                  : 'Unknown Device (${device.id})',
+                                  : 'unknown_device'.tr + ' (${device.id})',
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 color: Theme.of(context).textTheme.bodyMedium?.color,
@@ -456,7 +456,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                   ),
                                   const SizedBox(width: 10),
                                   Text(
-                                    'Connecting...',
+                                  'connecting'.tr,
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       fontSize: 16,
@@ -468,7 +468,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                                 ],
                               )
                             : Text(
-                                'Connect',
+                               'connect'.tr,
                                 style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
@@ -485,7 +485,7 @@ class _BraceletConnectScreenState extends State<BraceletConnectScreen> with Sing
                     child: TextButton(
                       onPressed: () => Get.offNamed('/home'),
                       child: Text(
-                        'Skip for now',
+                       'skip_for_now'.tr,
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 14,

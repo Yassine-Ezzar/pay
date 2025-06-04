@@ -31,7 +31,7 @@ class _CardListScreenState extends State<CardListScreen> {
   Future<void> _loadUserId() async {
     userId = await ApiService.storage.read(key: 'userId');
     if (userId == null) {
-      Get.snackbar('Error', 'User not logged in',
+      Get.snackbar('error'.tr, 'user_not_logged_in'.tr,
           backgroundColor: Styles.defaultRedColor, colorText: Styles.defaultLightWhiteColor);
       Get.offNamed('/login');
     } else {
@@ -62,10 +62,10 @@ class _CardListScreenState extends State<CardListScreen> {
       try {
         await ApiService.deleteCard(cardId);
         _fetchCards();
-        Get.snackbar('Success', 'Card deleted',
+        Get.snackbar('success'.tr, 'card_deleted'.tr,
             backgroundColor: Styles.defaultBlueColor, colorText: Styles.defaultYellowColor);
       } catch (e) {
-        Get.snackbar('Error', e.toString(),
+        Get.snackbar('error'.tr, e.toString(),
             backgroundColor: Styles.defaultRedColor, colorText: Styles.defaultLightWhiteColor);
       } finally {
         setState(() => isLoading = false);
@@ -85,9 +85,9 @@ class _CardListScreenState extends State<CardListScreen> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: const Text(
-          'Your Cards',
+      backgroundColor:Color.fromRGBO(0, 0, 0, 1),
+        title:  Text(
+          'your_cards'.tr,
           style: TextStyle(
             fontFamily: 'Poppins',
             color: Colors.white,
@@ -130,8 +130,8 @@ class _CardListScreenState extends State<CardListScreen> {
                                 color: Colors.white.withOpacity(0.5),
                               ),
                               SizedBox(height: Styles.defaultPadding),
-                              const Text(
-                                'No Cards Added',
+                               Text(
+                                'no_cards_added'.tr,
                                 style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 20,
@@ -141,7 +141,7 @@ class _CardListScreenState extends State<CardListScreen> {
                               ),
                               SizedBox(height: Styles.defaultPadding),
                               Text(
-                                'Add a card to get started',
+                                'add_card_to_start'.tr,
                                 style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
@@ -207,11 +207,12 @@ class _CardListScreenState extends State<CardListScreen> {
 
   Widget _buildCardItem(dynamic card, int index) {
     final List<Color> cardColors = [
-      const Color(0xFF1E3A8A), 
-      const Color(0xFF6B21A8), 
+      const Color.fromARGB(255, 229, 228, 228), 
+      const Color.fromARGB(139, 107, 33, 168), 
+      const Color.fromARGB(182, 52, 79, 153),
       const Color(0xFF047857), 
       const Color.fromARGB(157, 220, 38, 38),
-      const Color.fromARGB(255, 229, 228, 228),
+      const Color.fromARGB(255, 111, 111, 111),
     ];
     final cardColor = cardColors[index % cardColors.length];
 

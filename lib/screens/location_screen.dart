@@ -257,7 +257,7 @@ class _LocationScreenState extends State<LocationScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Locate Your Bracelet',
+                                'locate_bracelet'.tr,
                                 style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 28,
@@ -276,7 +276,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                 child: DropdownButton<String>(
                                   value: selectedBraceletId,
                                   hint: Text(
-                                    'Select a Bracelet',
+                                   'select_bracelet'.tr,
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       color: Theme.of(context).textTheme.bodyMedium?.color,
@@ -324,7 +324,7 @@ class _LocationScreenState extends State<LocationScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Bracelet Location: $braceletAddress',
+                                  'bracelet_location'.tr + ' $braceletAddress',
                                   style: TextStyle(
                                     fontFamily: 'Poppins',
                                     color: Theme.of(context).textTheme.bodyMedium?.color,
@@ -333,7 +333,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                 ),
                                 if (distanceToBracelet != null)
                                   Text(
-                                    'Distance: ${distanceToBracelet!.toStringAsFixed(2)} km',
+                                   'distance'.tr + ' ${distanceToBracelet!.toStringAsFixed(2)} km'  ,
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       color: Theme.of(context).textTheme.bodyMedium?.color,
@@ -350,7 +350,7 @@ class _LocationScreenState extends State<LocationScreen> {
                               : bracelets.isEmpty
                                   ? Center(
                                       child: Text(
-                                        'No bracelets found.\nPlease connect a bracelet first.',
+                                        'no_bracelets_found'.tr,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: 'Poppins',
@@ -364,7 +364,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                       : userLocation == null
                                           ? Center(
                                               child: Text(
-                                                'Unable to fetch your location.',
+                                                'unable_fetch_location'.tr,
                                                 style: TextStyle(
                                                   fontFamily: 'Poppins',
                                                   color: Theme.of(context).textTheme.bodyMedium?.color,

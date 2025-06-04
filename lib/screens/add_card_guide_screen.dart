@@ -113,7 +113,7 @@ class AddCardGuideScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'CARDHOLDER NAME',
+                              'CARDHOLDER NAME'.tr,
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 14,
@@ -155,7 +155,7 @@ class AddCardGuideScreen extends StatelessWidget {
             const SizedBox(height: 30),
             // Title
             Text(
-              'Add Card to Your Bracelet',
+              'add_card_guide_title'.tr,
               style: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 24,
@@ -166,7 +166,7 @@ class AddCardGuideScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              'Add credit, debit, or store cards to your bracelet to make secure payments.',
+              'add_card_guide_description'.tr,
               style: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 16,
@@ -189,7 +189,7 @@ class AddCardGuideScreen extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'Card-related information, location, and device settings may be sent to the card issuer to provide assessments to your card issuer or payment network to set up Apple Pay and prevent fraud.',
+                    'add_card_guide_info'.tr,
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 12,
@@ -220,9 +220,9 @@ class AddCardGuideScreen extends StatelessWidget {
                     borderRadius: Styles.defaultBorderRadius,
                   ),
                 ),
-                child: const Text(
-                  'Continue',
-                  style: TextStyle(
+                child: Text(
+                  'continue'.tr,
+                  style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 19,
                     fontWeight: FontWeight.w600,

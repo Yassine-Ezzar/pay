@@ -10,7 +10,7 @@ class CheckingScreen extends StatefulWidget {
 
 class _CheckingScreenState extends State<CheckingScreen>
     with SingleTickerProviderStateMixin {
-  bool _isButtonEnabled = false; 
+  bool _isButtonEnabled = false;
   late AnimationController _animationController;
   late Animation<double> _dot1Animation;
   late Animation<double> _dot2Animation;
@@ -23,7 +23,7 @@ class _CheckingScreenState extends State<CheckingScreen>
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 1000),
       vsync: this,
-    )..repeat(); 
+    )..repeat();
 
     _dot1Animation = Tween<double>(begin: 0.3, end: 1.0).animate(
       CurvedAnimation(
@@ -48,8 +48,8 @@ class _CheckingScreenState extends State<CheckingScreen>
 
     Timer(const Duration(seconds: 9), () {
       setState(() {
-        _isButtonEnabled = true; 
-        _animationController.stop(); 
+        _isButtonEnabled = true;
+        _animationController.stop();
       });
     });
   }
@@ -71,25 +71,27 @@ class _CheckingScreenState extends State<CheckingScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                'Checking!\nPlease wait ...',
+              Text(
+                'checking_title'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF063B87),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultYellowColor
+                      : const Color(0xFF063B87),
                   height: 1.2,
                 ),
               ),
               SizedBox(height: Styles.defaultPadding),
-              const Text(
-                'Your account is being checked before ready to use.',
+              Text(
+                'checking_description'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 14,
-                  color: Colors.black,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
               SizedBox(height: Styles.defaultPadding * 2),
@@ -104,9 +106,11 @@ class _CheckingScreenState extends State<CheckingScreen>
                         child: Container(
                           width: 8,
                           height: 8,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFF0066FF),
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Styles.darkDefaultBlueColor
+                                : const Color(0xFF0066FF),
                           ),
                         ),
                       );
@@ -121,9 +125,11 @@ class _CheckingScreenState extends State<CheckingScreen>
                         child: Container(
                           width: 8,
                           height: 8,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFF0066FF),
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Styles.darkDefaultBlueColor
+                                : const Color(0xFF0066FF),
                           ),
                         ),
                       );
@@ -138,9 +144,11 @@ class _CheckingScreenState extends State<CheckingScreen>
                         child: Container(
                           width: 8,
                           height: 8,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFF0066FF),
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Styles.darkDefaultBlueColor
+                                : const Color(0xFF0066FF),
                           ),
                         ),
                       );
@@ -157,16 +165,18 @@ class _CheckingScreenState extends State<CheckingScreen>
                       ? () {
                           Get.offNamed('/success');
                         }
-                      : null, 
+                      : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0066FF),
+                    backgroundColor: Theme.of(context).brightness == Brightness.dark
+                        ? Styles.darkDefaultBlueColor
+                        : const Color(0xFF0066FF),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  child: const Text(
-                    'Go to Home',
-                    style: TextStyle(
+                  child: Text(
+                    'go_to_home'.tr,
+                    style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

@@ -3,12 +3,16 @@ import 'package:app/widgets/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:app/controllers/language_controller.dart'; 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final ThemeController themeController = Get.put(ThemeController());
+  final LanguageController languageController = Get.put(LanguageController());
+
   themeController.onInit();
+  await languageController.loadLanguagePreference();
 
   runApp(MyApp());
 }
@@ -44,10 +48,9 @@ class ThemeController extends GetxController {
 class MyApp extends StatelessWidget {
   final _storage = const FlutterSecureStorage();
 
-  Future<List<dynamic>> _getInitialData() async {
+  Future<String> _getInitialRoute() async {
     String? userId = await _storage.read(key: 'userId');
     String? role = await _storage.read(key: 'role');
-    String? locale = await _storage.read(key: 'locale');
     String initialRoute;
 
     if (userId != null && role == 'admin') {
@@ -58,16 +61,14 @@ class MyApp extends StatelessWidget {
       initialRoute = '/splash';
     }
 
-    Locale appLocale = locale == 'fr_FR' ? const Locale('fr', 'FR') : const Locale('en', 'US');
-
-    return [initialRoute, appLocale];
+    return initialRoute;
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _getInitialData(),
-      builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+      future: _getInitialRoute(),
+      builder: (context, AsyncSnapshot<String> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const MaterialApp(
             home: Scaffold(
@@ -78,8 +79,7 @@ class MyApp extends StatelessWidget {
           );
         }
 
-        final String initialRoute = snapshot.data![0] as String;
-        final Locale appLocale = snapshot.data![1] as Locale;
+        final String initialRoute = snapshot.data!;
 
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
@@ -146,8 +146,8 @@ class MyApp extends StatelessWidget {
           ),
           themeMode: Get.find<ThemeController>().isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
           translations: AppTranslations(),
-          locale: appLocale,
-          fallbackLocale: const Locale('fr', 'FR'),
+          locale: Get.locale, 
+          fallbackLocale: const Locale('en', 'US'), 
         );
       },
     );
@@ -206,6 +206,123 @@ class AppTranslations extends Translations {
               'We implement industry-standard security measures to protect your data.\n\n'
               '5. Contact Us\n'
               'If you have any questions about this Privacy Policy, please contact us at support@example.com.',
+          'add_card_guide_title': 'Add Card to Your Bracelet',
+          'add_card_guide_description': 'Add credit, debit, or store cards to your bracelet to make secure payments.',
+          'add_card_guide_info': 'Card-related information, location, and device settings may be sent to the card issuer to provide assessments to your card issuer or payment network to set up Apple Pay and prevent fraud.',
+          'continue': 'Continue',
+          'add_card_manual_title': 'Add Card Manually',
+  'card_details': 'Card Details',
+  'card_number': 'Card Number',
+  'cardholder_name': 'Cardholder Name',
+  'expiry_date': 'Expiry Date (MM/YY)',
+  'cvv': 'CVV',
+  'card_security_code': 'Card Security Code',
+  'welcome_title': 'The best way\nTo store\nMoney',
+  'welcome_description': 'Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+  'get_started': 'Get started',
+  'forgot_password': 'If you forget your Password !',
+  'congratulations': 'Congratulations !',
+  'account_ready': 'Your account is ready to use!',
+  'get_started': 'GET STARTED',
+  'checking_title': 'Checking!\nPlease wait ...',
+  'checking_description': 'Your account is being checked before ready to use.',
+  'go_to_home': 'Go to Home',
+  'Face ID': 'Face ID',
+  'Touch ID': 'Touch ID',
+  'PIN': 'PIN',
+  'Next Step': 'Next Step',
+  'Register with Touch ID': 'Register with Touch ID',
+  'Register with PIN': 'Register with PIN',
+  'Already have an account? Log in': 'Already have an account? Log in',
+  'Name': 'Name',
+  'Pet’s Name': 'Pet’s Name',
+  'Position the face in the correct angle to show the face places.' :'Position the face in the correct angle to show the face places.',
+  'Place your finger on the sensor to register.': 'Place your finger on the sensor to register.',
+    'Touch ID is not available on this device.': 'Touch ID is not available on this device.',
+    'welcome_back': 'Welcome Back!',
+  'face_id': 'Face ID',
+  'touch_id': 'Touch ID',
+  'pin': 'PIN',
+  'position_face': 'Position the face in the correct angle to show the face places.',
+  'place_finger': 'Place your finger on the sensor to login.',
+  'login_with_face_id': 'Login with Face ID',
+  'login_with_touch_id': 'Login with Touch ID',
+  'login_with_pin': 'Login with PIN',
+  'name': 'Name',
+  'forgot_pin_reset': 'Forgot PIN? Reset it',
+  'error': 'Error',
+  'please_enter_name_pin': 'Please enter your name and a 4-digit PIN',
+  'info': 'Info',
+  'face_id_not_available': 'Face ID is not available on this device.',
+  'touch_id_not_available': 'Touch ID is not available on this device.',
+  'face_recognition_failed': 'Face recognition failed.',
+  'fingerprint_recognition_failed': 'Fingerprint recognition failed.',
+  'name_not_found': 'Name not found. Please log in with PIN first.',
+  'your_face_recognized': 'Your face is being recognized...',
+  'place_finger_sensor': 'Place your finger on the sensor...',
+  'cancel': 'Cancel',
+  'reset_pin': 'Reset PIN',
+  'name': 'Name',
+  'pet_name': 'Pet’s Name',
+  'submit': 'SUBMIT',
+  'error': 'Error',
+  'please_fill_all_fields': 'Please fill all fields correctly',
+  'your_cards': 'Your Cards',
+  'no_cards_added': 'No cards added yet.\nTap the + button to add a card.',
+  'transactions': 'Transactions',
+  'refresh': 'REFRESH',
+  'no_transactions_yet': 'No transactions yet.\nMake a payment with your bracelet to see it here.',
+  'date': 'Date',
+  'error': 'Error',
+  'locate_bracelet': 'Locate Your Bracelet',
+  'select_bracelet': 'Select a Bracelet',
+  'bracelet_location': 'Bracelet Location:',
+  'distance': 'Distance:',
+  'no_bracelets_found': 'No bracelets found.\nPlease connect a bracelet first.',
+  'unable_fetch_location': 'Unable to fetch your location.',
+  'your_cards': 'Your Cards',
+  'no_cards_added': 'No Cards Added',
+  'add_card_to_start': 'Add a card to get started',
+  'success': 'Success',
+  'card_deleted': 'Card deleted',
+  'error': 'Error',
+  'user_not_logged_in': 'User not logged in',
+  'choose_your_avatar': 'Choose Your Avatar',
+  'pick_from_gallery': 'Pick from Gallery',
+  'cancel': 'Cancel',
+  'select': 'Select',
+  'new_user': 'New User',
+  'create_profile_info': 'Create Profile Information',
+  'edit_profile_info': 'Edit Profile Information',
+  'notifications': 'Notifications',
+  'language': 'Language',
+  'security': 'Security',
+  'theme': 'Theme',
+  'help_support': 'Help & Support',
+  'contact_us': 'Contact Us',
+  'privacy_policy': 'Privacy Policy',
+  'logout': 'Logout',
+  'success': 'Success',
+  'avatar_updated': 'Avatar updated successfully',
+  'image_updated': 'Image updated successfully',
+  'connect_bracelet': 'Connect Your Bracelet',
+  'how_to_connect': 'How to Connect',
+  'step_1': 'Step 1: Ensure Bluetooth is enabled',
+  'step_2': 'Step 2: Scan for your bracelet',
+  'step_3': 'Step 3: Select and connect',
+  'search_bracelets': 'Search for Bracelets',
+  'scanning': 'Scanning...',
+  'select_bracelet': 'Select a Bracelet',
+  'unknown_device': 'Unknown Device',
+  'connect': 'Connect',
+  'connecting': 'Connecting...',
+  'skip_for_now': 'Skip for now',
+  'error': 'Error',
+  'bluetooth_permissions_required': 'Bluetooth permissions are required to connect to your bracelet.',
+  'failed_scan_devices': 'Failed to scan for devices: ',
+  'please_select_bracelet': 'Please select a bracelet',
+  'success': 'Success',
+  'bracelet_connected': 'Bracelet connected successfully',
         },
         'fr_FR': {
           'language': 'Langue',
@@ -256,6 +373,123 @@ class AppTranslations extends Translations {
               'Nous mettons en œuvre des mesures de sécurité conformes aux normes de l’industrie pour protéger vos données.\n\n'
               '5. Contactez-nous\n'
               'Si vous avez des questions concernant cette politique de confidentialité, veuillez nous contacter à support@example.com.',
+          'add_card_guide_title': 'Ajouter une carte à votre bracelet',
+          'add_card_guide_description': 'Ajoutez des cartes de crédit, de débit ou de magasin à votre bracelet pour effectuer des paiements sécurisés.',
+          'add_card_guide_info': 'Les informations liées à la carte, la localisation et les paramètres de l’appareil peuvent être envoyées à l’émetteur de la carte pour fournir des évaluations à votre émetteur de carte ou réseau de paiement afin de configurer Apple Pay et prévenir la fraude.',
+          'continue': 'Continuer',
+          'add_card_manual_title': 'Ajouter une carte manuellement',
+  'card_details': 'Détails de la carte',
+  'card_number': 'Numéro de carte',
+  'cardholder_name': 'Nom du titulaire de la carte',
+  'expiry_date': 'Date d’expiration (MM/AA)',
+  'cvv': 'CVV',
+  'card_security_code': 'Code de sécurité de la carte',
+  'welcome_title': 'La meilleure façon\nde stocker\nvotre argent',
+  'welcome_description': 'Le texte de Lorem ipsum est simplement un texte fictif utilisé dans l\'imprimerie et la composition. Il est devenu la norme dans l\'industrie depuis les années 1500, lorsqu\'un imprimeur inconnu a pris une galée de caractères et l\'a brouillée pour créer un livre d\'épreuves.',
+  'get_started': 'Commencer',
+  'forgot_password': 'Si vous oubliez votre mot de passe !',
+  'Congratulations': 'Félicitations !',
+  'Account Ready': 'Votre compte est prêt à être utilisé !',
+  'Get Started': 'COMMENCER',
+  'checking_title': 'Vérification !\nVeuillez patienter ...',
+  'checking_description': 'Votre compte est en cours de vérification avant d’être prêt à l’utilisation.',
+  'go_to_home': 'Aller à l’accueil',
+  'Face ID': 'Face ID',
+  'Touch ID': 'Touch ID',
+  'PIN': 'PIN',
+  'Next Step': 'Étape suivante',
+  'Register with Touch ID': 'S’inscrire avec Touch ID',
+  'Register with PIN': 'S’inscrire avec un PIN',
+  'Already have an account? Log in': 'Vous avez déjà un compte ? Connectez-vous',
+  'Name': 'Nom',
+  'Pet’s Name': 'Nom de l’animal',
+  'Position the face in the correct angle to show the face places.': 'Positionnez le visage dans l\'angle correct pour montrer les emplacements du visage.',
+   'Place your finger on the sensor to register.': 'Placez votre doigt sur le capteur pour vous enregistrer.',
+     'Touch ID is not available on this device.': 'Touch ID n\'est pas disponible sur cet appareil.',
+ 'welcome_back': 'Bon retour !',
+  'face_id': 'Face ID',
+  'touch_id': 'Touch ID',
+  'pin': 'PIN',
+  'position_face': 'Positionnez votre visage à l’angle correct pour montrer les zones du visage.',
+  'place_finger': 'Placez votre doigt sur le capteur pour vous connecter.',
+  'login_with_face_id': 'Se connecter avec Face ID',
+  'login_with_touch_id': 'Se connecter avec Touch ID',
+  'login_with_pin': 'Se connecter avec PIN',
+  'name': 'Nom',
+  'forgot_pin_reset': 'PIN oublié ? Réinitialisez-le',
+  'error': 'Erreur',
+  'please_enter_name_pin': 'Veuillez entrer votre nom et un PIN à 4 chiffres',
+  'info': 'Info',
+  'face_id_not_available': 'Face ID n’est pas disponible sur cet appareil.',
+  'touch_id_not_available': 'Touch ID n’est pas disponible sur cet appareil.',
+  'face_recognition_failed': 'La reconnaissance faciale a échoué.',
+  'fingerprint_recognition_failed': 'La reconnaissance d’empreintes digitales a échoué.',
+  'name_not_found': 'Nom non trouvé. Veuillez d’abord vous connecter avec un PIN.',
+  'your_face_recognized': 'Votre visage est en cours de reconnaissance...',
+  'place_finger_sensor': 'Placez votre doigt sur le capteur...',
+  'cancel': 'Annuler',
+  'reset_pin': 'Réinitialiser le PIN',
+  'name': 'Nom',
+  'pet_name': 'Nom de l’animal de compagnie',
+  'submit': 'SOUMETTRE',
+  'error': 'Erreur',
+  'please_fill_all_fields': 'Veuillez remplir tous les champs correctement',
+  'your_cards': 'Vos cartes',
+  'no_cards_added': 'Aucune carte ajoutée pour l’instant.\nAppuyez sur le bouton + pour ajouter une carte.',
+  'transactions': 'Transactions',
+  'refresh': 'RAFRAÎCHIR',
+  'no_transactions_yet': 'Aucune transaction pour l’instant.\nEffectuez un paiement avec votre bracelet pour le voir ici.',
+  'date': 'Date',
+  'error': 'Erreur',
+  'locate_bracelet': 'Localiser votre bracelet',
+  'select_bracelet': 'Sélectionner un bracelet',
+  'bracelet_location': 'Emplacement du bracelet :',
+  'distance': 'Distance :',
+  'no_bracelets_found': 'Aucun bracelet trouvé.\nVeuillez connecter un bracelet d’abord.',
+  'unable_fetch_location': 'Impossible de récupérer votre emplacement.',
+  'your_cards': 'Vos Cartes',
+  'no_cards_added': 'Aucune Carte Ajoutée',
+  'add_card_to_start': 'Ajoutez une carte pour commencer',
+  'success': 'Succès',
+  'card_deleted': 'Carte supprimée',
+  'error': 'Erreur',
+  'user_not_logged_in': 'Utilisateur non connecté',
+  'choose_your_avatar': 'Choisissez votre avatar',
+  'pick_from_gallery': 'Choisir dans la galerie',
+  'cancel': 'Annuler',
+  'select': 'Sélectionner',
+  'new_user': 'Nouvel utilisateur',
+  'create_profile_info': 'Créer les informations du profil',
+  'edit_profile_info': 'Modifier les informations du profil',
+  'notifications': 'Notifications',
+  'language': 'Langue',
+  'security': 'Sécurité',
+  'theme': 'Thème',
+  'help_support': 'Aide et Support',
+  'contact_us': 'Nous Contacter',
+  'privacy_policy': 'Politique de Confidentialité',
+  'logout': 'Déconnexion',
+  'success': 'Succès',
+  'avatar_updated': 'Avatar mis à jour avec succès',
+  'image_updated': 'Image mise à jour avec succès',
+  'connect_bracelet': 'Connectez votre bracelet',
+  'how_to_connect': 'Comment se connecter',
+  'step_1': 'Étape 1 : Assurez-vous que Bluetooth est activé',
+  'step_2': 'Étape 2 : Recherchez votre bracelet',
+  'step_3': 'Étape 3 : Sélectionnez et connectez',
+  'search_bracelets': 'Rechercher des bracelets',
+  'scanning': 'Recherche en cours...',
+  'select_bracelet': 'Sélectionnez un bracelet',
+  'unknown_device': 'Appareil inconnu',
+  'connect': 'Connecter',
+  'connecting': 'Connexion en cours...',
+  'skip_for_now': 'Passer pour l’instant',
+  'error': 'Erreur',
+  'bluetooth_permissions_required': 'Les autorisations Bluetooth sont nécessaires pour connecter votre bracelet.',
+  'failed_scan_devices': 'Échec de la recherche des appareils : ',
+  'please_select_bracelet': 'Veuillez sélectionner un bracelet',
+  'success': 'Succès',
+  'bracelet_connected': 'Bracelet connecté avec succès',
         },
       };
 }

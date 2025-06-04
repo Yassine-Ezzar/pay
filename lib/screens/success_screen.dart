@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../styles/styles.dart';
 
 class SuccessScreen extends StatefulWidget {
   @override
@@ -82,13 +83,13 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
 
               FadeTransition(
                 opacity: _fadeAnimation,
-                child: const Text(
-                  'Congratulations !',
+                child: Text(
+                  'Congratulations'.tr,
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF063B87), 
+                    color: const Color(0xFF063B87), 
                     letterSpacing: 1.2,
                   ),
                   textAlign: TextAlign.center,
@@ -98,8 +99,8 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
 
               FadeTransition(
                 opacity: _fadeAnimation,
-                child: const Text(
-                  'Your account is ready to use!',
+                child: Text(
+                  'Account Ready'.tr,
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 18,
@@ -122,8 +123,8 @@ class _SuccessScreenState extends State<SuccessScreen> with SingleTickerProvider
                         borderRadius: BorderRadius.circular(15), 
                       ),
                     ),
-                    child: const Text(
-                      'GET STARTED',
+                    child: Text(
+                      'Get Started'.tr,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 20,

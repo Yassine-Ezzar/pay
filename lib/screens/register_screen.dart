@@ -17,8 +17,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _biometricService = BiometricService();
   String _enteredPin = '';
   bool _biometricEnabled = false;
-  bool _faceIdCompleted = false; // Track if Face ID registration is complete
-  bool _isFaceIdSelected = true; // Default to Face ID method
+  bool _faceIdCompleted = false; 
+  bool _isFaceIdSelected = true; 
   bool _isTouchIdSelected = false;
   bool _isPinSelected = false;
 
@@ -43,10 +43,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     bool canUseBiometrics = await _biometricService.canUseBiometrics();
     if (!canUseBiometrics) {
       Get.snackbar(
-        'Info',
-        'Face ID is not available on this device.',
+        'Info'.tr,
+        'Face ID is not available on this device.'.tr,
         backgroundColor: Styles.defaultGreyColor,
-        colorText: Colors.black,
+        colorText: Theme.of(context).textTheme.bodyLarge?.color,
       );
       return;
     }
@@ -58,10 +58,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       });
     } else {
       Get.snackbar(
-        'Error',
-        'Face recognition failed.',
+        'Error'.tr,
+        'Face recognition failed.'.tr,
         backgroundColor: Styles.defaultRedColor,
-        colorText: Colors.white,
+        colorText: Theme.of(context).textTheme.bodyLarge?.color,
       );
     }
   }
@@ -71,10 +71,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     bool canUseBiometrics = await _biometricService.canUseBiometrics();
     if (!canUseBiometrics) {
       Get.snackbar(
-        'Info',
-        'Touch ID is not available on this device.',
+        'Info'.tr,
+        'Touch ID is not available on this device.'.tr,
         backgroundColor: Styles.defaultGreyColor,
-        colorText: Colors.black,
+        colorText: Theme.of(context).textTheme.bodyLarge?.color,
       );
       return;
     }
@@ -97,15 +97,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'Error',
           e.toString(),
           backgroundColor: Styles.defaultRedColor,
-          colorText: Colors.white,
+          colorText: Theme.of(context).textTheme.bodyLarge?.color,
         );
       }
     } else {
       Get.snackbar(
-        'Error',
-        'Fingerprint recognition failed.',
+        'Error'.tr,
+        'Fingerprint recognition failed.'.tr,
         backgroundColor: Styles.defaultRedColor,
-        colorText: Colors.white,
+        colorText: Theme.of(context).textTheme.bodyLarge?.color,
       );
     }
   }
@@ -116,10 +116,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _nameController.text.isEmpty ||
         _answerController.text.isEmpty) {
       Get.snackbar(
-        'Error',
-        'Please fill all fields correctly',
+        'Error'.tr,
+        'Please fill all fields correctly'.tr,
         backgroundColor: Styles.defaultRedColor,
-        colorText: Colors.white,
+        colorText: Theme.of(context).textTheme.bodyLarge?.color,
       );
       return;
     }
@@ -134,10 +134,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Get.offNamed('/checking');
     } catch (e) {
       Get.snackbar(
-        'Error',
+        'Error'.tr,
         e.toString(),
         backgroundColor: Styles.defaultRedColor,
-        colorText: Colors.white,
+        colorText: Theme.of(context).textTheme.bodyLarge?.color,
       );
     }
   }
@@ -175,10 +175,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.close, color: Color(0xFF063B87)),
+          icon: Icon(
+            Icons.close,
+            color: Theme.of(context).appBarTheme.foregroundColor,
+          ),
           onPressed: () => SystemNavigator.pop(),
         ),
         centerTitle: true,
@@ -191,51 +194,53 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildMethodButton('Face ID', _isFaceIdSelected, _switchToFaceId),
+                _buildMethodButton('Face ID'.tr, _isFaceIdSelected, _switchToFaceId),
                 SizedBox(width: Styles.defaultPadding / 2),
-                _buildMethodButton('Touch ID', _isTouchIdSelected, _switchToTouchId),
+                _buildMethodButton('Touch ID'.tr, _isTouchIdSelected, _switchToTouchId),
                 SizedBox(width: Styles.defaultPadding / 2),
-                _buildMethodButton('PIN', _isPinSelected, _switchToPin),
+                _buildMethodButton('PIN'.tr, _isPinSelected, _switchToPin),
               ],
             ),
             SizedBox(height: Styles.defaultPadding * 2),
             if (_isFaceIdSelected) ...[
-              const Text(
-                'Face ID',
+              Text(
+                'Face ID'.tr,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF063B87),
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                 ),
               ),
               SizedBox(height: Styles.defaultPadding),
-              const Text(
-                'Position the face in the correct angle to show the face places.',
+              Text(
+                'Position the face in the correct angle to show the face places.'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 14,
-                  color: Colors.black,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
               SizedBox(height: Styles.defaultPadding * 2),
-            Container(
-  width: 120,
-  height: 120,
-  decoration: BoxDecoration(
-    shape: BoxShape.circle,
-    color: Colors.grey[200],
-  ),
-  child: ClipOval(
-    child: Image.asset(
-      'assets/images/face-id.png',
-      width: 160 ,
-      height: 160,
-      fit: BoxFit.cover, 
-    ),
-  ),
-),
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultLightGreyColor
+                      : Colors.grey[200],
+                ),
+                child: ClipOval(
+                  child: Image.asset(
+                    'assets/images/face-id.png',
+                    width: 160,
+                    height: 160,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
               SizedBox(height: Styles.defaultPadding * 2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -247,7 +252,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 8,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: index == 1 ? const Color(0xFF0066FF) : Colors.grey[300],
+                        color: index == 1
+                            ? Theme.of(context).primaryColor
+                            : Theme.of(context).brightness == Brightness.dark
+                                ? Styles.darkDefaultLightGreyColor
+                                : Colors.grey[300],
                       ),
                     ),
                   );
@@ -278,24 +287,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               'Error',
                               e.toString(),
                               backgroundColor: Styles.defaultRedColor,
-                              colorText: Colors.white,
+                              colorText: Theme.of(context).textTheme.bodyLarge?.color,
                             );
                           }
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0066FF),
+                    backgroundColor: Theme.of(context).primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  child: const Text(
-                    'Next Step',
+                  child: Text(
+                    'Next Step'.tr,
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Theme.of(context).elevatedButtonTheme.style?.foregroundColor?.resolve({}),
                     ),
                   ),
                 ),
@@ -303,23 +312,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ],
             // Touch ID registration UI
             if (_isTouchIdSelected) ...[
-              const Text(
-                'Touch ID',
+              Text(
+                'Touch ID'.tr,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF063B87),
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                 ),
               ),
               SizedBox(height: Styles.defaultPadding),
-              const Text(
-                'Place your finger on the sensor to register.',
+              Text(
+                'Place your finger on the sensor to register.'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 14,
-                  color: Colors.black,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
               SizedBox(height: Styles.defaultPadding * 2),
@@ -328,12 +337,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.grey[200],
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultLightGreyColor
+                      : Colors.grey[200],
                 ),
                 child: Icon(
                   Icons.fingerprint,
                   size: 80,
-                  color: Colors.grey[400],
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultYellowColor
+                      : Colors.grey[400],
                 ),
               ),
               SizedBox(height: Styles.defaultPadding * 2),
@@ -343,49 +356,53 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: ElevatedButton(
                   onPressed: _registerWithTouchId,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0066FF),
+                    backgroundColor: Theme.of(context).primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  child: const Text(
-                    'Register with Touch ID',
+                  child: Text(
+                    'Register with Touch ID'.tr,
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Theme.of(context).elevatedButtonTheme.style?.foregroundColor?.resolve({}),
                     ),
                   ),
                 ),
               ),
             ],
-            // PIN registration UI (similar to the original)
+            // PIN registration UI
             if (_isPinSelected) ...[
-              const Text(
-                'Register with PIN',
+              Text(
+                'Register with PIN'.tr,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF063B87),
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                 ),
               ),
               SizedBox(height: Styles.defaultPadding),
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Name',
-                  labelStyle: const TextStyle(color: Colors.black),
+                  labelText: 'Name'.tr,
+                  labelStyle: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
                   filled: true,
-                  fillColor: Colors.grey[200],
+                  fillColor: Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultLightGreyColor
+                      : Colors.grey[200],
                   border: OutlineInputBorder(
                     borderRadius: Styles.defaultBorderRadius,
-                    borderSide: const BorderSide(color: Colors.grey),
+                    borderSide: BorderSide(color: Theme.of(context).brightness == Brightness.dark
+                        ? Styles.darkDefaultGreyColor
+                        : Colors.grey),
                   ),
                 ),
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                   fontFamily: 'Poppins',
                 ),
               ),
@@ -393,17 +410,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextField(
                 controller: _answerController,
                 decoration: InputDecoration(
-                  labelText: 'Pet’s Name',
-                  labelStyle: const TextStyle(color: Colors.black),
+                  labelText: 'Pet’s Name'.tr,
+                  labelStyle: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
                   filled: true,
-                  fillColor: Colors.grey[200],
+                  fillColor: Theme.of(context).brightness == Brightness.dark
+                      ? Styles.darkDefaultLightGreyColor
+                      : Colors.grey[200],
                   border: OutlineInputBorder(
                     borderRadius: Styles.defaultBorderRadius,
-                    borderSide: const BorderSide(color: Colors.grey),
+                    borderSide: BorderSide(color: Theme.of(context).brightness == Brightness.dark
+                        ? Styles.darkDefaultGreyColor
+                        : Colors.grey),
                   ),
                 ),
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                   fontFamily: 'Poppins',
                 ),
               ),
@@ -419,8 +440,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: index < _enteredPin.length
-                            ? const Color(0xFF063B87)
-                            : Colors.grey,
+                            ? Theme.of(context).primaryColor
+                            : Theme.of(context).brightness == Brightness.dark
+                                ? Styles.darkDefaultLightGreyColor
+                                : Colors.grey,
                       ),
                     ),
                   );
@@ -437,15 +460,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return ElevatedButton(
                     onPressed: () => _addNumber('${index + 1}'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey[200],
-                      foregroundColor: Colors.black,
+                      backgroundColor: Theme.of(context).brightness == Brightness.dark
+                          ? Styles.darkDefaultLightGreyColor
+                          : Colors.grey[200],
+                      foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     child: Text(
                       '${index + 1}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 20,
                       ),
@@ -456,8 +481,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ElevatedButton(
                       onPressed: _deleteNumber,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[200],
-                        foregroundColor: Colors.black,
+                        backgroundColor: Theme.of(context).brightness == Brightness.dark
+                            ? Styles.darkDefaultLightGreyColor
+                            : Colors.grey[200],
+                        foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -467,8 +494,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ElevatedButton(
                       onPressed: () => _addNumber('0'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[200],
-                        foregroundColor: Colors.black,
+                        backgroundColor: Theme.of(context).brightness == Brightness.dark
+                            ? Styles.darkDefaultLightGreyColor
+                            : Colors.grey[200],
+                        foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -495,18 +524,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ? _registerWithPin
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0066FF),
+                    backgroundColor: Theme.of(context).primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  child: const Text(
-                    'Register with PIN',
+                  child: Text(
+                    'Register with PIN'.tr,
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Theme.of(context).elevatedButtonTheme.style?.foregroundColor?.resolve({}),
                     ),
                   ),
                 ),
@@ -515,11 +544,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             SizedBox(height: Styles.defaultPadding * 2),
             TextButton(
               onPressed: () => Get.offNamed('/login'),
-              child: const Text(
-                'Already have an account? Log in',
+              child: Text(
+                'Already have an account? Log in'.tr,
                 style: TextStyle(
                   fontFamily: 'Poppins',
-                  color: Colors.black,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                   fontSize: 14,
                 ),
               ),
@@ -539,14 +568,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
           vertical: Styles.defaultPadding / 2,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF0066FF) : Colors.grey[200],
+          color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).brightness == Brightness.dark
+              ? Styles.darkDefaultLightGreyColor
+              : Colors.grey[200],
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           title,
           style: TextStyle(
             fontFamily: 'Poppins',
-            color: isSelected ? Colors.white : Colors.black,
+            color: isSelected ? Theme.of(context).elevatedButtonTheme.style?.foregroundColor?.resolve({}) : Theme.of(context).textTheme.bodyLarge?.color,
             fontWeight: FontWeight.bold,
           ),
         ),

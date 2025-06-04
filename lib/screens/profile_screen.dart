@@ -22,8 +22,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   late Animation<double> _fadeAnimation;
   final storage = const FlutterSecureStorage();
   String? selectedAvatar;
-  String? selectedImagePath; // Store the path of the picked image
-  String? registeredName; // To store the name from registration
+  String? selectedImagePath; 
+  String? registeredName; 
 
   final List<Map<String, dynamic>> avatars = [
     {'id': 'avatar1', 'icon': Icons.person},
@@ -47,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     _loadUserId();
     _loadAvatar();
     _loadRegisteredName();
-    _loadSelectedImage(); // Load the saved image path
+    _loadSelectedImage(); 
   }
 
   @override
@@ -95,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       selectedAvatar = avatarId;
       selectedImagePath = null;
     });
-    Get.snackbar('Success', 'Avatar updated successfully', backgroundColor: const Color.fromARGB(68, 76, 175, 79));
+    Get.snackbar('success'.tr, 'avatar_updated'.tr, backgroundColor: const Color.fromARGB(68, 76, 175, 79));
   }
 
   Future<void> _pickImage() async {
@@ -107,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
         selectedImagePath = image.path;
         selectedAvatar = null;
       });
-      Get.snackbar('Success', 'Image updated successfully', backgroundColor: const Color.fromARGB(68, 76, 175, 79));
+      Get.snackbar('success'.tr, 'image_updated'.tr, backgroundColor: const Color.fromARGB(68, 76, 175, 79));
     }
   }
 
@@ -161,8 +161,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Choose Your Avatar',
+                 Text(
+                  'choose_your_avatar'.tr,
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 20,
@@ -220,8 +220,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: const Text(
-                    'Pick from Gallery',
+                  child:  Text(
+                    'pick_from_gallery'.tr,
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,
@@ -235,8 +235,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   children: [
                     TextButton(
                       onPressed: () => Get.back(),
-                      child: const Text(
-                        'Cancel',
+                      child:  Text(
+                        'cancel'.tr,
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 16,
@@ -258,8 +258,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: const Text(
-                        'Select',
+                      child: Text(
+                       'select'.tr,
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 16,
@@ -407,8 +407,8 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                             const SizedBox(width: 5),
                                             Text(
                                               profile == null
-                                                  ? 'Create Profile Information'
-                                                  : 'Edit Profile Information',
+                                                  ? 'create_profile_info'.tr
+                                                  : 'edit_profile_info'.tr,
                                               style: const TextStyle(
                                                 fontFamily: 'Poppins',
                                                 fontSize: 14,
@@ -434,49 +434,49 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                     children: [
                                       _buildProfileOption(
                                         icon: Icons.notifications,
-                                        title: 'Notifications',
+                                        title: 'notifications'.tr,
                                         onTap: () => Get.toNamed('/notifications-settings'),
                                       ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(
                                         icon: Icons.language,
-                                        title: 'Language',
+                                        title: 'language'.tr,
                                         onTap: () => Get.toNamed('/language-selection'),
                                       ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(
                                         icon: Icons.security,
-                                        title: 'Security',
+                                        title: 'security'.tr,
                                         onTap: () => Get.toNamed('/reset-pin'),
                                       ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(
                                         icon: Icons.brightness_6,
-                                        title: 'Theme',
+                                        title: 'theme'.tr,
                                         onTap: () => Get.toNamed('/theme-settings'),
                                       ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(
                                         icon: Icons.help,
-                                        title: 'Help & Support',
+                                        title: 'help_support'.tr,
                                         onTap: () => Get.toNamed('/help-support'),
                                       ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(
                                         icon: Icons.support_agent,
-                                        title: 'Contact Us',
+                                        title: 'contact_us'.tr,
                                         onTap: () => Get.toNamed('/contact-us'),
                                       ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(
                                         icon: Icons.privacy_tip,
-                                        title: 'Privacy Policy',
+                                        title: 'privacy_policy'.tr,
                                         onTap: () => Get.toNamed('/privacy-policy'),
                                       ),
                                       const SizedBox(height: 20),
                                       _buildProfileOption(
                                         icon: Icons.logout,
-                                        title: 'Logout',
+                                        title: 'logout'.tr,
                                         color: Colors.redAccent,
                                         onTap: () async {
                                           await ApiService.storage.deleteAll();

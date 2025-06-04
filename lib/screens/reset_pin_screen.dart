@@ -35,8 +35,8 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
   void _resetPin() async {
     if (_enteredPin.length != 4 || _nameController.text.isEmpty || _answerController.text.isEmpty) {
       Get.snackbar(
-        'Error',
-        'Please fill all fields correctly',
+        'error'.tr,
+    'please_fill_all_fields'.tr,
         backgroundColor: Styles.defaultRedColor,
         colorText: Colors.white,
       );
@@ -65,8 +65,8 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
           icon: const Icon(Icons.close, color: Color(0xFF063B87)),
           onPressed: () => Get.back(),
         ),
-        title: const Text(
-          'Reset PIN',
+        title:  Text(
+        'reset_pin'.tr,
           style: TextStyle(
             fontFamily: 'Poppins',
             color: Color(0xFF063B87),
@@ -112,7 +112,7 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Name',
+                  labelText: 'name'.tr,
                   labelStyle: const TextStyle(color: Colors.black),
                   filled: true,
                   fillColor: Colors.grey[200],
@@ -139,7 +139,7 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
               TextField(
                 controller: _answerController,
                 decoration: InputDecoration(
-                  labelText: 'Pet’s Name',
+                  labelText: 'pet_name'.tr,
                   labelStyle: const TextStyle(color: Colors.black),
                   filled: true,
                   fillColor: Colors.grey[200],
@@ -236,8 +236,8 @@ class _ResetPinScreenState extends State<ResetPinScreen> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  child: const Text(
-                    'SUBMIT',
+                  child:  Text(
+                   'submit'.tr,
                     style: TextStyle(
                       fontSize: 20,
                       fontFamily: 'Poppins',

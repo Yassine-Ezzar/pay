@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _loginWithPin() async {
     if (_enteredPin.length != 4 || _nameController.text.isEmpty) {
       Get.snackbar(
-        'Error',
+        'Error'.tr,
         'Please enter your name and a 4-digit PIN',
         backgroundColor: Styles.defaultRedColor,
         colorText: Colors.white,
@@ -69,8 +69,8 @@ class _LoginScreenState extends State<LoginScreen> {
     bool canUseBiometrics = await _biometricService.canUseBiometrics();
     if (!canUseBiometrics) {
       Get.snackbar(
-        'Info',
-        'Face ID is not available on this device.',
+        'Info'.tr,
+        'face_id_not_available'.tr,
         backgroundColor: Styles.defaultGreyColor,
         colorText: Colors.black,
       );
@@ -80,8 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
     bool authenticated = await _biometricService.authenticate();
     if (authenticated) {
       _showBiometricDialog(
-        title: 'Login with Face ID',
-        message: 'Your face is being recognized...',
+        title: 'Login with Face ID'.tr,
+        message: 'Your face is being recognized...'.tr,
         icon: Icons.face,
         onConfirm: () async {
           final name = await _storage.read(key: 'name');
@@ -99,8 +99,8 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           } else {
             Get.snackbar(
-              'Error',
-              'Name not found. Please log in with PIN first.',
+              'Error'.tr,
+              'Name not found. Please log in with PIN first.'.tr,
               backgroundColor: Styles.defaultRedColor,
               colorText: Colors.white,
             );
@@ -109,8 +109,8 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } else {
       Get.snackbar(
-        'Error',
-        'Face recognition failed.',
+        'Error'.tr,
+        'face_recognition_failed'.tr,
         backgroundColor: Styles.defaultRedColor,
         colorText: Colors.white,
       );
@@ -121,8 +121,8 @@ class _LoginScreenState extends State<LoginScreen> {
     bool canUseBiometrics = await _biometricService.canUseBiometrics();
     if (!canUseBiometrics) {
       Get.snackbar(
-        'Info',
-        'Touch ID is not available on this device.',
+        'Info'.tr,
+       'touch_id_not_available'.tr,
         backgroundColor: Styles.defaultGreyColor,
         colorText: Colors.black,
       );
@@ -132,8 +132,8 @@ class _LoginScreenState extends State<LoginScreen> {
     bool authenticated = await _biometricService.authenticate();
     if (authenticated) {
       _showBiometricDialog(
-        title: 'Login with Touch ID',
-        message: 'Place your finger on the sensor...',
+        title: 'Login with Touch ID'.tr,
+        message: 'Place your finger on the sensor...'.tr,
         icon: Icons.fingerprint,
         onConfirm: () async {
           final name = await _storage.read(key: 'name');
@@ -151,8 +151,8 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           } else {
             Get.snackbar(
-              'Error',
-              'Name not found. Please log in with PIN first.',
+              'Error'.tr,
+              'Name not found. Please log in with PIN first.'.tr,
               backgroundColor: Styles.defaultRedColor,
               colorText: Colors.white,
             );
@@ -161,8 +161,8 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } else {
       Get.snackbar(
-        'Error',
-        'Fingerprint recognition failed.',
+        'Error'.tr,
+        'Fingerprint recognition failed.'.tr,
         backgroundColor: Styles.defaultRedColor,
         colorText: Colors.white,
       );
@@ -178,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Get.defaultDialog(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       title: title,
-      titleStyle: TextStyle(
+      titleStyle: const TextStyle(
         fontFamily: 'Poppins',
         color: Color(0xFF063B87),
         fontSize: 24,
@@ -187,15 +187,15 @@ class _LoginScreenState extends State<LoginScreen> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 80, color: Color(0xFF063B87)),
+          Icon(icon, size: 80, color: const Color(0xFF063B87)),
           SizedBox(height: Styles.defaultPadding),
-          CircularProgressIndicator(
+          const CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0066FF)),
           ),
           SizedBox(height: Styles.defaultPadding),
           Text(
             message,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Poppins',
               color: Colors.black,
               fontSize: 16,
@@ -210,13 +210,13 @@ class _LoginScreenState extends State<LoginScreen> {
         child: ElevatedButton(
           onPressed: onConfirm,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF0066FF),
+            backgroundColor: const Color(0xFF0066FF),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),
           ),
-          child: const Text(
-            'Continue',
+          child:  Text(
+           'continue'.tr  ,
             style: TextStyle(
               fontFamily: 'Poppins',
               color: Colors.white,
@@ -228,8 +228,8 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       cancel: TextButton(
         onPressed: () => Get.back(),
-        child: Text(
-          'Cancel',
+        child:  Text(
+          'cancel'.tr,
           style: TextStyle(
             color: Color(0xFF063B87),
             fontFamily: 'Poppins',
@@ -245,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _isFaceIdSelected = true;
       _isTouchIdSelected = false;
       _isPinSelected = false;
-      _enteredPin = ''; // Reset PIN entry
+      _enteredPin = ''; 
       _pinController.text = '';
     });
   }
@@ -255,7 +255,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _isFaceIdSelected = false;
       _isTouchIdSelected = true;
       _isPinSelected = false;
-      _enteredPin = ''; // Reset PIN entry
+      _enteredPin = ''; 
       _pinController.text = '';
     });
   }
@@ -278,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF063B87)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF063B87)),
           onPressed: () => Get.offNamed('/register'),
         ),
       ),
@@ -288,16 +288,15 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Welcome Back!',
-              style: TextStyle(
+              'welcome_back'.tr,
+              style: const TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF063B87), // Large title color
+                color: Color(0xFF063B87), 
               ),
             ),
             SizedBox(height: Styles.defaultPadding * 2),
-            // Method selection buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -311,23 +310,23 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: Styles.defaultPadding * 2),
             // Face ID login UI
             if (_isFaceIdSelected) ...[
-              Text(
-                'Face ID',
+               Text(
+                'face_id'.tr,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF063B87), // Large title color
+                  color: Color(0xFF063B87), 
                 ),
               ),
               SizedBox(height: Styles.defaultPadding),
-              Text(
-                'Position the face in the correct angle to show the face places.',
+               Text(
+              'position_face'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 14,
-                  color: Colors.black, // Subtitle color
+                  color: Colors.black, 
                 ),
               ),
               SizedBox(height: Styles.defaultPadding * 2),
@@ -355,7 +354,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 8,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: index == 1 ? Color(0xFF0066FF) : Colors.grey[300],
+                        color: index == 1 ? const Color(0xFF0066FF) : Colors.grey[300],
                       ),
                     ),
                   );
@@ -368,15 +367,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ElevatedButton(
                   onPressed: isLoading ? null : _loginWithFaceId,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF0066FF), 
+                    backgroundColor: const Color(0xFF0066FF), 
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15), 
                     ),
                   ),
                   child: isLoading
-                      ? CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                          'Login with Face ID',
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      :  Text(
+                          'login_with_face_id'.tr,
                           style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 16,
@@ -389,23 +388,23 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
             // Touch ID login UI
             if (_isTouchIdSelected) ...[
-              Text(
-                'Touch ID',
+               Text(
+                'touch_id'.tr,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF063B87), // Large title color
+                  color: Color(0xFF063B87), 
                 ),
               ),
               SizedBox(height: Styles.defaultPadding),
-              Text(
-                'Place your finger on the sensor to login.',
+               Text(
+                'place_finger'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 14,
-                  color: Colors.black, // Subtitle color
+                  color: Colors.black, 
                 ),
               ),
               SizedBox(height: Styles.defaultPadding * 2),
@@ -433,7 +432,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 8,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: index == 1 ? Color(0xFF0066FF) : Colors.grey[300],
+                        color: index == 1 ? const Color(0xFF0066FF) : Colors.grey[300],
                       ),
                     ),
                   );
@@ -446,15 +445,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ElevatedButton(
                   onPressed: isLoading ? null : _loginWithTouchId,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF0066FF), 
+                    backgroundColor: const Color(0xFF0066FF), 
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15), 
                     ),
                   ),
                   child: isLoading
-                      ? CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                          'Login with Touch ID',
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      :  Text(
+                          'login_with_touch_id'.tr,
                           style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 16,
@@ -467,37 +466,37 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
             // PIN login UI
             if (_isPinSelected) ...[
-              Text(
-                'Login with PIN',
+               Text(
+               'login_with_pin'.tr,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF063B87), // Large title color
+                  color: Color(0xFF063B87), 
                 ),
               ),
               SizedBox(height: Styles.defaultPadding),
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Name',
-                  labelStyle: TextStyle(color: Colors.black),
+                  labelText: 'name'.tr,
+                  labelStyle: const TextStyle(color: Colors.black),
                   filled: true,
                   fillColor: Colors.grey[200],
                   border: OutlineInputBorder(
                     borderRadius: Styles.defaultBorderRadius,
-                    borderSide: BorderSide(color: Colors.grey),
+                    borderSide: const BorderSide(color: Colors.grey),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
+                    borderSide: const BorderSide(color: Colors.grey),
                     borderRadius: Styles.defaultBorderRadius,
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF063B87)),
+                    borderSide: const BorderSide(color: Color(0xFF063B87)),
                     borderRadius: Styles.defaultBorderRadius,
                   ),
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontFamily: 'Poppins',
                 ),
@@ -514,7 +513,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: index < _enteredPin.length
-                            ? Color(0xFF063B87)
+                            ? const Color(0xFF063B87)
                             : Colors.grey,
                       ),
                     ),
@@ -590,15 +589,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       ? null
                       : _loginWithPin,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF0066FF), 
+                    backgroundColor: const Color(0xFF0066FF), 
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15), 
                     ),
                   ),
                   child: isLoading
-                      ? CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                          'Login with PIN',
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      :  Text(
+                          'login_with_pin'.tr,
                           style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 16,
@@ -613,8 +612,8 @@ class _LoginScreenState extends State<LoginScreen> {
             TextButton(
               onPressed: isLoading ? null : () => Get.toNamed('/reset-pin'),
               child: Text(
-                'Forgot PIN? Reset it',
-                style: TextStyle(
+                'forgot_pin_reset'.tr,
+                style: const TextStyle(
                   fontFamily: 'Poppins',
                   color: Colors.black,
                   fontSize: 16,
@@ -636,7 +635,7 @@ class _LoginScreenState extends State<LoginScreen> {
           vertical: Styles.defaultPadding / 2,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xFF0066FF) : Colors.grey[200],
+          color: isSelected ? const Color(0xFF0066FF) : Colors.grey[200],
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(

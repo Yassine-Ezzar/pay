@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Your Cards',
+                                'your_cards'.tr,
                                 style: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: 28,
@@ -163,9 +163,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   ),
                                 )
                               : cards.isEmpty
-                                  ? const Center(
+                                  ?  Center(
                                       child: Text(
-                                        'No cards added yet.\nTap the + button to add a card.',
+                                        'no_cards_added'.tr,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: 'Poppins',
@@ -293,7 +293,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Transactions',
+                              'transactions'.tr,
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 22,
@@ -319,7 +319,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                       ),
                                     ),
                                   Text(
-                                    'REFRESH',
+                                    'refresh'.tr,
                                     style: TextStyle(
                                       fontFamily: 'Poppins',
                                       color: Theme.of(context).textTheme.bodyLarge?.color,
@@ -352,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     ),
                                     child: Center(
                                       child: Text(
-                                        'No transactions yet.\nMake a payment with your bracelet to see it here.',
+                                      'no_transactions_yet'.tr,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: 'Poppins',
@@ -410,7 +410,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           ),
                                           trailing: Text(
                                             '-\$${payment['amount'].toStringAsFixed(2)}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontFamily: 'Poppins',
                                               color: Colors.redAccent,
                                               fontSize: 16,
