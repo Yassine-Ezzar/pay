@@ -75,14 +75,14 @@ class _AddCardScreenState extends State<AddCardScreen> {
         };
         Get.toNamed('/enter-contact', arguments: arguments);
       } else if (_isFrontScanned && _cvv.isEmpty) {
-        Get.snackbar('Error', 'CVV not detected. Please scan the back side again.', backgroundColor: Colors.redAccent);
+        Get.snackbar('error'.tr, 'cvv_not_detected'.tr, backgroundColor: Colors.redAccent);
       } else if (!_isFrontScanned && (_cardNumber.isEmpty || _cardHolderName.isEmpty || _expiryDate.isEmpty)) {
         _isFrontScanned = true;
-        Get.snackbar('Info', 'Front side scanned. Please scan the back side for CVV.', backgroundColor: Colors.blueAccent);
+        Get.snackbar('Info', 'front_side_scanned'.tr, backgroundColor: Colors.blueAccent);
       }
     } catch (e) {
       setState(() => _isScanning = false);
-      Get.snackbar('Error', 'Failed to scan card: $e', backgroundColor: Colors.redAccent);
+      Get.snackbar('error'.tr, 'scan_failed'.tr, backgroundColor: Colors.redAccent);
     }
   }
 
@@ -142,7 +142,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                         ),
                         child: Center(
                           child: Text(
-                            _isFrontScanned ? 'Scan Back Side' : 'Scan Front Side',
+                            _isFrontScanned ? 'scan_back_side'.tr : 'scan_front_side'.tr,
                             style: const TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 20,
@@ -155,8 +155,8 @@ class _AddCardScreenState extends State<AddCardScreen> {
                       const SizedBox(height: 20),
                       Text(
                         _isFrontScanned
-                            ? 'Hold the phone near the back of the card to scan the CVV.'
-                            : 'Hold the phone near the front of the card to scan the details.',
+                            ? 'hold_back_cvv'.tr
+                            : 'hold_front_details'.tr,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontFamily: 'Poppins',
@@ -188,8 +188,8 @@ class _AddCardScreenState extends State<AddCardScreen> {
               left: 20,
               child: TextButton(
                 onPressed: () => Get.back(),
-                child: const Text(
-                  'Cancel',
+                child:  Text(
+                  'cancel'.tr,
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 16,
@@ -207,8 +207,8 @@ class _AddCardScreenState extends State<AddCardScreen> {
                   onPressed: () {
                     Get.toNamed('/add-card-manual');
                   },
-                  child: const Text(
-                    'Enter Card Details Manually',
+                  child:  Text(
+                    'enter_card_details_manually'.tr,
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,

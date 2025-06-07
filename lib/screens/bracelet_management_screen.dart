@@ -36,7 +36,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
   Future<void> _initBle() async {
     _ble.statusStream.listen((status) {
       if (status != BleStatus.ready) {
-        Get.snackbar('Bluetooth', 'Please Turn Bluetooth On', backgroundColor: const Color.fromARGB(160, 244, 67, 54));
+        Get.snackbar('Bluetooth', 'please_turn_bluetooth_on'.tr, backgroundColor: const Color.fromARGB(160, 244, 67, 54));
       }
     });
   }
@@ -51,7 +51,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
         });
       }
     }, onError: (e) {
-      Get.snackbar('Scan Error', e.toString(), backgroundColor: Colors.red);
+      Get.snackbar('scan_error'.tr, e.toString(), backgroundColor: Colors.red);
       setState(() => _isScanning = false);
     });
 
@@ -69,7 +69,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
         isLoading = false;
       });
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Colors.red);
+      Get.snackbar('error'.tr, e.toString(), backgroundColor: Colors.red);
       setState(() => isLoading = false);
     }
   }
@@ -77,30 +77,30 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
   Future<void> _connectBracelet(String braceletId) async {
     try {
       await ApiService.connectBracelet(braceletId);
-      Get.snackbar('Success', 'Bracelet connected', backgroundColor: const Color(0xFF85C6EB));
+      Get.snackbar('success'.tr, 'bracelet_connected'.tr, backgroundColor: const Color(0xFF85C6EB));
       _fetchBracelets();
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Colors.red);
+      Get.snackbar('error'.tr, e.toString(), backgroundColor: Colors.red);
     }
   }
 
   Future<void> _disconnectBracelet(String braceletId) async {
     try {
       await ApiService.disconnectBracelet(braceletId);
-      Get.snackbar('Success', 'Bracelet disconnected', backgroundColor: const Color(0xFF85C6EB));
+      Get.snackbar('success'.tr, 'bracelet_disconnected'.tr, backgroundColor: const Color(0xFF85C6EB));
       _fetchBracelets();
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Colors.red);
+      Get.snackbar('error'.tr, e.toString(), backgroundColor: Colors.red);
     }
   }
 
   Future<void> _deleteBracelet(String braceletId) async {
     try {
       await ApiService.deleteBracelet(braceletId);
-      Get.snackbar('Success', 'Bracelet deleted', backgroundColor: const Color(0xFF85C6EB));
+      Get.snackbar('success'.tr, 'bracelet_deleted'.tr, backgroundColor: const Color(0xFF85C6EB));
       _fetchBracelets();
     } catch (e) {
-      Get.snackbar('Error', e.toString(), backgroundColor: Colors.red);
+      Get.snackbar('error'.tr, e.toString(), backgroundColor: Colors.red);
     }
   }
 
@@ -115,10 +115,10 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(70), 
         child: AppBar(
-          title: const Padding(
+          title: Padding(
             padding: EdgeInsets.only(top: 33), 
             child: Text(
-              'Manage Bracelets',
+              'manage_bracelets'.tr,
               style: TextStyle(
                 fontFamily: 'Poppins',
                 color: Color(0xFF000080),
@@ -158,7 +158,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                             ),
                             SizedBox(height: Styles.defaultPadding / 2),
                             Text(
-                              'No bracelets found.\nTap the + button to connect a new bracelet.',
+                             'no_bracelets_found'.tr,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: 'Poppins',
@@ -183,11 +183,11 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                             child: ListTile(
                               leading: Icon(
                                 Icons.watch,
-                                color: bracelet['connected'] ? Colors.blue : Colors.grey.shade600,
+                                color: bracelet['connected'.tr] ? Colors.blue : Colors.grey.shade600,
                                 size: 24,
                               ),
                               title: Text(
-                                bracelet['name'],
+                                bracelet['name'.tr],
                                 style: const TextStyle(
                                   fontFamily: 'Poppins',
                                   color: Colors.black87,
@@ -196,7 +196,7 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                                 ),
                               ),
                               subtitle: Text(
-                                'ID: ${bracelet['braceletId']}\nStatus: ${bracelet['connected'] ? 'Connected' : 'Disconnected'}',
+                                'ID: ${bracelet['braceletId']}\nStatus: ${bracelet['connected'.tr] ? 'connected'.tr : 'disconnected'.tr}',
                                 style: TextStyle(
                                   fontFamily: 'Poppins',
                                   color: Colors.grey.shade700,
@@ -208,25 +208,25 @@ class _BraceletManagementScreenState extends State<BraceletManagementScreen> {
                                 children: [
                                   IconButton(
                                     icon: Icon(
-                                      bracelet['connected']
+                                      bracelet['connected'.tr]
                                           ? Icons.bluetooth_disabled
                                           : Icons.bluetooth_connected,
-                                      color: bracelet['connected'] ? Colors.red : Colors.blue,
+                                      color: bracelet['connected'.tr] ? Colors.red : Colors.blue,
                                       size: 20,
                                     ),
                                     onPressed: () {
-                                      if (bracelet['connected']) {
+                                      if (bracelet['connected'.tr]) {
                                         _disconnectBracelet(bracelet['braceletId']);
                                       } else {
                                         _connectBracelet(bracelet['braceletId']);
                                       }
                                     },
-                                    tooltip: bracelet['connected'] ? 'Disconnect' : 'Connect',
+                                    tooltip: bracelet['connected'.tr] ? 'disconnect'.tr : 'connect'.tr,
                                   ),
                                   IconButton(
                                     icon: const Icon(Icons.delete, color: Colors.red, size: 20),
                                     onPressed: () => _deleteBracelet(bracelet['braceletId']),
-                                    tooltip: 'Delete',
+                                    tooltip: 'delete'.tr,
                                   ),
                                 ],
                               ),

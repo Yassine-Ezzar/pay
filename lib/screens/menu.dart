@@ -29,7 +29,7 @@ class Menu extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.credit_card, color: Styles.defaultYellowColor), 
                   title: Text(
-                    'Cards',
+                  'cards'.tr,
                     style: TextStyle(fontFamily: 'Poppins', color: Styles.defaultYellowColor),
                   ),
                   onTap: () {
@@ -40,7 +40,7 @@ class Menu extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.watch, color: Styles.defaultYellowColor),
                   title: Text(
-                    'Bracelet',
+                    'bracelet'.tr,
                     style: TextStyle(fontFamily: 'Poppins', color: Styles.defaultYellowColor),
                   ),
                   onTap: () {
@@ -51,7 +51,7 @@ class Menu extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.logout, color: Styles.defaultRedColor),
                   title: Text(
-                    'Logout',
+                    'logout'.tr,
                     style: TextStyle(fontFamily: 'Poppins', color: Styles.defaultRedColor),
                   ),
                   onTap: () async {

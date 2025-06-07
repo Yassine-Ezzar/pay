@@ -42,20 +42,20 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
         final needsOTP = await ApiService.checkOTPRequirement(userId!);
         if (needsOTP) {
           Get.toNamed('/enter-contact', arguments: {
-            'cardNumber': _cardNumber.replaceAll(' ', ''),
-            'cardHolderName': _cardHolderName,
+            'card_number'.tr: _cardNumber.replaceAll(' ', ''),
+            'cardholder_name'.tr: _cardHolderName,
             'expiryDate': _expiryDate,
             'cvv': _cvv,
-            'cardSecurityCode': _cardSecurityCode,
+            'card_security_code'.tr: _cardSecurityCode,
             'userId': userId,
           });
         } else {
           Get.toNamed('/card-verification', arguments: {
-            'cardNumber': _cardNumber.replaceAll(' ', ''),
-            'cardHolderName': _cardHolderName,
-            'expiryDate': _expiryDate,
+            'card_number'.tr: _cardNumber.replaceAll(' ', ''),
+            'cardholder_name'.tr: _cardHolderName,
+           'expiry_date'.tr: _expiryDate,
             'cvv': _cvv,
-            'cardSecurityCode': _cardSecurityCode,
+            'card_security_code'.tr: _cardSecurityCode,
             'userId': userId,
           });
         }
@@ -79,7 +79,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
           onPressed: () => Get.back(),
         ),
         title: Text(
-          'Add Card Manually',
+         'add_card_manually'.tr,
           style: TextStyle(
             fontFamily: 'Poppins',
             fontSize: 20,
@@ -121,8 +121,8 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Card Details',
+                     Text(
+                      'card_details'.tr,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 24,
@@ -133,7 +133,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'Card Number',
+                        labelText: 'card_number'.tr,
                         labelStyle: const TextStyle(color: Colors.black),
                         filled: true,
                         fillColor: Colors.grey[200],
@@ -152,10 +152,10 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                       ],
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter card number';
+                          return 'please_enter_card_number'.tr;
                         }
                         if (value.replaceAll(' ', '').length != 16) {
-                          return 'Enter a valid 16-digit card number';
+                          return 'valid_16_digit_card'.tr;
                         }
                         return null;
                       },
@@ -169,7 +169,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'Cardholder Name',
+                        labelText: 'cardholder_name'.tr,
                         labelStyle: const TextStyle(color: Colors.black),
                         filled: true,
                         fillColor: Colors.grey[200],
@@ -182,7 +182,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                       style: const TextStyle(color: Colors.black),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter cardholder name';
+                          return 'please_enter_cardholder_name'.tr;
                         }
                         return null;
                       },
@@ -199,7 +199,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                         Expanded(
                           child: TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'Expiry Date (MM/YY)',
+                              labelText: 'expiry_date'.tr,
                               labelStyle: const TextStyle(color: Colors.black),
                               filled: true,
                               fillColor: Colors.grey[200],
@@ -218,10 +218,10 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                             ],
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter expiry date';
+                                return 'please_enter_expiry_date'.tr;
                               }
                               if (!RegExp(r'^(0[1-9]|1[0-2])\/\d{2}$').hasMatch(value)) {
-                                return 'Enter a valid expiry date (MM/YY)';
+                                return 'valid_expiry_date'.tr;
                               }
                               return null;
                             },
@@ -237,7 +237,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                         Expanded(
                           child: TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'CVV',
+                              labelText: 'cvv'.tr,
                               labelStyle: const TextStyle(color: Colors.black),
                               filled: true,
                               fillColor: Colors.grey[200],
@@ -255,10 +255,10 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                             ],
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter CVV';
+                                return 'please_enter_cvv'.tr;
                               }
                               if (!RegExp(r'^\d{3}$').hasMatch(value)) {
-                                return 'Enter a valid 3-digit CVV';
+                                return 'valid_3_digit_cvv'.tr;
                               }
                               return null;
                             },
@@ -281,7 +281,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'Card Security Code',
+                        labelText: 'card_security_code'.tr,
                         labelStyle: const TextStyle(color: Colors.black),
                         filled: true,
                         fillColor: Colors.grey[200],
@@ -295,7 +295,7 @@ class _AddCardManualScreenState extends State<AddCardManualScreen> {
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter card security code';
+                          return 'please_enter_security_code'.tr;
                         }
                         return null;
                       },

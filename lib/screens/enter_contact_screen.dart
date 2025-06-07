@@ -21,8 +21,8 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
       try {
         await ApiService.sendOTP(_identifier, 'sms');
         Get.snackbar(
-          'Success',
-          'OTP sent successfully',
+          'success'.tr,
+          'otp_sent_successfully'.tr,
           backgroundColor: Colors.green,
           colorText: Colors.white,
           snackPosition: SnackPosition.TOP,
@@ -34,7 +34,7 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
         });
       } catch (e) {
         Get.snackbar(
-          'Error',
+          'error'.tr,
           e.toString(),
           backgroundColor: Colors.redAccent,
           colorText: Colors.white,
@@ -61,7 +61,6 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // Header with Icon
                 Container(
                   padding: EdgeInsets.symmetric(
                     vertical: Styles.defaultPadding * 2,
@@ -89,8 +88,8 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
                         color: Colors.white,
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        'Verify Your Phone Number',
+                       Text(
+                        'verify_phone_number'.tr,
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 28,
@@ -99,8 +98,8 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        'We’ll send you a one-time password (OTP) via SMS to verify your identity.',
+                       Text(
+                        'otp_via_sms'.tr,
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 16,
@@ -112,7 +111,6 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
                     ],
                   ),
                 ),
-                // Form Card
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
                   padding: EdgeInsets.all(Styles.defaultPadding),
@@ -132,8 +130,8 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Phone Number',
+                         Text(
+                          'phone_number'.tr,
                           style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 16,
@@ -144,7 +142,7 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
                         const SizedBox(height: 10),
                         TextFormField(
                           decoration: InputDecoration(
-                            hintText: 'e.g., +12345678901',
+                            hintText: '+12345678901',
                             hintStyle: TextStyle(color: Colors.grey[400]),
                             filled: true,
                             fillColor: Colors.grey[100],
@@ -169,10 +167,10 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
                           keyboardType: TextInputType.phone,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your phone number';
+                              return 'please_enter_phone'.tr;
                             }
                             if (!RegExp(r'^\+\d{10,15}$').hasMatch(value)) {
-                              return 'Please enter a valid phone number in international format (e.g., +12345678901)';
+                              return 'invalid_phone_format'.tr;
                             }
                             return null;
                           },
@@ -207,8 +205,8 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
                                     ? const CircularProgressIndicator(
                                         color: Colors.white,
                                       )
-                                    : const Text(
-                                        'Send OTP',
+                                    :  Text(
+                                      'send_otp'.tr,
                                         style: TextStyle(
                                           fontFamily: 'Poppins',
                                           fontSize: 18,

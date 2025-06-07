@@ -74,9 +74,8 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Title with futuristic style
                 Text(
-                  'Notification Settings',
+                  'notification_settings'.tr,
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 24,
@@ -94,7 +93,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  'This page allows you to enable or disable notifications. Turning off notifications will prevent you from receiving any alerts, updates, or reminders.',
+                  'notification_info'.tr,
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 16,
@@ -125,7 +124,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                         shadowColor: Theme.of(context).primaryColor.withOpacity(0.5),
                       ),
                       child: Text(
-                        'Proceed',
+                       'proceed'.tr,
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 16,
@@ -166,7 +165,6 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Back button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -181,7 +179,6 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                   ],
                 ),
                 const SizedBox(height: 40),
-                // Icon and Title
                 Icon(
                   Icons.notifications,
                   size: 80,
@@ -189,7 +186,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'Notifications Settings',
+                  'notification_settings'.tr,
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 28,
@@ -198,7 +195,6 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Settings Card
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.all(Styles.defaultPadding),
@@ -219,7 +215,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Notification Preferences',
+                         'notification_preferences'.tr,
                           style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 16,
@@ -230,7 +226,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                         const SizedBox(height: 20),
                         SwitchListTile(
                           title: Text(
-                            'Enable Notifications',
+                            'enable_notifications'.tr,
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 18,
@@ -238,7 +234,7 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
                             ),
                           ),
                           subtitle: Text(
-                            'Receive alerts, updates, and reminders',
+                           'receive_alerts'.tr,
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontSize: 14,

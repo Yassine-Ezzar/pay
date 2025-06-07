@@ -52,8 +52,8 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> {
       final identifier = arguments['identifier'];
       await ApiService.sendOTP(identifier, 'sms');
       Get.snackbar(
-        'Success',
-        'OTP resent successfully',
+        'success'.tr,
+        'otp_resent_success'.tr,
         backgroundColor: Colors.green,
         colorText: Colors.white,
         snackPosition: SnackPosition.TOP,
@@ -61,7 +61,7 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> {
       _startResendTimer();
     } catch (e) {
       Get.snackbar(
-        'Error',
+       'error'.tr,
         e.toString(),
         backgroundColor: Colors.redAccent,
         colorText: Colors.white,
@@ -81,8 +81,8 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> {
         final identifier = arguments['identifier'];
         await ApiService.verifyOTP(identifier, otp);
         Get.snackbar(
-          'Success',
-          'OTP verified successfully',
+         'success'.tr,
+          'otp_resent_success'.tr,
           backgroundColor: Colors.green,
           colorText: Colors.white,
           snackPosition: SnackPosition.TOP,
@@ -135,7 +135,6 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Header with Icon
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -156,8 +155,8 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> {
                   color: Colors.white,
                 ).animate().fadeIn(duration: 500.ms, delay: 200.ms),
                 const SizedBox(height: 20),
-                const Text(
-                  'Enter Your OTP',
+                 Text(
+                  'enter_your_otp'.tr,
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 28,
@@ -177,7 +176,6 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> {
                   textAlign: TextAlign.center,
                 ).animate().fadeIn(duration: 500.ms, delay: 600.ms),
                 const SizedBox(height: 40),
-                // OTP Form Card
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.all(Styles.defaultPadding),
@@ -195,8 +193,8 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'OTP Code',
+                         Text(
+                          'otp_code'.tr,
                           style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 16,
@@ -260,7 +258,7 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              _canResend ? 'Didn’t receive the code? ' : 'Resend OTP in $_resendTimer s',
+                              _canResend ? 'resend_not_received'.tr : 'Resend OTP in $_resendTimer s',
                               style: const TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: 14,
@@ -270,8 +268,8 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> {
                             if (_canResend)
                               GestureDetector(
                                 onTap: _resendOTP,
-                                child: const Text(
-                                  'Resend',
+                                child:  Text(
+                                  'resend'.tr,
                                   style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 14,
@@ -310,8 +308,8 @@ class _EnterOTPScreenState extends State<EnterOTPScreen> {
                                   ? const CircularProgressIndicator(
                                       color: Colors.white,
                                     )
-                                  : const Text(
-                                      'Verify OTP',
+                                  :  Text(
+                                      'verify_otp'.tr,
                                       style: TextStyle(
                                         fontFamily: 'Poppins',
                                         fontSize: 18,

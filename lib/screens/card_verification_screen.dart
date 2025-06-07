@@ -40,7 +40,7 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
         cardSecurityCode,
       );
 
-      Get.snackbar('Success', 'Card added successfully', backgroundColor: Colors.green);
+      Get.snackbar('success'.tr, 'card_added_successfully'.tr, backgroundColor: Colors.green);
       Get.offAllNamed('/home');
     } catch (e) {
       setState(() {
@@ -59,8 +59,8 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Verifying Your Card',
+               Text(
+                'verifying_your_card'.tr,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 24,
@@ -74,8 +74,8 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
               else if (_errorMessage != null)
                 Column(
                   children: [
-                    const Text(
-                      'Verification Failed',
+                     Text(
+                      'verification_failed'.tr,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 18,
@@ -103,8 +103,8 @@ class _CardVerificationScreenState extends State<CardVerificationScreen> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      child: const Text(
-                        'Try Again',
+                      child:  Text(
+                        'try_again'.tr,
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 16,
