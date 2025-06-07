@@ -94,9 +94,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
         }
 
         Get.back();
-        Get.snackbar('Success', 'Profile updated successfully', backgroundColor: const Color.fromARGB(68, 76, 175, 79));
+        Get.snackbar('success'.tr, 'profile_updated'.tr, backgroundColor: const Color.fromARGB(68, 76, 175, 79));
       } catch (e) {
-        Get.snackbar('Error', e.toString(), backgroundColor: Colors.redAccent);
+        Get.snackbar('error'.tr, e.toString(), backgroundColor: Colors.redAccent);
       } finally {
         setState(() => _isLoading = false);
       }
@@ -140,8 +140,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                       onPressed: () => Get.back(),
                     ),
                     const SizedBox(width: 10),
-                    const Text(
-                      'Edit Profile',
+                     Text(
+                      'edit_profile'.tr,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 24,
@@ -158,7 +158,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                     ),
                   ],
                 ),
-                SizedBox(height: Styles.defaultPadding * 2), // Increased spacing after header
+                SizedBox(height: Styles.defaultPadding * 2), 
                 Expanded(
                   child: SlideTransition(
                     position: _slideAnimation,
@@ -170,37 +170,37 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                           children: [
                             _buildTextField(
                               controller: _fullNameController,
-                              label: 'Full Name',
+                              label: 'full_name'.tr,
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
-                                  return 'Please enter your full name';
+                                  return 'please_enter_full_name'.tr;
                                 }
                                 if (value.trim().length < 2) {
-                                  return 'Full name must be at least 2 characters long';
+                                  return 'full_name_too_short'.tr;
                                 }
                                 if (value.trim().length > 50) {
-                                  return 'Full name cannot exceed 50 characters';
+                                  return 'full_name_too_long'.tr;
                                 }
                                 if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
-                                  return 'Full name can only contain letters and spaces';
+                                  return 'full_name_invalid'.tr;
                                 }
                                 return null;
                               },
                             ),
-                            SizedBox(height: Styles.defaultPadding * 2), // Increased spacing between fields
+                            SizedBox(height: Styles.defaultPadding * 2), 
                             _buildTextField(
                               controller: _nicknameController,
-                              label: 'Nickname',
+                              label: 'nickname'.tr,
                               validator: (value) {
                                 if (value != null && value.trim().isNotEmpty) {
                                   if (value.trim().length < 2) {
-                                    return 'Nickname must be at least 2 characters long';
+                                    return 'nickname_too_short'.tr;
                                   }
                                   if (value.trim().length > 30) {
-                                    return 'Nickname cannot exceed 30 characters';
+                                    return 'nickname_too_long'.tr;
                                   }
                                   if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
-                                    return 'Nickname can only contain letters, numbers, and underscores';
+                                    return 'nickname_invalid'.tr;
                                   }
                                 }
                                 return null;
@@ -209,11 +209,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                             SizedBox(height: Styles.defaultPadding * 2),
                             _buildTextField(
                               controller: _emailController,
-                              label: 'Email',
+                              label: 'email'.tr,
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
-                                  return 'Please enter your email';
+                                  return 'invalid_email'.tr;
                                 }
                                 if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                                   return 'Please enter a valid email (e.g., example@domain.com)';
@@ -224,14 +224,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                             SizedBox(height: Styles.defaultPadding * 2),
                             _buildTextField(
                               controller: _phoneNumberController,
-                              label: 'Phone Number',
+                              label: 'phone_number'.tr,
                               keyboardType: TextInputType.phone,
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
-                                  return 'Please enter your phone number';
+                                  return 'please_enter_phone'.tr;
                                 }
                                 if (!RegExp(r'^\+?[1-9]\d{1,14}$').hasMatch(value)) {
-                                  return 'Please enter a valid phone number (e.g., +1234567890)';
+                                  return 'invalid_phone'.tr;
                                 }
                                 return null;
                               },
@@ -242,19 +242,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                 Expanded(
                                   child: _buildTextField(
                                     controller: _countryController,
-                                    label: 'Country',
+                                    label: 'country'.tr,
                                     validator: (value) {
                                       if (value == null || value.trim().isEmpty) {
-                                        return 'Please enter your country';
+                                        return 'please_enter_country'.tr;
                                       }
                                       if (value.trim().length < 2) {
-                                        return 'Country name must be at least 2 characters long';
+                                        return 'country_invalid'.tr;
                                       }
                                       if (value.trim().length > 50) {
-                                        return 'Country name cannot exceed 50 characters';
+                                        return 'country_too_long'.tr;
                                       }
                                       if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
-                                        return 'Country name can only contain letters and spaces';
+                                        return 'country_invalid'.tr;
                                       }
                                       return null;
                                     },
@@ -265,7 +265,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                   child: DropdownButtonFormField<String>(
                                     value: _selectedGender,
                                     decoration: InputDecoration(
-                                      labelText: 'Gender',
+                                      labelText: 'gender'.tr,
                                       labelStyle: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                                       filled: true,
                                       fillColor: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.1),
@@ -307,7 +307,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                     },
                                     validator: (value) {
                                       if (value == null) {
-                                        return 'Please select your gender';
+                                        return 'please_select_gender'.tr;
                                       }
                                       return null;
                                     },
@@ -320,16 +320,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                             SizedBox(height: Styles.defaultPadding * 2),
                             _buildTextField(
                               controller: _addressController,
-                              label: 'Address',
+                              label: 'address'.tr,
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
-                                  return 'Please enter your address';
+                                  return 'please_enter_address'.tr;
                                 }
                                 if (value.trim().length < 5) {
-                                  return 'Address must be at least 5 characters long';
+                                  return 'address_too_short'.tr;
                                 }
                                 if (value.trim().length > 100) {
-                                  return 'Address cannot exceed 100 characters';
+                                  return 'address_too_long'.tr;
                                 }
                                 return null;
                               },
@@ -350,8 +350,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> with SingleTicker
                                 ),
                                 child: _isLoading
                                     ? const CircularProgressIndicator(color: Color(0xFF477bd0))
-                                    : const Text(
-                                        'SUBMIT',
+                                    :  Text(
+                                      'submit'.tr,
                                         style: TextStyle(
                                           fontFamily: 'Poppins',
                                           fontSize: 16,

@@ -50,9 +50,9 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF0066FF), Color(0xFF004ECC)],
+            colors: [const Color(0xFF1E3A8A).withOpacity(0.9), const Color(0xFF4B6CB7)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -71,57 +71,65 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
                       Row(
                         children: [
                           IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.arrow_back,
-                              color: Colors.white,
-                              size: 28,
+                              color: Colors.white.withOpacity(0.9),
+                              size: 30,
                             ),
                             onPressed: () => Get.back(),
                           ),
                           const Spacer(),
                         ],
                       ),
-                      const SizedBox(height: 20),
-                      const Icon(
+                      const SizedBox(height: 40),
+                      Icon(
                         Icons.phone_iphone_rounded,
-                        size: 80,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(height: 10),
-                       Text(
+                        size: 100,
+                        color: Colors.white.withOpacity(0.9),
+                      ).animate().scale(duration: 800.ms, curve: Curves.easeOut),
+                      const SizedBox(height: 20),
+                      Text(
                         'verify_phone_number'.tr,
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 32,
+                          fontWeight: FontWeight.w700,
                           color: Colors.white,
+                          letterSpacing: 1.2,
                         ),
-                      ),
+                      ).animate().fadeIn(duration: 600.ms),
                       const SizedBox(height: 10),
-                       Text(
+                      Text(
                         'otp_via_sms'.tr,
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 16,
+                          fontSize: 18,
                           color: Colors.white70,
-                          height: 1.5,
+                          height: 1.6,
                         ),
                         textAlign: TextAlign.center,
-                      ),
+                      ).animate().fadeIn(duration: 700.ms),
                     ],
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
-                  padding: EdgeInsets.all(Styles.defaultPadding),
+                  margin: EdgeInsets.symmetric(
+                    horizontal: Styles.defaultPadding,
+                    vertical: Styles.defaultPadding,
+                  ),
+                  padding: EdgeInsets.all(Styles.defaultPadding * 1.5),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Styles.darkScaffoldBackgroundColor
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(25),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 5),
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black54.withOpacity(0.3)
+                            : Colors.black.withOpacity(0.1),
+                        blurRadius: 15,
+                        offset: const Offset(0, 8),
                       ),
                     ],
                   ),
@@ -130,39 +138,52 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Text(
+                        Text(
                           'phone_number'.tr,
                           style: TextStyle(
                             fontFamily: 'Poppins',
-                            fontSize: 16,
+                            fontSize: 18,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF063B87),
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Styles.darkDefaultLightWhiteColor
+                                : const Color(0xFF1E3A8A),
                           ),
-                        ),
-                        const SizedBox(height: 10),
+                        ).animate().fadeIn(duration: 500.ms, delay: 100.ms),
+                        const SizedBox(height: 15),
                         TextFormField(
                           decoration: InputDecoration(
                             hintText: '+12345678901',
-                            hintStyle: TextStyle(color: Colors.grey[400]),
+                            hintStyle: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Styles.darkDefaultGreyColor
+                                  : Colors.grey[500],
+                            ),
                             filled: true,
-                            fillColor: Colors.grey[100],
+                            fillColor: Theme.of(context).brightness == Brightness.dark
+                                ? Styles.darkDefaultLightGreyColor.withOpacity(0.2)
+                                : Colors.grey[50],
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(15),
                               borderSide: BorderSide.none,
                             ),
-                            prefixIcon: const Icon(
+                            prefixIcon: Icon(
                               Icons.phone,
-                              color: Color(0xFF0066FF),
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Styles.darkDefaultBlueColor
+                                  : const Color(0xFF0066FF),
                             ),
                             contentPadding: const EdgeInsets.symmetric(
-                              vertical: 15,
+                              vertical: 18,
                               horizontal: 20,
                             ),
                           ),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 16,
-                            color: Colors.black,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Styles.darkDefaultLightWhiteColor
+                                : Colors.black87,
                           ),
                           keyboardType: TextInputType.phone,
                           validator: (value) {
@@ -175,38 +196,40 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
                             return null;
                           },
                           onSaved: (value) => _identifier = value!,
-                        ).animate().fadeIn(duration: 500.ms, delay: 200.ms),
-                        const SizedBox(height: 30),
+                        ).animate().fadeIn(duration: 600.ms, delay: 200.ms),
+                        const SizedBox(height: 40),
                         Center(
                           child: SizedBox(
                             width: double.infinity,
-                            height: 56,
+                            height: 60,
                             child: ElevatedButton(
                               onPressed: _isLoading ? null : _submitContact,
                               style: ElevatedButton.styleFrom(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.transparent,
                                 shadowColor: Colors.transparent,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
                               ),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [Color(0xFF0066FF), Color(0xFF004ECC)],
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      const Color(0xFF0066FF),
+                                      const Color(0xFF004ECC),
+                                    ],
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                   ),
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
                                 alignment: Alignment.center,
                                 child: _isLoading
                                     ? const CircularProgressIndicator(
                                         color: Colors.white,
                                       )
-                                    :  Text(
-                                      'send_otp'.tr,
+                                    : Text(
+                                        'send_otp'.tr,
                                         style: TextStyle(
                                           fontFamily: 'Poppins',
                                           fontSize: 18,
@@ -216,13 +239,13 @@ class _EnterContactScreenState extends State<EnterContactScreen> {
                                       ),
                               ),
                             ),
-                          ),
-                        ).animate().fadeIn(duration: 500.ms, delay: 400.ms),
+                          ).animate().scale(duration: 700.ms, delay: 300.ms),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
               ],
             ),
           ),
