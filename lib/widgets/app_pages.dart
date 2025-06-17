@@ -2,6 +2,7 @@ import 'package:app/screens/AdminDashboardScreen.dart';
 import 'package:app/screens/add_card_guide_screen.dart';
 import 'package:app/screens/add_card_manual_screen.dart';
 import 'package:app/screens/add_card_screen.dart';
+import 'package:app/screens/assistant_screen.dart';
 import 'package:app/screens/bracelet_connect_screen.dart';
 import 'package:app/screens/bracelet_management_screen.dart';
 import 'package:app/screens/card_list_screen.dart';
@@ -60,6 +61,7 @@ GetPage(name: '/add-card-manual', page: () => AddCardManualScreen()),
     GetPage(name: '/password-changed', page: () => PasswordChangedSuccessfullyScreen()),
     GetPage(name: '/enter-contact', page: () => EnterContactScreen()),
         GetPage(name: '/enter-otp', page: () => EnterOTPScreen()),
+        GetPage(name: '/assistant', page: () => AssistantScreen()),
     
     
     

@@ -204,7 +204,6 @@ class LanguageSelectionScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          // English Preview
                           Column(
                             children: [
                               Container(
@@ -290,7 +289,6 @@ class LanguageSelectionScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          // French Preview
                           Column(
                             children: [
                               Container(
@@ -390,7 +388,7 @@ class LanguageSelectionScreen extends StatelessWidget {
                     onPressed: () {
                       Get.snackbar(
                         'info'.tr,
-                        'language_preference_saved'.tr,
+                        'language preference saved'.tr,
                         backgroundColor: Theme.of(context).brightness == Brightness.dark
                             ? Styles.darkDefaultBlueColor
                             : Styles.defaultBlueColor,
@@ -403,7 +401,7 @@ class LanguageSelectionScreen extends StatelessWidget {
                       );
                     },
                     child: Text(
-                      'save_preference'.tr,
+                      'Save preference'.tr,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 16,

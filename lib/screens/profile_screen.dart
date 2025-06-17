@@ -437,6 +437,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                         title: 'notifications'.tr,
                                         onTap: () => Get.toNamed('/notifications-settings'),
                                       ),
+                                                              const SizedBox(height: 10),
+                                      _buildProfileOption(
+          icon: Icons.chat,
+          title: 'assistant'.tr,
+          onTap: () => Get.toNamed('/assistant'),
+        ),
                                       const SizedBox(height: 10),
                                       _buildProfileOption(
                                         icon: Icons.language,
@@ -473,6 +479,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                         title: 'privacy_policy'.tr,
                                         onTap: () => Get.toNamed('/privacy-policy'),
                                       ),
+              
                                       const SizedBox(height: 20),
                                       _buildProfileOption(
                                         icon: Icons.logout,

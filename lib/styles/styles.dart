@@ -33,5 +33,7 @@ class Styles {
     radius: const Radius.circular(20),
   );
 
-  static var cardBackgroundColor; 
+  static var cardBackgroundColor;
+
+  static var darkDefaultLightBlueColor; 
 }
