@@ -17,7 +17,6 @@ class _NotificationsSettingsScreenState extends State<NotificationsSettingsScree
   void initState() {
     super.initState();
     _loadNotificationsSetting();
-    // Defer the dialog to after the first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_hasShownInfo) {
         _showInfoDialog();

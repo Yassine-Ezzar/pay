@@ -204,7 +204,6 @@ class ThemeSettingsScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          // Light Theme Preview
                           Column(
                             children: [
                               Container(

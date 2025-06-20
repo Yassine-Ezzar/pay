@@ -48,7 +48,7 @@ class _AssistantScreenState extends State<AssistantScreen> with SingleTickerProv
 
   void _processResponse(String question) async {
     String response = _getBotResponse(question);
-    await Future.delayed(const Duration(milliseconds: 800)); // Délai réaliste
+    await Future.delayed(const Duration(milliseconds: 800)); 
 
     setState(() {
       _chatHistory.add({'role': 'bot', 'message': response});
@@ -148,7 +148,7 @@ class _AssistantScreenState extends State<AssistantScreen> with SingleTickerProv
             Expanded(
               child: Container(
                 padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.05, // 5% de la largeur de l'écran
+                  horizontal: screenWidth * 0.05, 
                   vertical: 10,
                 ),
                 decoration: BoxDecoration(
@@ -223,10 +223,10 @@ class _AssistantScreenState extends State<AssistantScreen> with SingleTickerProv
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(
-                screenWidth * 0.05, // 5% de la largeur à gauche
+                screenWidth * 0.05, 
                 10,
-                screenWidth * 0.05, // 5% de la largeur à droite
-                10 + MediaQuery.of(context).viewInsets.bottom, // Ajuster pour le clavier
+                screenWidth * 0.05, 
+                10 + MediaQuery.of(context).viewInsets.bottom, 
               ),
               child: Row(
                 children: [
